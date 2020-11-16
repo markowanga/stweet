@@ -6,6 +6,7 @@ from model.search_run_context import SearchRunContext
 from model.search_tweets_task import SearchTweetsTask
 from model.tweet import Tweet
 from runner.request_details_builder import scrap_tweets_get_params, scrap_tweets_get_headers
+from runner.tweet_filter import TweetFilter
 from token_request import TokenRequest
 from tweet_output.tweet_output import TweetOutput
 from tweet_parser import TweetParser
@@ -42,9 +43,9 @@ class TweetSearchRunner:
         if response.is_token_expired():
             self._refresh_token()
         elif response.is_success():
-            # TODO implement
             parsed_tweets = TweetParser.parse_tweets(response.text)
-            self._process_new_tweets_to_output(parsed_tweets)
+            filtered_tweets = TweetFilter(self.search_tweets_task).filter_tweets(parsed_tweets)
+            self._process_new_tweets_to_output(filtered_tweets)
             self.search_run_context.scroll_token = TweetParser.parse_cursor(response.text)
             self.search_run_context.last_tweets_download_count = len(parsed_tweets)
         else:

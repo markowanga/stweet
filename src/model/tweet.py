@@ -20,4 +20,4 @@ class Tweet:
     user_full_name: str
 
     def to_json_string(self) -> str:
-        return json.dumps(self)
+        return json.dumps(self, default=lambda o: o.__dict__)

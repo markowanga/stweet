@@ -48,7 +48,8 @@ class SearchTweetsTask:
             query += f" to:{self.to_username}"  # TODO check it works
         # if config.Replies:
         #     q += " filter:replies"
-        #     # although this filter can still be used, but I found it broken in my preliminary testing, needs more testing
+        #     # although this filter can still be used, but I found it broken in my preliminary
+        #     # testing, needs more testing
         # if config.Native_retweets:
         #     q += " filter:nativeretweets"
         # if config.Min_likes:

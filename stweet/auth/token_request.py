@@ -3,7 +3,7 @@ import time
 
 import requests
 
-from src.exceptions.refresh_token_exception import RefreshTokenException
+from stweet.exceptions.refresh_token_exception import RefreshTokenException
 
 
 class TokenRequest:

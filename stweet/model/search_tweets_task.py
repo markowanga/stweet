@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from model.language import Language
+from stweet.model.language import Language
 
 
 @dataclass(frozen=True)

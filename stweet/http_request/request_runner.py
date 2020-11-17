@@ -1,7 +1,7 @@
 import requests
 
-from http_request.request_details import RequestDetails
-from http_request.request_response import RequestResponse
+from stweet.http_request.request_details import RequestDetails
+from stweet.http_request.request_response import RequestResponse
 
 
 class RequestRunner:

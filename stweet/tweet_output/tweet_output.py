@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from model.tweet import Tweet
+from stweet.model.tweet import Tweet
 
 
 class TweetOutput(ABC):

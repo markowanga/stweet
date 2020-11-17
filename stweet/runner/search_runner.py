@@ -1,14 +1,14 @@
 from typing import List
 
-from http_request.request_details import RequestDetails
-from http_request.request_runner import RequestRunner
-from model.search_run_context import SearchRunContext
-from model.search_tweets_task import SearchTweetsTask
-from model.tweet import Tweet
-from runner.request_details_builder import scrap_tweets_get_params, scrap_tweets_get_headers
-from auth.token_request import TokenRequest
-from tweet_output.tweet_output import TweetOutput
-from parse.tweet_parser import TweetParser
+from stweet.auth.token_request import TokenRequest
+from stweet.http_request.request_details import RequestDetails
+from stweet.http_request.request_runner import RequestRunner
+from stweet.model.search_run_context import SearchRunContext
+from stweet.model.search_tweets_task import SearchTweetsTask
+from stweet.model.tweet import Tweet
+from stweet.parse.tweet_parser import TweetParser
+from stweet.runner.request_details_builder import scrap_tweets_get_params, scrap_tweets_get_headers
+from stweet.tweet_output.tweet_output import TweetOutput
 
 
 class TweetSearchRunner:
@@ -36,8 +36,8 @@ class TweetSearchRunner:
             self._execute_next_tweets_request()
 
     def _is_end_of_scrapping(self) -> bool:
-        with self.search_run_context as context:
-            return context.last_tweets_download_count or context.was_no_more_data_raised
+        context = self.search_run_context
+        return context.last_tweets_download_count == 0 or context.was_no_more_data_raised
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()

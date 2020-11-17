@@ -1,7 +1,7 @@
 from typing import List
 
-from model.search_tweets_task import SearchTweetsTask
-from model.tweet import Tweet
+from stweet.model.search_tweets_task import SearchTweetsTask
+from stweet.model.tweet import Tweet
 
 
 class TweetFilter:

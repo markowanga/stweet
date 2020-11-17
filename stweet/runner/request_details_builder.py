@@ -1,7 +1,7 @@
 from typing import Dict
 
-from model.search_tweets_task import SearchTweetsTask
-from runner.search_runner import SearchRunContext
+from stweet.model.search_tweets_task import SearchTweetsTask
+from stweet.runner.search_runner import SearchRunContext
 
 _bearer_token = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4pu' \
                 'Ts%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA'

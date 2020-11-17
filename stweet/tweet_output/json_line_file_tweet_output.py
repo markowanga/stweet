@@ -2,8 +2,8 @@
 
 from typing import List
 
-from model.tweet import Tweet
-from tweet_output.tweet_output import TweetOutput
+from stweet.model.tweet import Tweet
+from stweet.tweet_output.tweet_output import TweetOutput
 
 
 class JsonLineFileTweetOutput(TweetOutput):

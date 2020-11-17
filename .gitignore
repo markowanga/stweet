@@ -1,3 +1,5 @@
 test_run.py
 .idea
 .tox
+build
+dist

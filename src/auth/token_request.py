@@ -13,6 +13,7 @@ class TokenRequest:
     url = 'https://twitter.com'
 
     def _request(self):
+        """Method from Twint."""
         for attempt in range(self._retries + 1):
             # The request is newly prepared on each retry because of potential cookie updates.
             req = self._session.prepare_request(requests.Request('GET', self.url))

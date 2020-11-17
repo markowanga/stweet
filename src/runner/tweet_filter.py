@@ -18,4 +18,5 @@ class TweetFilter:
         return self._predicate_language(tweet)
 
     def _predicate_language(self, tweet: Tweet) -> bool:
-        return tweet.lang is None or tweet.lang == self.search_tweet_task.language
+        # print(tweet.lang, self.search_tweet_task.language)
+        return tweet.lang is None or tweet.lang == self.search_tweet_task.language.short_value

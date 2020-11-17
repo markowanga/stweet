@@ -9,7 +9,6 @@ class SearchRunContext:
     was_no_more_data_raised: bool
     last_tweets_download_count: int
     all_download_tweets: int
-    all_filtered_tweets: int
 
     def __init__(self, scroll_token: str = '-1', guest_auth_token: Optional[str] = None,
                  was_no_more_data_raised: bool = False, last_tweets_download_count: int = -1,
@@ -22,6 +21,5 @@ class SearchRunContext:
         self.all_filtered_tweets = all_filtered_tweets
         return
 
-    def add_downloaded_tweets_count(self, downloaded_tweets: int, filtered_tweets: int):
+    def add_downloaded_tweets_count(self, downloaded_tweets: int):
         self.all_download_tweets += downloaded_tweets
-        self.all_filtered_tweets += filtered_tweets

@@ -28,9 +28,9 @@ def scrap_tweets_get_params(
         ('ext', 'mediaStats%2ChighlightedLabel'),
         ('tweet_search_mode', 'live'),
         ('f', 'tweets'),  # if not config.Popular_tweets
-        ('l', search_tweets_task.language.short_value),
-        ('lang', 'en'),
-        ('q', search_tweets_task.simple_search_phrase)
+        # ('l', search_tweets_task.language.short_value),
+        # ('lang', 'en'),
+        ('q', search_tweets_task.get_full_search_query())
     ])
 
 

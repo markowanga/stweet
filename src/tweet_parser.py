@@ -16,6 +16,7 @@ class TweetParser:
 
     @staticmethod
     def parse_tweets(response_text: str) -> List[Tweet]:
+        # main method part from twint -- https://github.com/twintproject/twint
         response_json = json.loads(response_text)
         if len(response_json['globalObjects']['tweets']) == 0:
             return list()

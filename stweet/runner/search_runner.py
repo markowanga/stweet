@@ -1,3 +1,5 @@
+"""Runner to process task to search tweets."""
+
 from typing import List
 
 from stweet.auth.token_request import TokenRequest
@@ -12,6 +14,8 @@ from stweet.tweet_output.tweet_output import TweetOutput
 
 
 class TweetSearchRunner:
+    """Runner class to process task to search tweets."""
+
     search_run_context: SearchRunContext
     search_tweets_task: SearchTweetsTask
     tweet_outputs: List[TweetOutput]
@@ -24,6 +28,7 @@ class TweetSearchRunner:
             search_run_context: SearchRunContext = SearchRunContext(),
             return_scrapped_objects: bool = False
     ):
+        """Constructor to create object."""
         self.search_run_context = search_run_context
         self.search_tweets_task = search_tweets_task
         self.tweet_outputs = tweet_outputs
@@ -31,6 +36,7 @@ class TweetSearchRunner:
         return
 
     def run(self):
+        """Main runner method."""
         self._prepare_token()
         while not self._is_end_of_scrapping():
             self._execute_next_tweets_request()

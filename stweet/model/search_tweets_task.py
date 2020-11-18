@@ -1,3 +1,5 @@
+"""Domain SearchTweetsTask class."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
@@ -7,6 +9,8 @@ from stweet.model.language import Language
 
 @dataclass(frozen=True)
 class SearchTweetsTask:
+    """Domain SearchTweetsTask class."""
+
     simple_search_phrase: Optional[str]
     from_username: Optional[str]
     to_username: Optional[str]
@@ -24,6 +28,7 @@ class SearchTweetsTask:
             until: Optional[datetime],
             language: Optional[Language]
     ):
+        """Class constructor."""
         object.__setattr__(self, 'simple_search_phrase', simple_search_phrase)
         object.__setattr__(self, 'from_username', from_username)
         object.__setattr__(self, 'to_username', to_username)
@@ -33,6 +38,7 @@ class SearchTweetsTask:
         return
 
     def get_full_search_query(self) -> str:
+        """Method to return full search query. This will be contains many details from task, conditions from Twint."""
         query = self.simple_search_phrase
         if self.language is not None:
             query += f' lang:{self.language.short_value}'

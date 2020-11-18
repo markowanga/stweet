@@ -1,12 +1,16 @@
+"""Util to process access token to Twitter api."""
+
 import re
 import time
 
 import requests
 
-from stweet.exceptions.refresh_token_exception import RefreshTokenException
+from stweet.exceptions import RefreshTokenException
 
 
 class TokenRequest:
+    """Class to manage Twitter token api."""
+
     _session = requests.Session()
     _retries = 5
     _timeout = 10
@@ -46,6 +50,7 @@ class TokenRequest:
             raise RefreshTokenException(msg)
 
     def refresh(self) -> str:
+        """Method to get refreshed token. In case of error raise RefreshTokenException."""
         print('Retrieving guest token')
         res = self._request()
         match = re.search(r'\("gt=(\d+);', res.text)

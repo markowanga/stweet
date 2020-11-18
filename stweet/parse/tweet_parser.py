@@ -1,3 +1,5 @@
+"""Utils to parse data from web response."""
+
 import json
 from datetime import datetime
 from typing import List
@@ -13,9 +15,11 @@ _Tweet_formats = {
 
 # TODO fix this class -- loaded JSON as class field, try changeł datetime format
 class TweetParser:
+    """Utils class to parse data from web response."""
 
     @staticmethod
     def parse_tweets(response_text: str) -> List[Tweet]:
+        """Method to extract tweets from web response."""
         # main method part from twint -- https://github.com/twintproject/twint
         response_json = json.loads(response_text)
         if len(response_json['globalObjects']['tweets']) == 0:
@@ -78,6 +82,7 @@ class TweetParser:
 
     @staticmethod
     def parse_cursor(response_content: str) -> str:
+        """Method to extract next cursor to scrap request from web response."""
         response_json = json.loads(response_content)
         try:
             next_cursor = response_json['timeline']['instructions'][0]['addEntries']['entries'][-1]['content'][

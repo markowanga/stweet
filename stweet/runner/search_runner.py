@@ -42,8 +42,8 @@ class TweetSearchRunner:
             self._execute_next_tweets_request()
 
     def _is_end_of_scrapping(self) -> bool:
-        context = self.search_run_context
-        return context.last_tweets_download_count == 0 or context.was_no_more_data_raised
+        ctx = self.search_run_context
+        return ctx.last_tweets_download_count == 0 or ctx.was_no_more_data_raised or ctx.scroll_token is None
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()

@@ -87,6 +87,8 @@ class TweetParser:
                 'operation']['cursor']['value']
         except KeyError:
             return None
+        except IndexError:
+            return None
 
     @staticmethod
     def _parse_cursor_second_location(response_json: any) -> Optional[str]:
@@ -95,12 +97,14 @@ class TweetParser:
                 'cursor']['value']
         except KeyError:
             return None
+        except IndexError:
+            return None
 
     @staticmethod
     def parse_cursor(response_content: str) -> Optional[str]:
         """Method to extract next cursor to scrap request from web response."""
         response_json = json.loads(response_content)
-        next_cursor = TweetParser._parse_cursor_second_location(response_json)
+        next_cursor = TweetParser._parse_cursor_first_location(response_json)
         if next_cursor is None:
             next_cursor = TweetParser._parse_cursor_second_location(response_json)
         return next_cursor

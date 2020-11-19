@@ -21,9 +21,9 @@ class TokenRequest:
         for attempt in range(self._retries + 1):
             # The request is newly prepared on each retry because of potential cookie updates.
             req = self._session.prepare_request(requests.Request('GET', self.url))
-            print(f'Retrieving {req.url}')
+            # print(f'Retrieving {req.url}')
             try:
-                print('self._session.send', req)
+                # print('self._session.send', req)
                 r = self._session.send(req, allow_redirects=True, timeout=self._timeout)
             except requests.exceptions.RequestException as exc:
                 if attempt < self._retries:
@@ -32,13 +32,13 @@ class TokenRequest:
                 else:
                     retrying = ''
                     level = 'ERROR'
-                print(level, f'Error retrieving {req.url}: {exc!r}{retrying}')
+                # print(level, f'Error retrieving {req.url}: {exc!r}{retrying}')
             else:
                 success, msg = (True, None)
                 msg = f': {msg}' if msg else ''
 
                 if success:
-                    print(f'{req.url} retrieved successfully{msg}')
+                    # print(f'{req.url} retrieved successfully{msg}')
                     return r
             if attempt < self._retries:
                 sleep_time = 2.0 * 2 ** attempt
@@ -55,7 +55,7 @@ class TokenRequest:
         res = self._request()
         match = re.search(r'\("gt=(\d+);', res.text)
         if match:
-            print('Found guest token in HTML')
+            # print('Found guest token in HTML')
             return str(match.group(1))
         else:
             raise RefreshTokenException('Could not find the Guest token in HTML')

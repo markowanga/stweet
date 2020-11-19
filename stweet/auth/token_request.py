@@ -2,11 +2,13 @@
 
 import re
 
+from retrying import retry
+
 from stweet.exceptions import RefreshTokenException
 from stweet.http_request import RequestDetails, RequestRunner
 
 _retries = 5
-_timeout = 10
+_timeout = 20
 _url = 'https://twitter.com'
 
 
@@ -24,6 +26,8 @@ class TokenRequest:
             raise RefreshTokenException('Error during request for token')
 
     @staticmethod
+    @retry(stop_max_attempt_number=20)
+    # sometimes an error occurs on CI tests
     def refresh() -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
         print('Retrieving guest token')
@@ -32,5 +36,5 @@ class TokenRequest:
         if match:
             return str(match.group(1))
         else:
-            print(token_html)
+            print('Could not find the Guest token in HTML')
             raise RefreshTokenException('Could not find the Guest token in HTML')

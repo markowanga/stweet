@@ -140,3 +140,5 @@ dmypy.json
 cython_debug/
 
 test_run.py
+clean.sh
+tmp

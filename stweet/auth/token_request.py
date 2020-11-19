@@ -8,6 +8,7 @@ import requests
 from stweet.exceptions import RefreshTokenException
 
 
+# TODO One interface to call requests (like in runner)
 class TokenRequest:
     """Class to manage Twitter token api."""
 

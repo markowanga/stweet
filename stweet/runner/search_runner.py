@@ -1,6 +1,6 @@
 """Runner to process task to search tweets."""
 
-from typing import List
+from typing import List, Optional
 
 from stweet.auth.token_request import TokenRequest
 from stweet.http_request.request_details import RequestDetails
@@ -25,11 +25,11 @@ class TweetSearchRunner:
             self,
             search_tweets_task: SearchTweetsTask,
             tweet_outputs: List[TweetOutput],
-            search_run_context: SearchRunContext = SearchRunContext(),
+            search_run_context: Optional[SearchRunContext] = None,
             return_scrapped_objects: bool = False
     ):
         """Constructor to create object."""
-        self.search_run_context = search_run_context
+        self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context
         self.search_tweets_task = search_tweets_task
         self.tweet_outputs = tweet_outputs
         self.return_scrapped_objects = return_scrapped_objects
@@ -37,13 +37,14 @@ class TweetSearchRunner:
 
     def run(self):
         """Main runner method."""
+        print(self.search_run_context)
         self._prepare_token()
         while not self._is_end_of_scrapping():
             self._execute_next_tweets_request()
 
     def _is_end_of_scrapping(self) -> bool:
-        context = self.search_run_context
-        return context.last_tweets_download_count == 0 or context.was_no_more_data_raised
+        ctx = self.search_run_context
+        return ctx.last_tweets_download_count == 0 or ctx.was_no_more_data_raised or (ctx.scroll_token is None)
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()

@@ -2,7 +2,7 @@
 
 import json
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from stweet.model.tweet import Tweet
 
@@ -81,15 +81,30 @@ class TweetParser:
         )
 
     @staticmethod
-    def parse_cursor(response_content: str) -> str:
-        """Method to extract next cursor to scrap request from web response."""
-        response_json = json.loads(response_content)
+    def _parse_cursor_first_location(response_json: any) -> Optional[str]:
         try:
-            next_cursor = response_json['timeline']['instructions'][0]['addEntries']['entries'][-1]['content'][
+            return response_json['timeline']['instructions'][0]['addEntries']['entries'][-1]['content'][
                 'operation']['cursor']['value']
         except KeyError:
-            # this is needed because after the first request location of cursor is changed
-            next_cursor = \
-                response_json['timeline']['instructions'][-1]['replaceEntry']['entry']['content']['operation'][
-                    'cursor']['value']
+            return None
+        except IndexError:
+            return None
+
+    @staticmethod
+    def _parse_cursor_second_location(response_json: any) -> Optional[str]:
+        try:
+            return response_json['timeline']['instructions'][-1]['replaceEntry']['entry']['content']['operation'][
+                'cursor']['value']
+        except KeyError:
+            return None
+        except IndexError:
+            return None
+
+    @staticmethod
+    def parse_cursor(response_content: str) -> Optional[str]:
+        """Method to extract next cursor to scrap request from web response."""
+        response_json = json.loads(response_content)
+        next_cursor = TweetParser._parse_cursor_first_location(response_json)
+        if next_cursor is None:
+            next_cursor = TweetParser._parse_cursor_second_location(response_json)
         return next_cursor

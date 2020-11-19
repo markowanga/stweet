@@ -8,7 +8,7 @@ from typing import Optional
 class SearchRunContext:
     """Domain SearchRunContext class."""
 
-    scroll_token: str
+    scroll_token: Optional[str]
     guest_auth_token: Optional[str]
     was_no_more_data_raised: bool
     last_tweets_download_count: int

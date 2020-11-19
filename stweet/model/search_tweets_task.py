@@ -81,6 +81,6 @@ class SearchTweetsTask:
     @staticmethod
     def _format_date(date) -> int:
         try:
-            return int(datetime.strptime(date, "%Y-%m-%d %H:%M:%S").timestamp())
+            return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())
         except ValueError:
-            return int(datetime.strptime(date, "%Y-%m-%d").timestamp())
+            return int(datetime.strptime(str(date), "%Y-%m-%d").timestamp())

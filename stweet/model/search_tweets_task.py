@@ -39,7 +39,7 @@ class SearchTweetsTask:
 
     def get_full_search_query(self) -> str:
         """Method to return full search query. This will be contains many details from task, conditions from Twint."""
-        query = self.simple_search_phrase
+        query = self.simple_search_phrase if self.simple_search_phrase is not None else ''
         if self.language is not None:
             query += f' lang:{self.language.short_value}'
         if self.from_username:

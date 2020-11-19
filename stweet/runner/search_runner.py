@@ -67,7 +67,8 @@ class TweetSearchRunner:
         return RequestDetails(
             url='https://api.twitter.com/2/search/adaptive.json',
             headers=scrap_tweets_get_headers(self.search_run_context),
-            params=scrap_tweets_get_params(self.search_run_context, self.search_tweets_task)
+            params=scrap_tweets_get_params(self.search_run_context, self.search_tweets_task),
+            timeout=10
         )
 
     def _refresh_token(self):

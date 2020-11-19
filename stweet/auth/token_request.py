@@ -59,4 +59,5 @@ class TokenRequest:
             # print('Found guest token in HTML')
             return str(match.group(1))
         else:
+            print(res.text)
             raise RefreshTokenException('Could not find the Guest token in HTML')

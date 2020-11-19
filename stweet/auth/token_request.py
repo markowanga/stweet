@@ -33,13 +33,13 @@ class TokenRequest:
                 else:
                     retrying = ''
                     level = 'ERROR'
-                # print(level, f'Error retrieving {req.url}: {exc!r}{retrying}')
+                print(level, f'Error retrieving {req.url}: {exc!r}{retrying}')
             else:
                 success, msg = (True, None)
                 msg = f': {msg}' if msg else ''
 
                 if success:
-                    # print(f'{req.url} retrieved successfully{msg}')
+                    print(f'{req.url} retrieved successfully{msg}')
                     return r
             if attempt < self._retries:
                 sleep_time = 2.0 * 2 ** attempt

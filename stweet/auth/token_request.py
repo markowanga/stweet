@@ -3,8 +3,6 @@
 import re
 import uuid
 
-from retrying import retry
-
 from stweet.exceptions import RefreshTokenException
 from stweet.http_request import RequestDetails, RequestRunner
 
@@ -40,7 +38,6 @@ class TokenRequest:
             raise RefreshTokenException('Error during request for token')
 
     @staticmethod
-    @retry(stop_max_attempt_number=20)
     # sometimes an error occurs on CI tests
     def refresh() -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""

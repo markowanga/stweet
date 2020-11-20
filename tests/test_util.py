@@ -10,7 +10,7 @@ def get_temp_test_file_name(file_extension_without_dot: str) -> str:
 
 
 def _get_uuid_str() -> str:
-    return uuid.uuid4().__str__().replace('-', '')
+    return str(uuid.uuid4()).replace('-', '')
 
 
 def remove_all_temp_files():

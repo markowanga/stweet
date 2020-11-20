@@ -34,6 +34,24 @@ def test_return_tweets_objects():
     assert all([phrase in it.full_text for it in result.tweets if phrase in it.full_text]) is True
 
 
+def test_return_tweets_from_user():
+    username = 'realDonaldTrump'
+    search_tweets_task = st.SearchTweetsTask(
+        simple_search_phrase=None,
+        from_username=username,
+        to_username=None,
+        since=datetime(2020, 10, 1),
+        until=datetime(2020, 11, 1),
+        language=None
+    )
+    result = st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[]
+    ).run()
+    print(result.tweets[0].user_name)
+    assert all([it.user_name == username for it in result.tweets]) is True
+
+
 def test_no_return_tweets():
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(

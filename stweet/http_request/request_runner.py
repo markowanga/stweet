@@ -12,5 +12,10 @@ class RequestRunner:
     def run_request(params: RequestDetails) -> RequestResponse:
         """Main method to run request."""
         session = requests.Session()
-        response = session.get(url=params.url, params=params.params, headers=params.headers)
+        response = session.get(
+            url=params.url,
+            params=params.params,
+            headers=params.headers,
+            timeout=params.timeout
+        )
         return RequestResponse(response.status_code, response.text)

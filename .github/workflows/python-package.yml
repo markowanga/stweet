@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8 ]
+        python-version: [ 3.7, 3.8, 3.9 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,11 +23,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Check Internet connection
-        run: |
-          pip install curl
-          curl -I www.google.pl
-          curl -I www.twitter.com
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip

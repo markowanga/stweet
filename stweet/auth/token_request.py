@@ -1,62 +1,40 @@
 """Util to process access token to Twitter api."""
 
 import re
-import time
 
-import requests
+from retrying import retry
 
 from stweet.exceptions import RefreshTokenException
+from stweet.http_request import RequestDetails, RequestRunner
+
+_retries = 5
+_timeout = 20
+_url = 'https://twitter.com'
 
 
-# TODO One interface to call requests (like in runner)
 class TokenRequest:
     """Class to manage Twitter token api."""
 
-    _session = requests.Session()
-    _retries = 5
-    _timeout = 10
-    url = 'https://twitter.com'
-
-    def _request(self):
+    @staticmethod
+    def _request_for_response_body():
         """Method from Twint."""
-        for attempt in range(self._retries + 1):
-            # The request is newly prepared on each retry because of potential cookie updates.
-            req = self._session.prepare_request(requests.Request('GET', self.url))
-            # print(f'Retrieving {req.url}')
-            try:
-                # print('self._session.send', req)
-                r = self._session.send(req, allow_redirects=True, timeout=self._timeout)
-            except requests.exceptions.RequestException as exc:
-                if attempt < self._retries:
-                    retrying = ', retrying'
-                    level = 'WARNING'
-                else:
-                    retrying = ''
-                    level = 'ERROR'
-                print(level, f'Error retrieving {req.url}: {exc!r}{retrying}')
-            else:
-                success, msg = (True, None)
-                msg = f': {msg}' if msg else ''
-
-                if success:
-                    print(f'{req.url} retrieved successfully{msg}')
-                    return r
-            if attempt < self._retries:
-                sleep_time = 2.0 * 2 ** attempt
-                print(f'Waiting {sleep_time:.0f} seconds')
-                time.sleep(sleep_time)
+        token_request_details = RequestDetails(_url, dict(), dict(), _timeout)
+        token_response = RequestRunner().run_request(token_request_details)
+        if token_response.is_success():
+            return token_response.text
         else:
-            msg = f'{self._retries + 1} requests to {self.url} failed, giving up.'
-            print(msg)
-            raise RefreshTokenException(msg)
+            raise RefreshTokenException('Error during request for token')
 
-    def refresh(self) -> str:
+    @staticmethod
+    @retry(stop_max_attempt_number=20)
+    # sometimes an error occurs on CI tests
+    def refresh() -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
         print('Retrieving guest token')
-        res = self._request()
-        match = re.search(r'\("gt=(\d+);', res.text)
+        token_html = TokenRequest._request_for_response_body()
+        match = re.search(r'\("gt=(\d+);', token_html)
         if match:
-            # print('Found guest token in HTML')
             return str(match.group(1))
         else:
+            print('Could not find the Guest token in HTML')
             raise RefreshTokenException('Could not find the Guest token in HTML')

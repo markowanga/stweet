@@ -11,3 +11,4 @@ class RequestDetails:
     url: str
     headers: Dict[str, str]
     params: Dict[str, str]
+    timeout: int

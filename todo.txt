@@ -10,5 +10,6 @@
 # TODO add integration tests
 # TODO prepare CI for projekct (public for opensource)
 # TODO prepare README
+
 # article with good practices
 # https://opensource.com/article/18/12/tips-open-sourcing-python-libraries

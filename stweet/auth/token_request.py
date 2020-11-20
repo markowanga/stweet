@@ -1,6 +1,7 @@
 """Util to process access token to Twitter api."""
 
 import re
+import uuid
 
 from retrying import retry
 
@@ -16,9 +17,22 @@ class TokenRequest:
     """Class to manage Twitter token api."""
 
     @staticmethod
+    def _get_random_uuid_str() -> str:
+        return uuid.uuid4().__str__().replace('-', '')
+
+    @staticmethod
+    def _get_sample_cookie_header_dict():
+        return dict({
+            'Cookie': 'personalization_id="{}"; guest_id={}'.format(
+                TokenRequest._get_random_uuid_str(),
+                TokenRequest._get_random_uuid_str()
+            )
+        })
+
+    @staticmethod
     def _request_for_response_body():
         """Method from Twint."""
-        token_request_details = RequestDetails(_url, dict(), dict(), _timeout)
+        token_request_details = RequestDetails(_url, TokenRequest._get_sample_cookie_header_dict(), dict(), _timeout)
         token_response = RequestRunner().run_request(token_request_details)
         if token_response.is_success():
             return token_response.text

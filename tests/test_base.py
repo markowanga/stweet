@@ -1,8 +1,17 @@
 from datetime import datetime
 
+import pytest
+
 import stweet as st
 import stweet.file_reader.read_from_file
 from stweet.model.search_tweets_result import SearchTweetsResult
+from tests.test_util import remove_all_temp_files, get_temp_test_file_name
+
+
+@pytest.fixture(autouse=True)
+def run_around_tests():
+    yield
+    remove_all_temp_files()
 
 
 def test_return_tweets_objects():
@@ -46,6 +55,7 @@ def test_no_return_tweets():
 
 def test_csv_serialization():
     phrase = '#koronawirus'
+    csv_filename = get_temp_test_file_name('csv')
     search_tweets_task = st.SearchTweetsTask(
         simple_search_phrase=phrase,
         from_username=None,
@@ -54,13 +64,12 @@ def test_csv_serialization():
         until=None,
         language=st.Language.POLISH
     )
-    file_name = 'text_file.csv'
     result = st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
         tweet_outputs=[
-            st.CsvTweetOutput(file_name)
+            st.CsvTweetOutput(csv_filename)
         ],
         return_scrapped_objects=True
     ).run()
-    tweets_from_csv = st.file_reader.read_from_file.read_from_csv(file_name)
+    tweets_from_csv = st.file_reader.read_from_file.read_from_csv(csv_filename)
     assert tweets_from_csv[0] == result.tweets[0]

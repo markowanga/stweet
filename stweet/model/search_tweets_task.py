@@ -18,6 +18,7 @@ class SearchTweetsTask:
     until: Optional[datetime]
     language: Optional[Language]
     verified_user: bool
+    tweets_count: Optional[int]
 
     def __init__(
             self,
@@ -26,7 +27,8 @@ class SearchTweetsTask:
             to_username: Optional[str],
             since: Optional[datetime],
             until: Optional[datetime],
-            language: Optional[Language]
+            language: Optional[Language],
+            tweets_count: Optional[int]
     ):
         """Class constructor."""
         object.__setattr__(self, 'simple_search_phrase', simple_search_phrase)
@@ -35,6 +37,7 @@ class SearchTweetsTask:
         object.__setattr__(self, 'since', since)
         object.__setattr__(self, 'until', until)
         object.__setattr__(self, 'language', language)
+        object.__setattr__(self, 'tweets_count', tweets_count)
         return
 
     def get_full_search_query(self) -> str:

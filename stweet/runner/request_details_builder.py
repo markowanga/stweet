@@ -55,7 +55,7 @@ def get_search_tweet_request_details(
         search_run_context: SearchRunContext,
         search_tweets_task: SearchTweetsTask
 ) -> RequestDetails:
-    """Returns the RequestDetails for simple request for tweets"""
+    """Returns the RequestDetails for simple request for tweets."""
     return RequestDetails(
         HttpMethod.GET,
         url=_search_tweets_url,

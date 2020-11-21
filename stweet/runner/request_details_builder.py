@@ -18,7 +18,7 @@ def scrap_tweets_get_params(
     count_in_batch = __default_tweets_count_in_batch \
         if search_tweets_task.tweets_count is None \
         else min(__default_tweets_count_in_batch,
-                 search_tweets_task.tweets_count - search_run_context.all_download_tweets)
+                 search_tweets_task.tweets_count - search_run_context.all_download_tweets_count)
     return dict([
         ('include_can_media_tag', '1'),
         ('include_ext_alt_text', 'true'),

@@ -27,14 +27,16 @@ def test_return_tweets_objects():
         language=st.Language.POLISH,
         tweets_count=None
     )
+    tweets_collector = st.CollectorTweetOutput()
     result = st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[]
+        tweet_outputs=[tweets_collector]
     ).run()
+    scrapped_tweets = tweets_collector.get_scrapped_tweets()
     assert isinstance(result, SearchTweetsResult)
-    assert result.downloaded_count == len(result.tweets)
+    assert result.downloaded_count == len(scrapped_tweets)
     assert result.downloaded_count > 0
-    assert all([phrase in it.full_text for it in result.tweets if phrase in it.full_text]) is True
+    assert all([phrase in it.full_text for it in scrapped_tweets if phrase in it.full_text]) is True
 
 
 def test_return_tweets_from_user():
@@ -48,32 +50,12 @@ def test_return_tweets_from_user():
         language=None,
         tweets_count=None
     )
-    result = st.TweetSearchRunner(
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[]
+        tweet_outputs=[tweets_collector]
     ).run()
-    print(result.tweets[0].user_name)
-    assert all([it.user_name == username for it in result.tweets]) is True
-
-
-def test_no_return_tweets():
-    phrase = '#koronawirus'
-    search_tweets_task = st.SearchTweetsTask(
-        simple_search_phrase=phrase,
-        from_username=None,
-        to_username=None,
-        since=datetime(2020, 11, 18),
-        until=None,
-        language=st.Language.POLISH,
-        tweets_count=None
-    )
-    result = st.TweetSearchRunner(
-        search_tweets_task=search_tweets_task,
-        tweet_outputs=[],
-        return_scrapped_objects=False
-    ).run()
-    assert isinstance(result, SearchTweetsResult)
-    assert result.tweets is None
+    assert all([it.user_name == username for it in tweets_collector.get_scrapped_tweets()]) is True
 
 
 def test_csv_serialization():
@@ -88,15 +70,16 @@ def test_csv_serialization():
         language=st.Language.POLISH,
         tweets_count=None
     )
-    result = st.TweetSearchRunner(
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
         tweet_outputs=[
-            st.CsvTweetOutput(csv_filename)
-        ],
-        return_scrapped_objects=True
+            st.CsvTweetOutput(csv_filename),
+            tweets_collector
+        ]
     ).run()
     tweets_from_csv = st.file_reader.read_from_file.read_from_csv(csv_filename)
-    assert tweets_from_csv[0] == result.tweets[0]
+    assert tweets_from_csv[0] == tweets_collector.get_scrapped_tweets()[0]
 
 
 def scrap_tweets_with_count(count: int) -> List[Tweet]:
@@ -110,11 +93,12 @@ def scrap_tweets_with_count(count: int) -> List[Tweet]:
         language=st.Language.POLISH,
         tweets_count=count
     )
-    return st.TweetSearchRunner(
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[],
-        return_scrapped_objects=True
-    ).run().tweets
+        tweet_outputs=[tweets_collector]
+    ).run()
+    return tweets_collector.get_scrapped_tweets()
 
 
 def test_scrap_small_count_of_tweets():

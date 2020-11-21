@@ -18,6 +18,3 @@ def remove_all_temp_files():
     for filePath in files_to_remove:
         os.remove(filePath)
     return
-
-
-print(get_temp_test_file_name('csv'))

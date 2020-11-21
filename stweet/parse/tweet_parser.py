@@ -67,7 +67,8 @@ class TweetParser:
             created_at=tweet['created_at'],
             id_str=tweet['id_str'],
             conversation_id_str=tweet['conversation_id_str'],
-            full_text=tweet['full_text'],
+            # there was the problem with pandas exporting because \r is old version of \n
+            full_text=tweet['full_text'].replace('\r', '\n'),
             lang=tweet['lang'],
             favorited=tweet['favorited'],
             retweeted=tweet['retweeted'],

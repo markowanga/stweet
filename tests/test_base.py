@@ -5,7 +5,7 @@ import pytest
 
 import stweet as st
 import stweet.file_reader.read_from_file
-from stweet import Tweet
+from stweet import Tweet, Language
 from stweet.model.search_tweets_result import SearchTweetsResult
 from tests.test_util import remove_all_temp_files, get_temp_test_file_name
 
@@ -79,7 +79,7 @@ def test_csv_serialization():
         ]
     ).run()
     tweets_from_csv = st.file_reader.read_from_file.read_from_csv(csv_filename)
-    assert tweets_from_csv[0] == tweets_collector.get_scrapped_tweets()[0]
+    assert tweets_from_csv == tweets_collector.get_scrapped_tweets()
 
 
 def scrap_tweets_with_count(count: int) -> List[Tweet]:
@@ -114,3 +114,7 @@ def test_scrap_medium_count_of_tweets():
 def test_scrap_big_count_of_tweets():
     tweets_count = 999
     assert len(scrap_tweets_with_count(tweets_count)) == tweets_count
+
+
+def test_unique_language_shortcut():
+    assert len(Language) == len(set([it.short_value for it in Language]))

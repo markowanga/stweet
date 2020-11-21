@@ -3,8 +3,8 @@
 import re
 import uuid
 
-from stweet.exceptions import RefreshTokenException
-from stweet.http_request import RequestDetails, WebClient
+from ..exceptions import RefreshTokenException
+from ..http_request import RequestDetails, WebClient
 
 _retries = 5
 _timeout = 20

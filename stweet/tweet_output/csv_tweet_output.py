@@ -5,8 +5,8 @@ from typing import List
 
 import pandas as pd
 
-from stweet.model.tweet import Tweet
-from stweet.tweet_output.tweet_output import TweetOutput
+from .tweet_output import TweetOutput
+from ..model.tweet import Tweet
 
 _fields_list = ['created_at', 'id_str', 'conversation_id_str', 'full_text', 'lang', 'favorited', 'retweeted',
                 'retweet_count', 'favorite_count', 'reply_count', 'quote_count', 'user_id_str', 'user_name',

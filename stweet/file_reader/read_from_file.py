@@ -4,7 +4,7 @@ from typing import List
 
 import pandas as pd
 
-from stweet import Tweet
+from ..model.tweet import Tweet
 
 
 def read_from_csv(file_path: str) -> List[Tweet]:

@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 from typing import List, Optional
 
-from stweet.model.tweet import Tweet
+from ..model.tweet import Tweet
 
 _Tweet_formats = {
     'datetime': '%Y-%m-%d %H:%M:%S %Z',

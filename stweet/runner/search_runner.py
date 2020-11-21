@@ -5,7 +5,8 @@ from typing import List, Optional
 from stweet.auth.token_request import TokenRequest
 from stweet.exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from stweet.http_request.request_details import RequestDetails
-from stweet.http_request.request_runner import RequestRunner
+from stweet.http_request.web_client import WebClient
+from stweet.http_request.web_client_requests_impl import WebClientRequestsImpl
 from stweet.model.search_run_context import SearchRunContext
 from stweet.model.search_tweets_result import SearchTweetsResult
 from stweet.model.search_tweets_task import SearchTweetsTask
@@ -23,6 +24,7 @@ class TweetSearchRunner:
     tweet_outputs: List[TweetOutput]
     all_scrapped_tweets: Optional[List[Tweet]]
     tweet_to_scrap_count: Optional[int]
+    web_client: WebClient
 
     def __init__(
             self,
@@ -30,7 +32,8 @@ class TweetSearchRunner:
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
             return_scrapped_objects: bool = True,
-            tweet_to_scrap_count: Optional[int] = None
+            tweet_to_scrap_count: Optional[int] = None,
+            web_client: WebClient = WebClientRequestsImpl()
     ):
         """Constructor to create object."""
         self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context
@@ -38,6 +41,7 @@ class TweetSearchRunner:
         self.tweet_outputs = tweet_outputs
         self.all_scrapped_tweets = [] if return_scrapped_objects else None
         self.tweet_to_scrap_count = tweet_to_scrap_count
+        self.web_client = web_client
         return
 
     def run(self) -> SearchTweetsResult:
@@ -58,7 +62,7 @@ class TweetSearchRunner:
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()
-        response = RequestRunner.run_request(request_params)
+        response = self.web_client.run_request(request_params)
         if response.is_token_expired():
             self._refresh_token()
         elif response.is_success():
@@ -86,7 +90,7 @@ class TweetSearchRunner:
         )
 
     def _refresh_token(self):
-        self.search_run_context.guest_auth_token = TokenRequest().refresh()
+        self.search_run_context.guest_auth_token = TokenRequest(self.web_client).refresh()
         return
 
     def _prepare_token(self):

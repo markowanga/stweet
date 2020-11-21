@@ -3,10 +3,7 @@
 
 # TODO add package publishing
 
-# TODO add reading data from file: csv, txt (json lines)
-# TODO change export interface (json need to export all at finish)
 # TODO try scrap user profile, followings, followers, favourite?
-# TODO prepae exceptions
 # TODO add custom logger
 # TODO add debugging logs, and logs config
 # TODO add unit tests

@@ -79,7 +79,7 @@ def test_csv_serialization():
         ]
     ).run()
     tweets_from_csv = st.file_reader.read_from_file.read_from_csv(csv_filename)
-    assert tweets_from_csv[0] == tweets_collector.get_scrapped_tweets()[0]
+    assert tweets_from_csv == tweets_collector.get_scrapped_tweets()
 
 
 def scrap_tweets_with_count(count: int) -> List[Tweet]:

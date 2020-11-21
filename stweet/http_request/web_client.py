@@ -11,4 +11,3 @@ class WebClient:
     @abstractmethod
     def run_request(self, params: RequestDetails) -> RequestResponse:
         """Abstract method to run request."""
-        pass

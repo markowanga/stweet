@@ -12,4 +12,3 @@ class TweetOutput(ABC):
     @abstractmethod
     def export_tweets(self, tweets: List[Tweet]):
         """Method to process all tweets from request batch."""
-        pass

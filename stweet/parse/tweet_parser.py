@@ -63,7 +63,6 @@ class TweetParser:
 
     @staticmethod
     def _tweet_dict_to_tweet_object(tweet) -> Tweet:
-        # print(tweet['user_data'])
         return Tweet(
             created_at=tweet['created_at'],
             id_str=tweet['id_str'],

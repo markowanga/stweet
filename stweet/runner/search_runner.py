@@ -2,10 +2,9 @@
 
 from typing import List, Optional
 
-from .request_details_builder import scrap_tweets_get_params, scrap_tweets_get_headers
+from .request_details_builder import get_search_tweet_request_details
 from ..auth.token_request import TokenRequest
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
-from ..http_request.http_method import HttpMethod
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
 from ..http_request.web_client_requests_impl import WebClientRequestsImpl
@@ -44,7 +43,6 @@ class TweetSearchRunner:
 
     def run(self) -> SearchTweetsResult:
         """Main runner method."""
-        print(self.search_run_context)
         self._prepare_token()
         while not self._is_end_of_scrapping():
             self._execute_next_tweets_request()
@@ -77,14 +75,7 @@ class TweetSearchRunner:
         self.search_run_context.add_downloaded_tweets_count(len(parsed_tweets))
 
     def _get_next_request_details(self) -> RequestDetails:
-        # TODO extract to external tool
-        return RequestDetails(
-            HttpMethod.GET,
-            url='https://api.twitter.com/2/search/adaptive.json',
-            headers=scrap_tweets_get_headers(self.search_run_context),
-            params=scrap_tweets_get_params(self.search_run_context, self.search_tweets_task),
-            timeout=10
-        )
+        return get_search_tweet_request_details(self.search_run_context, self.search_tweets_task)
 
     def _refresh_token(self):
         self.search_run_context.guest_auth_token = TokenRequest(self.web_client).refresh()

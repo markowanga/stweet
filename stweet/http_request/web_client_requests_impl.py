@@ -12,7 +12,8 @@ class WebClientRequestsImpl(WebClient):
     def run_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""
         session = requests.Session()
-        response = session.get(
+        response = session.request(
+            method=params.http_method.name,
             url=params.url,
             params=params.params,
             headers=params.headers,

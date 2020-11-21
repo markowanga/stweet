@@ -5,6 +5,7 @@ import uuid
 
 from ..exceptions import RefreshTokenException
 from ..http_request import RequestDetails, WebClient
+from ..http_request.http_method import HttpMethod
 
 _retries = 5
 _timeout = 20
@@ -27,7 +28,7 @@ class TokenRequest:
 
     def _request_for_response_body(self):
         """Method from Twint."""
-        token_request_details = RequestDetails(_url, dict(), dict(), _timeout)
+        token_request_details = RequestDetails(HttpMethod.GET, _url, dict(), dict(), _timeout)
         token_response = self.web_client.run_request(token_request_details)
         if token_response.is_success():
             return token_response.text
@@ -36,11 +37,11 @@ class TokenRequest:
 
     def refresh(self) -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
-        print('Retrieving guest token')
         token_html = self._request_for_response_body()
         match = re.search(r'\("gt=(\d+);', token_html)
         if match:
             return str(match.group(1))
         else:
             print('Could not find the Guest token in HTML')
+            print(token_html)
             raise RefreshTokenException('Could not find the Guest token in HTML')

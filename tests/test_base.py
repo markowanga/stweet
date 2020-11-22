@@ -1,4 +1,6 @@
+import sys
 from datetime import datetime
+from io import StringIO
 from typing import List
 
 import pytest
@@ -7,6 +9,7 @@ import stweet as st
 import stweet.file_reader.read_from_file
 from stweet import TweetOutput
 from tests.test_util import get_temp_test_file_name, remove_all_temp_files
+from tests.tweet_output_counter import TweetOutputCounter
 
 
 @pytest.fixture(autouse=True)
@@ -115,7 +118,7 @@ def test_scrap_medium_count_of_tweets():
 
 
 def test_scrap_big_count_of_tweets():
-    tweets_count = 999
+    tweets_count = 299
     assert len(scrap_tweets_with_count(tweets_count)) == tweets_count
 
 
@@ -133,3 +136,31 @@ def test_file_json_lines_serialization():
     tweets_from_jl = st.file_reader.read_from_file.read_from_json_lines(jl_filename)
     assert len(tweets_from_jl) == len(tweets_collector.get_scrapped_tweets())
     assert tweets_from_jl == tweets_collector.get_scrapped_tweets()
+
+
+def test_print_all_tweet_output():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+    tweets_collector = st.CollectorTweetOutput()
+    get_tweets_to_serialization_test([
+        st.PrintTweetOutput(),
+        tweets_collector
+    ])
+    sys.stdout = sys.__stdout__
+    captured_output.getvalue().count('Tweet(')
+    assert captured_output.getvalue().count('Tweet(') == len(tweets_collector.get_scrapped_tweets())
+
+
+def test_print_batch_single_tweet_tweet_output():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+    tweet_output_counter = TweetOutputCounter()
+    get_tweets_to_serialization_test([
+        st.PrintFirstInRequestTweetOutput(),
+        tweet_output_counter
+    ])
+    sys.stdout = sys.__stdout__
+    captured_output.getvalue().count('Tweet(')
+    print_tweet_count = captured_output.getvalue().count('Tweet(')
+    print_no_tweets_line = captured_output.getvalue().count('PrintFirstInRequestTweetOutput -- no tweets to print')
+    assert (print_tweet_count + print_no_tweets_line) == tweet_output_counter.get_output_call_count()

@@ -1,5 +1,6 @@
 from .model.language import Language
 from .model.search_tweets_result import SearchTweetsResult
+from .http_request.web_client import WebClient
 from .model.search_tweets_task import SearchTweetsTask
 from .model.tweet import Tweet
 from .runner.search_runner import TweetSearchRunner

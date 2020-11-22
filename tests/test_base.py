@@ -6,8 +6,11 @@ from typing import List
 import pytest
 
 import stweet as st
+import stweet.auth.token_request
+import stweet.exceptions.refresh_token_exception
 import stweet.file_reader.read_from_file
 from stweet import TweetOutput
+from tests.mock_web_client import MockWebClient
 from tests.test_util import get_temp_test_file_name, remove_all_temp_files
 from tests.tweet_output_counter import TweetOutputCounter
 
@@ -164,3 +167,18 @@ def test_print_batch_single_tweet_tweet_output():
     print_tweet_count = captured_output.getvalue().count('Tweet(')
     print_no_tweets_line = captured_output.getvalue().count('PrintFirstInRequestTweetOutput -- no tweets to print')
     assert (print_tweet_count + print_no_tweets_line) == tweet_output_counter.get_output_call_count()
+
+
+def test_get_auth_token_with_incorrect_response_1():
+    with pytest.raises(stweet.exceptions.refresh_token_exception.RefreshTokenException):
+        stweet.auth.token_request.TokenRequest(MockWebClient(None, None)).refresh()
+
+
+def test_get_auth_token_with_incorrect_response_2():
+    with pytest.raises(stweet.exceptions.refresh_token_exception.RefreshTokenException):
+        stweet.auth.token_request.TokenRequest(MockWebClient(400, 'None')).refresh()
+
+
+def test_get_auth_token_with_incorrect_response_3():
+    with pytest.raises(stweet.exceptions.refresh_token_exception.RefreshTokenException):
+        stweet.auth.token_request.TokenRequest(MockWebClient(200, 'None')).refresh()

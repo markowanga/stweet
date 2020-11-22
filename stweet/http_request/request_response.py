@@ -17,4 +17,4 @@ class RequestResponse:
 
     def is_success(self) -> bool:
         """Method to check that response have success status."""
-        return self.status_code < 300
+        return self.status_code is not None and self.status_code < 300

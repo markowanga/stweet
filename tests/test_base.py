@@ -6,8 +6,11 @@ from typing import List
 import pytest
 
 import stweet as st
+import stweet.auth.token_request
+import stweet.exceptions.refresh_token_exception
 import stweet.file_reader.read_from_file
 from stweet import TweetOutput
+from tests.mock_web_client import MockWebClient
 from tests.test_util import get_temp_test_file_name, remove_all_temp_files
 from tests.tweet_output_counter import TweetOutputCounter
 
@@ -164,3 +167,52 @@ def test_print_batch_single_tweet_tweet_output():
     print_tweet_count = captured_output.getvalue().count('Tweet(')
     print_no_tweets_line = captured_output.getvalue().count('PrintFirstInRequestTweetOutput -- no tweets to print')
     assert (print_tweet_count + print_no_tweets_line) == tweet_output_counter.get_output_call_count()
+
+
+def test_get_auth_token_with_incorrect_response_1():
+    with pytest.raises(stweet.exceptions.RefreshTokenException):
+        stweet.auth.token_request.TokenRequest(MockWebClient(None, None)).refresh()
+
+
+def test_get_auth_token_with_incorrect_response_2():
+    with pytest.raises(stweet.exceptions.RefreshTokenException):
+        stweet.auth.token_request.TokenRequest(MockWebClient(400, 'None')).refresh()
+
+
+def test_get_auth_token_with_incorrect_response_3():
+    with pytest.raises(stweet.exceptions.RefreshTokenException):
+        stweet.auth.token_request.TokenRequest(MockWebClient(200, 'None')).refresh()
+
+
+def test_runner_exceptions():
+    class TokenExpiryExceptionWebClient(st.WebClient):
+        count_dict = dict({
+            'https://twitter.com': 0,
+            'https://api.twitter.com/2/search/adaptive.json': 0
+        })
+
+        def run_request(self, params: st.http_request.RequestDetails) -> st.http_request.RequestResponse:
+            self.count_dict[params.url] = self.count_dict[params.url] + 1
+            if params.url == 'https://api.twitter.com/2/search/adaptive.json':
+                if self.count_dict[params.url] == 1:
+                    return st.http_request.RequestResponse(429, None)
+                else:
+                    return st.http_request.RequestResponse(400, '')
+            else:
+                return st.http_request.RequestResponse(200, 'decodeURIComponent("gt=1330640566170869763; Max=10800;')
+
+    with pytest.raises(stweet.exceptions.ScrapBatchBadResponse):
+        search_tweets_task = st.SearchTweetsTask(
+            simple_search_phrase='#koronawirus',
+            from_username=None,
+            to_username=None,
+            since=None,
+            until=None,
+            language=None,
+            tweets_count=None
+        )
+        st.TweetSearchRunner(
+            search_tweets_task=search_tweets_task,
+            tweet_outputs=[],
+            web_client=TokenExpiryExceptionWebClient()
+        ).run()

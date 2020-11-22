@@ -21,7 +21,7 @@ class JsonLineFileTweetOutput(TweetOutput):
 
     def export_tweets(self, tweets: List[Tweet]):
         """Append new tweet JSON strings to file."""
-        with open(self.file_name, 'w+') as file:
+        with open(self.file_name, 'a') as file:
             for tweet in tweets:
                 file.write(tweet.to_json_string() + '\n')
         return

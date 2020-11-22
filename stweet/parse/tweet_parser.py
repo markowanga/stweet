@@ -13,7 +13,6 @@ _Tweet_formats = {
 }
 
 
-# TODO fix this class -- loaded JSON as class field, try changeł datetime format
 class TweetParser:
     """Utils class to parse data from web response."""
 

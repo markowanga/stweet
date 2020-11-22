@@ -3,6 +3,7 @@
 
 # TODO add package publishing
 # TODO try change datetime format
+# TODO add params to search task
 
 # TODO try scrap user profile, followings, followers, favourite?
 # TODO add custom logger

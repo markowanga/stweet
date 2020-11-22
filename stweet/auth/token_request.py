@@ -1,7 +1,6 @@
 """Util to process access token to Twitter api."""
 
 import re
-import uuid
 
 from ..exceptions import RefreshTokenException
 from ..http_request import RequestDetails, WebClient

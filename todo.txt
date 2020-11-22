@@ -2,6 +2,7 @@
 # https://opensource.com/article/18/12/tips-open-sourcing-python-libraries
 
 # TODO add package publishing
+# TODO try change datetime format
 
 # TODO try scrap user profile, followings, followers, favourite?
 # TODO add custom logger

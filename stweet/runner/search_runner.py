@@ -13,6 +13,7 @@ from ..model.search_tweets_result import SearchTweetsResult
 from ..model.search_tweets_task import SearchTweetsTask
 from ..model.tweet import Tweet
 from ..parse.tweet_parser import TweetParser
+from ..parse.twint_based_tweet_parser import TwintBasedTweetParser
 from ..tweet_output.tweet_output import TweetOutput
 
 
@@ -24,6 +25,7 @@ class TweetSearchRunner:
     tweet_outputs: List[TweetOutput]
     tweet_to_scrap_count: Optional[int]
     web_client: WebClient
+    tweet_parser: TweetParser
 
     def __init__(
             self,
@@ -31,7 +33,8 @@ class TweetSearchRunner:
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
             tweet_to_scrap_count: Optional[int] = None,
-            web_client: WebClient = WebClientRequestsImpl()
+            web_client: WebClient = WebClientRequestsImpl(),
+            tweet_parser: TweetParser = TwintBasedTweetParser()
     ):
         """Constructor to create object."""
         self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context
@@ -39,6 +42,7 @@ class TweetSearchRunner:
         self.tweet_outputs = tweet_outputs
         self.tweet_to_scrap_count = tweet_to_scrap_count
         self.web_client = web_client
+        self.tweet_parser = tweet_parser
         return
 
     def run(self) -> SearchTweetsResult:
@@ -62,8 +66,8 @@ class TweetSearchRunner:
         if response.is_token_expired():
             self._refresh_token()
         elif response.is_success():
-            parsed_tweets = TweetParser.parse_tweets(response.text)
-            self.search_run_context.scroll_token = TweetParser.parse_cursor(response.text)
+            parsed_tweets = self.tweet_parser.parse_tweets(response.text)
+            self.search_run_context.scroll_token = self.tweet_parser.parse_cursor(response.text)
             self._process_new_scrapped_tweets(parsed_tweets)
         else:
             raise ScrapBatchBadResponse(response)

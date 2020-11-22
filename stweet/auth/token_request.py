@@ -1,7 +1,6 @@
 """Util to process access token to Twitter api."""
 
 import re
-import uuid
 
 from ..exceptions import RefreshTokenException
 from ..http_request import RequestDetails, WebClient
@@ -21,10 +20,6 @@ class TokenRequest:
         """Constructor of TokenRequest."""
         self.web_client = web_client
         return
-
-    @staticmethod
-    def _get_random_uuid_str() -> str:
-        return uuid.uuid4().__str__().replace('-', '')
 
     def _request_for_response_body(self):
         """Method from Twint."""

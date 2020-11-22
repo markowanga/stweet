@@ -1,19 +1,38 @@
+import sys
 from datetime import datetime
+from io import StringIO
 from typing import List
 
 import pytest
 
 import stweet as st
 import stweet.file_reader.read_from_file
-from stweet import Tweet, Language
-from stweet.model.search_tweets_result import SearchTweetsResult
-from tests.test_util import remove_all_temp_files, get_temp_test_file_name
+from stweet import TweetOutput
+from tests.test_util import get_temp_test_file_name, remove_all_temp_files
+from tests.tweet_output_counter import TweetOutputCounter
 
 
 @pytest.fixture(autouse=True)
 def run_around_tests():
     yield
     remove_all_temp_files()
+
+
+def get_tweets_to_serialization_test(tweet_output: List[TweetOutput]):
+    phrase = '#koronawirus'
+    search_tweets_task = st.SearchTweetsTask(
+        simple_search_phrase=phrase,
+        from_username=None,
+        to_username=None,
+        since=datetime(2020, 11, 21),
+        until=datetime(2020, 11, 22),
+        language=st.Language.POLISH,
+        tweets_count=None
+    )
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=tweet_output
+    ).run()
 
 
 def test_return_tweets_objects():
@@ -33,7 +52,7 @@ def test_return_tweets_objects():
         tweet_outputs=[tweets_collector]
     ).run()
     scrapped_tweets = tweets_collector.get_scrapped_tweets()
-    assert isinstance(result, SearchTweetsResult)
+    assert isinstance(result, st.SearchTweetsResult)
     assert result.downloaded_count == len(scrapped_tweets)
     assert result.downloaded_count > 0
     assert all([phrase in it.full_text for it in scrapped_tweets if phrase in it.full_text]) is True
@@ -59,30 +78,17 @@ def test_return_tweets_from_user():
 
 
 def test_csv_serialization():
-    phrase = '#koronawirus'
     csv_filename = get_temp_test_file_name('csv')
-    search_tweets_task = st.SearchTweetsTask(
-        simple_search_phrase=phrase,
-        from_username=None,
-        to_username=None,
-        since=datetime(2020, 11, 18),
-        until=None,
-        language=st.Language.POLISH,
-        tweets_count=None
-    )
     tweets_collector = st.CollectorTweetOutput()
-    st.TweetSearchRunner(
-        search_tweets_task=search_tweets_task,
-        tweet_outputs=[
-            st.CsvTweetOutput(csv_filename),
-            tweets_collector
-        ]
-    ).run()
+    get_tweets_to_serialization_test([
+        st.CsvTweetOutput(csv_filename),
+        tweets_collector
+    ])
     tweets_from_csv = st.file_reader.read_from_file.read_from_csv(csv_filename)
     assert tweets_from_csv == tweets_collector.get_scrapped_tweets()
 
 
-def scrap_tweets_with_count(count: int) -> List[Tweet]:
+def scrap_tweets_with_count(count: int) -> List[st.Tweet]:
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         simple_search_phrase=phrase,
@@ -112,9 +118,49 @@ def test_scrap_medium_count_of_tweets():
 
 
 def test_scrap_big_count_of_tweets():
-    tweets_count = 999
+    tweets_count = 299
     assert len(scrap_tweets_with_count(tweets_count)) == tweets_count
 
 
 def test_unique_language_shortcut():
-    assert len(Language) == len(set([it.short_value for it in Language]))
+    assert len(st.Language) == len(set([it.short_value for it in st.Language]))
+
+
+def test_file_json_lines_serialization():
+    jl_filename = get_temp_test_file_name('jl')
+    tweets_collector = st.CollectorTweetOutput()
+    get_tweets_to_serialization_test([
+        st.JsonLineFileTweetOutput(jl_filename),
+        tweets_collector
+    ])
+    tweets_from_jl = st.file_reader.read_from_file.read_from_json_lines(jl_filename)
+    assert len(tweets_from_jl) == len(tweets_collector.get_scrapped_tweets())
+    assert tweets_from_jl == tweets_collector.get_scrapped_tweets()
+
+
+def test_print_all_tweet_output():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+    tweets_collector = st.CollectorTweetOutput()
+    get_tweets_to_serialization_test([
+        st.PrintTweetOutput(),
+        tweets_collector
+    ])
+    sys.stdout = sys.__stdout__
+    captured_output.getvalue().count('Tweet(')
+    assert captured_output.getvalue().count('Tweet(') == len(tweets_collector.get_scrapped_tweets())
+
+
+def test_print_batch_single_tweet_tweet_output():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+    tweet_output_counter = TweetOutputCounter()
+    get_tweets_to_serialization_test([
+        st.PrintFirstInRequestTweetOutput(),
+        tweet_output_counter
+    ])
+    sys.stdout = sys.__stdout__
+    captured_output.getvalue().count('Tweet(')
+    print_tweet_count = captured_output.getvalue().count('Tweet(')
+    print_no_tweets_line = captured_output.getvalue().count('PrintFirstInRequestTweetOutput -- no tweets to print')
+    assert (print_tweet_count + print_no_tweets_line) == tweet_output_counter.get_output_call_count()

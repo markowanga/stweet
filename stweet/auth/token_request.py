@@ -22,10 +22,6 @@ class TokenRequest:
         self.web_client = web_client
         return
 
-    @staticmethod
-    def _get_random_uuid_str() -> str:
-        return uuid.uuid4().__str__().replace('-', '')
-
     def _request_for_response_body(self):
         """Method from Twint."""
         token_request_details = RequestDetails(HttpMethod.GET, _url, dict(), dict(), _timeout)

@@ -36,8 +36,8 @@ jobs:
           curl https://twitter.com -s | tail -3
       - name: Start tor
         run: |
-          apt-get update
-          apt install -y tor macchanger secure-delete git
+          sudo apt-get update
+          sudo apt-get install -y tor macchanger secure-delete git
           git clone https://github.com/BlackArch/torctl
           cd torctl
           mv service/* /etc/systemd/system/

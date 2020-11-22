@@ -8,14 +8,14 @@ import pytest
 import stweet as st
 import stweet.file_reader.read_from_file
 from stweet import TweetOutput
-from tests.test_util import get_temp_test_file_name, remove_all_temp_files
+from tests.test_util import get_temp_test_file_name, remove_all_test_temp_files
 from tests.tweet_output_counter import TweetOutputCounter
 
 
 @pytest.fixture(autouse=True)
 def run_around_tests():
     yield
-    remove_all_temp_files()
+    remove_all_test_temp_files()
 
 
 def get_tweets_to_serialization_test(tweet_output: List[TweetOutput]):

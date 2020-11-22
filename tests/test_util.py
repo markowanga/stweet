@@ -13,7 +13,7 @@ def _get_uuid_str() -> str:
     return str(uuid.uuid4()).replace('-', '')
 
 
-def remove_all_temp_files():
+def remove_all_test_temp_files():
     files_to_remove = glob.glob("{}*".format(_temp_file_prefix))
     for filePath in files_to_remove:
         os.remove(filePath)

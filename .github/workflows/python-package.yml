@@ -34,6 +34,19 @@ jobs:
         run: |
           pip install curl
           curl https://twitter.com -s | tail -3
+      - name: Start tor
+        run: |
+          apt-get update
+          apt install -y tor macchanger secure-delete git
+          git clone https://github.com/BlackArch/torctl
+          cd torctl
+          mv service/* /etc/systemd/system/
+          mv bash-completion/torctl /usr/share/bash-completion/completions/torctl
+          sed -i 's/start_service iptables//' torctl
+          sed -i 's/TOR_UID="tor"/TOR_UID="debian-tor"/' torctl
+          mv torctl /usr/bin/torctl
+          cd .. && rm -rf torctl/
+          torctl start
       - name: Run tox
         run: tox -v
       - name: Upload coverage to Codecov

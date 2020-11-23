@@ -1,4 +1,6 @@
+import string
 import sys
+import unicodedata
 from datetime import datetime
 from io import StringIO
 from typing import List
@@ -6,8 +8,8 @@ from typing import List
 import pytest
 
 import stweet as st
-import stweet.auth.token_request
-import stweet.exceptions.refresh_token_exception
+import stweet.auth
+import stweet.exceptions
 import stweet.file_reader.read_from_file
 from stweet import TweetOutput
 from tests.mock_web_client import MockWebClient
@@ -24,7 +26,7 @@ def run_around_tests():
 def get_tweets_to_serialization_test(tweet_output: List[TweetOutput]):
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
-        simple_search_phrase=phrase,
+        all_words=phrase,
         from_username=None,
         to_username=None,
         since=datetime(2020, 11, 21),
@@ -41,13 +43,10 @@ def get_tweets_to_serialization_test(tweet_output: List[TweetOutput]):
 def test_return_tweets_objects():
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
-        simple_search_phrase=phrase,
-        from_username=None,
-        to_username=None,
+        all_words=phrase,
         since=datetime(2020, 11, 18),
-        until=None,
-        language=st.Language.POLISH,
-        tweets_count=None
+        until=datetime(2020, 11, 19),
+        language=st.Language.POLISH
     )
     tweets_collector = st.CollectorTweetOutput()
     result = st.TweetSearchRunner(
@@ -64,7 +63,7 @@ def test_return_tweets_objects():
 def test_return_tweets_from_user():
     username = 'realDonaldTrump'
     search_tweets_task = st.SearchTweetsTask(
-        simple_search_phrase=None,
+        all_words=None,
         from_username=username,
         to_username=None,
         since=datetime(2020, 10, 1),
@@ -94,7 +93,7 @@ def test_csv_serialization():
 def scrap_tweets_with_count(count: int) -> List[st.Tweet]:
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
-        simple_search_phrase=phrase,
+        all_words=phrase,
         from_username=None,
         to_username=None,
         since=datetime(2020, 11, 18),
@@ -203,7 +202,7 @@ def test_runner_exceptions():
 
     with pytest.raises(stweet.exceptions.ScrapBatchBadResponse):
         search_tweets_task = st.SearchTweetsTask(
-            simple_search_phrase='#koronawirus',
+            all_words='#koronawirus',
             from_username=None,
             to_username=None,
             since=None,
@@ -216,3 +215,73 @@ def test_runner_exceptions():
             tweet_outputs=[],
             web_client=TokenExpiryExceptionWebClient()
         ).run()
+
+
+def remove_accented_chars(text) -> str:
+    new_text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+    return new_text
+
+
+def to_base_text(value: str) -> str:
+    table = str.maketrans(dict.fromkeys(string.punctuation))
+    to_return = remove_accented_chars(value.translate(table).lower())
+    return to_return
+
+
+def test_exact_words():
+    exact_phrase = 'duda kaczyński kempa'
+    search_tweets_task = st.SearchTweetsTask(
+        exact_words=exact_phrase
+    )
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+    ).run()
+    assert len(tweets_collector.get_scrapped_tweets()) > 0
+    assert all([
+        to_base_text(exact_phrase) in to_base_text(tweet.full_text)
+        for tweet in tweets_collector.get_scrapped_tweets()
+    ]) is True
+
+
+def contains_any_word(words: str, value: str) -> bool:
+    return any([to_base_text(word) in to_base_text(value) for word in words.split()]) is True
+
+
+def test_any_word():
+    any_phrase = 'kaczynski tusk'
+    search_tweets_task = st.SearchTweetsTask(
+        any_word=any_phrase,
+        tweets_count=100
+    )
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+    ).run()
+
+    assert len(tweets_collector.get_scrapped_tweets()) > 0
+    assert all([
+        contains_any_word(any_phrase, tweet.full_text) or contains_any_word(any_phrase, tweet.user_full_name) or
+        contains_any_word(any_phrase, tweet.user_name)
+        for tweet in tweets_collector.get_scrapped_tweets()
+    ]) is True
+
+
+def test_search_to_username():
+    username = 'realDonaldTrump'
+    search_tweets_task = st.SearchTweetsTask(
+        to_username=username,
+        tweets_count=100
+    )
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[tweets_collector]
+    ).run()
+    assert len(tweets_collector.get_scrapped_tweets()) > 0
+    assert all([
+        tweet.full_text.startswith('@{}'.format(username))
+        for tweet in tweets_collector.get_scrapped_tweets()
+    ]) is True

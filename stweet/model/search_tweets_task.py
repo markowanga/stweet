@@ -11,7 +11,9 @@ from ..model.language import Language
 class SearchTweetsTask:
     """Domain SearchTweetsTask class."""
 
-    simple_search_phrase: Optional[str]
+    all_words: Optional[str]
+    exact_words: Optional[str]
+    any_word: Optional[str]
     from_username: Optional[str]
     to_username: Optional[str]
     since: Optional[datetime]
@@ -22,16 +24,20 @@ class SearchTweetsTask:
 
     def __init__(
             self,
-            simple_search_phrase: Optional[str],
-            from_username: Optional[str],
-            to_username: Optional[str],
-            since: Optional[datetime],
-            until: Optional[datetime],
-            language: Optional[Language],
-            tweets_count: Optional[int]
+            all_words: Optional[str] = None,
+            exact_words: Optional[str] = None,
+            any_word: Optional[str] = None,
+            from_username: Optional[str] = None,
+            to_username: Optional[str] = None,
+            since: Optional[datetime] = None,
+            until: Optional[datetime] = None,
+            language: Optional[Language] = None,
+            tweets_count: Optional[int] = None
     ):
         """Class constructor."""
-        object.__setattr__(self, 'simple_search_phrase', simple_search_phrase)
+        object.__setattr__(self, 'all_words', all_words)
+        object.__setattr__(self, 'exact_words', exact_words)
+        object.__setattr__(self, 'any_word', any_word)
         object.__setattr__(self, 'from_username', from_username)
         object.__setattr__(self, 'to_username', to_username)
         object.__setattr__(self, 'since', since)
@@ -42,7 +48,13 @@ class SearchTweetsTask:
 
     def get_full_search_query(self) -> str:
         """Method to return full search query. This will be contains many details from task, conditions from Twint."""
-        query = self.simple_search_phrase if self.simple_search_phrase is not None else ''
+        query = ''
+        if self.all_words is not None:
+            query += self.all_words
+        if self.exact_words is not None:
+            query += '"{}"'.format(self.exact_words)
+        if self.any_word is not None:
+            query += '({})'.format(" OR ".join(self.any_word.split(" ")))
         if self.language is not None:
             query += f' lang:{self.language.short_value}'
         if self.from_username:
@@ -51,10 +63,10 @@ class SearchTweetsTask:
             query += f" since:{self._format_date(self.since)}"
         if self.until is not None:
             query += f" until:{self._format_date(self.until)}"
-        # if self.verified_user is True:  # TODO check it works
+        # if self.verified_user is True:
         #     query += " filter:verified"
         if self.to_username:
-            query += f" to:{self.to_username}"  # TODO check it works
+            query += f" to:{self.to_username}"
         # if config.Replies:
         #     q += " filter:replies"
         #     # although this filter can still be used, but I found it broken in my preliminary
@@ -83,7 +95,4 @@ class SearchTweetsTask:
 
     @staticmethod
     def _format_date(date) -> int:
-        try:
-            return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())
-        except ValueError:
-            return int(datetime.strptime(str(date), "%Y-%m-%d").timestamp())
+        return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())

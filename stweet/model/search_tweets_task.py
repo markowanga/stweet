@@ -63,10 +63,10 @@ class SearchTweetsTask:
             query += f" since:{self._format_date(self.since)}"
         if self.until is not None:
             query += f" until:{self._format_date(self.until)}"
-        # if self.verified_user is True:  # TODO check it works
+        # if self.verified_user is True:
         #     query += " filter:verified"
         if self.to_username:
-            query += f" to:{self.to_username}"  # TODO check it works
+            query += f" to:{self.to_username}"
         # if config.Replies:
         #     q += " filter:replies"
         #     # although this filter can still be used, but I found it broken in my preliminary
@@ -95,7 +95,4 @@ class SearchTweetsTask:
 
     @staticmethod
     def _format_date(date) -> int:
-        try:
-            return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())
-        except ValueError:
-            return int(datetime.strptime(str(date), "%Y-%m-%d").timestamp())
+        return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())

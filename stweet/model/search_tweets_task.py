@@ -4,7 +4,13 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from ..model.language import Language
+from .language import Language
+from .link_filter import LinkFilter
+from .replies_filter import RepliesFilter
+
+
+def _format_date(date) -> int:
+    return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())
 
 
 @dataclass(frozen=True)
@@ -19,8 +25,9 @@ class SearchTweetsTask:
     since: Optional[datetime]
     until: Optional[datetime]
     language: Optional[Language]
-    verified_user: bool
+    link_filter: Optional[LinkFilter]
     tweets_count: Optional[int]
+    replies_filter: Optional[RepliesFilter]
 
     def __init__(
             self,
@@ -32,7 +39,9 @@ class SearchTweetsTask:
             since: Optional[datetime] = None,
             until: Optional[datetime] = None,
             language: Optional[Language] = None,
-            tweets_count: Optional[int] = None
+            link_filter: Optional[LinkFilter] = None,
+            tweets_count: Optional[int] = None,
+            replies_filter: Optional[RepliesFilter] = None
     ):
         """Class constructor."""
         object.__setattr__(self, 'all_words', all_words)
@@ -43,7 +52,9 @@ class SearchTweetsTask:
         object.__setattr__(self, 'since', since)
         object.__setattr__(self, 'until', until)
         object.__setattr__(self, 'language', language)
+        object.__setattr__(self, 'link_filter', link_filter)
         object.__setattr__(self, 'tweets_count', tweets_count)
+        object.__setattr__(self, 'replies_filter', replies_filter)
         return
 
     def get_full_search_query(self) -> str:
@@ -52,47 +63,27 @@ class SearchTweetsTask:
         if self.all_words is not None:
             query += self.all_words
         if self.exact_words is not None:
-            query += '"{}"'.format(self.exact_words)
+            query += f' "{self.exact_words}"'
         if self.any_word is not None:
-            query += '({})'.format(" OR ".join(self.any_word.split(" ")))
+            query += f' ({" OR ".join(self.any_word.split(" "))})'
         if self.language is not None:
             query += f' lang:{self.language.short_value}'
         if self.from_username:
             query += f' from:{self.from_username}'
         if self.since is not None:
-            query += f" since:{self._format_date(self.since)}"
+            query += f" since:{_format_date(self.since)}"
         if self.until is not None:
-            query += f" until:{self._format_date(self.until)}"
-        # if self.verified_user is True:
-        #     query += " filter:verified"
+            query += f" until:{_format_date(self.until)}"
         if self.to_username:
             query += f" to:{self.to_username}"
-        # if config.Replies:
-        #     q += " filter:replies"
-        #     # although this filter can still be used, but I found it broken in my preliminary
-        #     # testing, needs more testing
-        # if config.Native_retweets:
-        #     q += " filter:nativeretweets"
-        # if config.Min_likes:
-        #     q += f" min_faves:{config.Min_likes}"
-        # if config.Min_retweets:
-        #     q += f" min_retweets:{config.Min_retweets}"
-        # if config.Min_replies:
-        #     q += f" min_replies:{config.Min_replies}"
-        # if config.Links == "include":
-        #     q += " filter:links"
-        # elif config.Links == "exclude":
-        #     q += " exclude:links"
-        # if config.Source:
-        #     q += f" source:\"{config.Source}\""
-        # if config.Members_list:
-        #     q += f" list:{config.Members_list}"
-        # if config.Filter_retweets:
-        #     q += f" exclude:nativeretweets exclude:retweets"
-        # if config.Custom_query:
-        #     q = config.Custom_query
+        if self.link_filter is not None:
+            if self.link_filter == LinkFilter.ONLY_WITH_LINKS:
+                query += " filter:links"
+            elif self.link_filter == LinkFilter.ONLY_WITHOUT_LINKS:
+                query += " -filter:links"
+        if self.replies_filter is not None:
+            if self.replies_filter == RepliesFilter.ONLY_REPLIES:
+                query += " filter:replies"
+            elif self.replies_filter == RepliesFilter.ONLY_ORIGINAL:
+                query += " -filter:replies"
         return query
-
-    @staticmethod
-    def _format_date(date) -> int:
-        return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())

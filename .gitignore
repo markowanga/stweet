@@ -139,6 +139,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-test_run.py
+tmp/test_run.py
 clean.sh
 tmp
+sample_tweet.json

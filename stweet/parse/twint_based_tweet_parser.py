@@ -75,9 +75,13 @@ class TwintBasedTweetParser(TweetParser):
             favorite_count=tweet['favorite_count'],
             reply_count=tweet['reply_count'],
             quote_count=tweet['quote_count'],
+            quoted_status_id_str=tweet['quoted_status_id_str'] if tweet['is_quote_status'] else '',
+            quoted_status_short_url=tweet['quoted_status_permalink']['url'] if tweet['is_quote_status'] else '',
+            quoted_status_expand_url=tweet['quoted_status_permalink']['expanded'] if tweet['is_quote_status'] else '',
             user_id_str=tweet['user_data']['id_str'],
             user_name=tweet['user_data']['screen_name'],
-            user_full_name=tweet['user_data']['name']
+            user_full_name=tweet['user_data']['name'],
+            user_verified=tweet['user_data']['verified']
         )
 
     @staticmethod

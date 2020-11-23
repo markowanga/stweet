@@ -1,3 +1,4 @@
+import re
 import string
 import sys
 import unicodedata
@@ -27,12 +28,9 @@ def get_tweets_to_serialization_test(tweet_output: List[TweetOutput]):
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
-        from_username=None,
-        to_username=None,
         since=datetime(2020, 11, 21),
         until=datetime(2020, 11, 22),
-        language=st.Language.POLISH,
-        tweets_count=None
+        language=st.Language.POLISH
     )
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
@@ -63,13 +61,9 @@ def test_return_tweets_objects():
 def test_return_tweets_from_user():
     username = 'realDonaldTrump'
     search_tweets_task = st.SearchTweetsTask(
-        all_words=None,
         from_username=username,
-        to_username=None,
         since=datetime(2020, 10, 1),
-        until=datetime(2020, 11, 1),
-        language=None,
-        tweets_count=None
+        until=datetime(2020, 11, 1)
     )
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
@@ -87,6 +81,11 @@ def test_csv_serialization():
         tweets_collector
     ])
     tweets_from_csv = st.file_reader.read_from_file.read_from_csv(csv_filename)
+    for index in range(len(tweets_from_csv)):
+        if tweets_from_csv[index] != tweets_collector.get_scrapped_tweets()[index]:
+            print(tweets_from_csv[index])
+            print(tweets_collector.get_scrapped_tweets()[index])
+            print('-------')
     assert tweets_from_csv == tweets_collector.get_scrapped_tweets()
 
 
@@ -94,10 +93,7 @@ def scrap_tweets_with_count(count: int) -> List[st.Tweet]:
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
-        from_username=None,
-        to_username=None,
         since=datetime(2020, 11, 18),
-        until=None,
         language=st.Language.POLISH,
         tweets_count=count
     )
@@ -170,17 +166,17 @@ def test_print_batch_single_tweet_tweet_output():
 
 def test_get_auth_token_with_incorrect_response_1():
     with pytest.raises(stweet.exceptions.RefreshTokenException):
-        stweet.auth.token_request.TokenRequest(MockWebClient(None, None)).refresh()
+        stweet.auth.twitter_auth_token_provider.TwitterAuthTokenProvider(MockWebClient(None, None)).refresh()
 
 
 def test_get_auth_token_with_incorrect_response_2():
     with pytest.raises(stweet.exceptions.RefreshTokenException):
-        stweet.auth.token_request.TokenRequest(MockWebClient(400, 'None')).refresh()
+        stweet.auth.twitter_auth_token_provider.TwitterAuthTokenProvider(MockWebClient(400, 'None')).refresh()
 
 
 def test_get_auth_token_with_incorrect_response_3():
     with pytest.raises(stweet.exceptions.RefreshTokenException):
-        stweet.auth.token_request.TokenRequest(MockWebClient(200, 'None')).refresh()
+        stweet.auth.twitter_auth_token_provider.TwitterAuthTokenProvider(MockWebClient(200, 'None')).refresh()
 
 
 def test_runner_exceptions():
@@ -202,13 +198,7 @@ def test_runner_exceptions():
 
     with pytest.raises(stweet.exceptions.ScrapBatchBadResponse):
         search_tweets_task = st.SearchTweetsTask(
-            all_words='#koronawirus',
-            from_username=None,
-            to_username=None,
-            since=None,
-            until=None,
-            language=None,
-            tweets_count=None
+            all_words='#koronawirus'
         )
         st.TweetSearchRunner(
             search_tweets_task=search_tweets_task,
@@ -282,6 +272,70 @@ def test_search_to_username():
     ).run()
     assert len(tweets_collector.get_scrapped_tweets()) > 0
     assert all([
-        tweet.full_text.startswith('@{}'.format(username))
+        to_base_text(username) in to_base_text(tweet.full_text)
         for tweet in tweets_collector.get_scrapped_tweets()
+    ]) is True
+
+
+def run_scrap_test_covid_tweets_in_language(language: st.Language):
+    search_tweets_task = st.SearchTweetsTask(
+        all_words='#covid19',
+        tweets_count=100,
+        language=language
+    )
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+    ).run()
+    assert all([it.lang == language.short_value for it in tweets_collector.get_scrapped_tweets()]) is True
+
+
+def test_scrap_tweets_in_english():
+    run_scrap_test_covid_tweets_in_language(st.Language.ENGLISH)
+
+
+def test_scrap_tweets_in_polish():
+    run_scrap_test_covid_tweets_in_language(st.Language.ENGLISH)
+
+
+def test_scrap_tweets_in_german():
+    run_scrap_test_covid_tweets_in_language(st.Language.GERMAN)
+
+
+def extract_links(value: str) -> List[str]:
+    return re.findall(r'(https?://\S+)', value)
+
+
+def test_search_with_links():
+    search_tweets_task = st.SearchTweetsTask(
+        all_words='#covid19',
+        tweets_count=500,
+        link_filter=st.LinkFilter.ONLY_WITH_LINKS
+    )
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+    ).run()
+    assert all([
+        len(extract_links(it.full_text)) > 0 or it.quoted_status_expand_url is not ''
+        for it in tweets_collector.get_scrapped_tweets()
+    ]) is True
+
+
+def test_search_without_links():
+    search_tweets_task = st.SearchTweetsTask(
+        all_words='#covid19',
+        tweets_count=1000,
+        link_filter=st.LinkFilter.ONLY_WITHOUT_LINKS
+    )
+    tweets_collector = st.CollectorTweetOutput()
+    st.TweetSearchRunner(
+        search_tweets_task=search_tweets_task,
+        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+    ).run()
+    assert all([
+        len(extract_links(it.full_text)) == 0 or it.quoted_status_expand_url is ''
+        for it in tweets_collector.get_scrapped_tweets()
     ]) is True

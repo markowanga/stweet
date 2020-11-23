@@ -11,7 +11,7 @@ _timeout = 20
 _url = 'https://twitter.com'
 
 
-class TokenRequest:
+class TwitterAuthTokenProvider:
     """Class to manage Twitter token api."""
 
     web_client: WebClient

@@ -1,1 +1,1 @@
-from .token_request import TokenRequest
+from .twitter_auth_token_provider import TwitterAuthTokenProvider

@@ -3,7 +3,7 @@
 from typing import List, Optional
 
 from .request_details_builder import get_search_tweet_request_details
-from ..auth.token_request import TokenRequest
+from ..auth.twitter_auth_token_provider import TwitterAuthTokenProvider
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
@@ -82,7 +82,7 @@ class TweetSearchRunner:
         return get_search_tweet_request_details(self.search_run_context, self.search_tweets_task)
 
     def _refresh_token(self):
-        self.search_run_context.guest_auth_token = TokenRequest(self.web_client).refresh()
+        self.search_run_context.guest_auth_token = TwitterAuthTokenProvider(self.web_client).refresh()
         return
 
     def _prepare_token(self):

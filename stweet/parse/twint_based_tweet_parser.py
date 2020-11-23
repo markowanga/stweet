@@ -14,6 +14,10 @@ _Tweet_formats = {
 }
 
 
+def _default_string_value(string: Optional[str], default_value: str) -> str:
+    return string if string is not None else default_value
+
+
 class TwintBasedTweetParser(TweetParser):
     """Utils class to parse data from web response."""
 
@@ -81,7 +85,9 @@ class TwintBasedTweetParser(TweetParser):
             user_id_str=tweet['user_data']['id_str'],
             user_name=tweet['user_data']['screen_name'],
             user_full_name=tweet['user_data']['name'],
-            user_verified=tweet['user_data']['verified']
+            user_verified=tweet['user_data']['verified'],
+            in_reply_to_status_id_str=_default_string_value(tweet['in_reply_to_status_id_str'], ''),
+            in_reply_to_user_id_str=_default_string_value(tweet['in_reply_to_user_id_str'], '')
         )
 
     @staticmethod

@@ -142,4 +142,4 @@ cython_debug/
 tmp/test_run.py
 clean.sh
 tmp
-sample_tweet.json
+sample_tweets.json

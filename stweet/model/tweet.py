@@ -27,6 +27,8 @@ class Tweet:
     user_name: str
     user_full_name: str
     user_verified: bool
+    in_reply_to_status_id_str: str
+    in_reply_to_user_id_str: str
 
     def to_json_string(self) -> str:
         """Method to prepare json of tweet. Used in JSON serialization."""
@@ -53,5 +55,7 @@ class Tweet:
             str(dictionary['user_id_str']),
             dictionary['user_name'],
             dictionary['user_full_name'],
-            dictionary['user_verified']
+            dictionary['user_verified'],
+            str(dictionary['in_reply_to_status_id_str']),
+            str(dictionary['in_reply_to_user_id_str'])
         )

@@ -56,3 +56,14 @@ def tweet_list_assert_condition(tweets: List[st.Tweet], condition: Callable[[st.
         condition(tweet)
         for tweet in tweets
     ]) is True
+
+
+def tweet_two_lists_assert_equal(tweets_1: List[st.Tweet], tweets_2: List[st.Tweet]):
+    assert len(tweets_1) == len(tweets_2)
+    for tweet_id in range(len(tweets_1)):
+        if tweets_1[tweet_id] != tweets_2[tweet_id]:
+            print('-----')
+            print(tweets_1[tweet_id])
+            print(tweets_1[tweet_id])
+            print('--')
+    assert tweets_1 == tweets_2

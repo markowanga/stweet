@@ -2,7 +2,9 @@
 
 import json
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Dict
+
+from dateutil import parser
 
 from . import TweetParser
 from ..model.tweet import Tweet
@@ -67,7 +69,7 @@ class TwintBasedTweetParser(TweetParser):
     @staticmethod
     def _tweet_dict_to_tweet_object(tweet) -> Tweet:
         return Tweet(
-            created_at=tweet['created_at'],
+            created_at=str(parser.parse(tweet['created_at'])),
             id_str=tweet['id_str'],
             conversation_id_str=tweet['conversation_id_str'],
             # there was the problem with pandas exporting because \r is old version of \n
@@ -79,16 +81,24 @@ class TwintBasedTweetParser(TweetParser):
             favorite_count=tweet['favorite_count'],
             reply_count=tweet['reply_count'],
             quote_count=tweet['quote_count'],
-            quoted_status_id_str=tweet['quoted_status_id_str'] if tweet['is_quote_status'] else '',
-            quoted_status_short_url=tweet['quoted_status_permalink']['url'] if tweet['is_quote_status'] else '',
-            quoted_status_expand_url=tweet['quoted_status_permalink']['expanded'] if tweet['is_quote_status'] else '',
+            quoted_status_id_str=TwintBasedTweetParser._get_default_string_value_from_dict(
+                tweet, 'quoted_status_id_str'),
+            quoted_status_short_url=TwintBasedTweetParser._get_default_string_value_from_dict(
+                tweet, 'quoted_status_short_url'),
+            quoted_status_expand_url=TwintBasedTweetParser._get_default_string_value_from_dict(
+                tweet, 'quoted_status_expand_url'),
             user_id_str=tweet['user_data']['id_str'],
             user_name=tweet['user_data']['screen_name'],
             user_full_name=tweet['user_data']['name'],
             user_verified=tweet['user_data']['verified'],
             in_reply_to_status_id_str=_default_string_value(tweet['in_reply_to_status_id_str'], ''),
-            in_reply_to_user_id_str=_default_string_value(tweet['in_reply_to_user_id_str'], '')
+            in_reply_to_user_id_str=_default_string_value(
+                tweet['in_reply_to_user_id_str'], '')
         )
+
+    @staticmethod
+    def _get_default_string_value_from_dict(tweet_dict: Dict[str, any], field: str, default_value: str = ''):
+        return default_value if field not in tweet_dict else tweet_dict[field]
 
     @staticmethod
     def _parse_cursor_first_location(response_json: any) -> Optional[str]:

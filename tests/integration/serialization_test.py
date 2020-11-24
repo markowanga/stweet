@@ -1,9 +1,8 @@
-from typing import List
-
 import pytest
 
 import stweet as st
-from tests.test_util import get_temp_test_file_name, remove_all_temp_files, get_tweets_to_tweet_output_test
+from tests.test_util import get_temp_test_file_name, remove_all_temp_files, get_tweets_to_tweet_output_test, \
+    tweet_two_lists_assert_equal
 
 
 @pytest.fixture(autouse=True)
@@ -20,12 +19,7 @@ def test_csv_serialization():
         tweets_collector
     ])
     tweets_from_csv = st.read_from_csv(csv_filename)
-    for index in range(len(tweets_from_csv)):
-        if tweets_from_csv[index] != tweets_collector.get_scrapped_tweets()[index]:
-            print(tweets_from_csv[index])
-            print(tweets_collector.get_scrapped_tweets()[index])
-            print('-------')
-    assert tweets_from_csv == tweets_collector.get_scrapped_tweets()
+    tweet_two_lists_assert_equal(tweets_from_csv, tweets_collector.get_scrapped_tweets())
 
 
 def test_file_json_lines_serialization():
@@ -36,5 +30,4 @@ def test_file_json_lines_serialization():
         tweets_collector
     ])
     tweets_from_jl = st.read_from_json_lines(jl_filename)
-    assert len(tweets_from_jl) == len(tweets_collector.get_scrapped_tweets())
-    assert tweets_from_jl == tweets_collector.get_scrapped_tweets()
+    tweet_two_lists_assert_equal(tweets_from_jl, tweets_collector.get_scrapped_tweets())

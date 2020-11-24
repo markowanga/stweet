@@ -1,4 +1,5 @@
 """Request runner class."""
+
 import requests
 
 from . import WebClient
@@ -12,6 +13,7 @@ class WebClientRequestsImpl(WebClient):
     def run_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""
         session = requests.Session()
+        # with debug_requests():
         response = session.request(
             method=params.http_method.name,
             url=params.url,

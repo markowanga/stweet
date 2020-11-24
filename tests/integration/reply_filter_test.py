@@ -1,4 +1,5 @@
 import stweet as st
+from tests.test_util import tweet_list_assert_condition
 
 
 def test_search_as_replay():
@@ -10,12 +11,12 @@ def test_search_as_replay():
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+        tweet_outputs=[tweets_collector]
     ).run()
-    assert all([
-        len(it.in_reply_to_status_id_str + it.in_reply_to_user_id_str) > 0
-        for it in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: len(tweet.in_reply_to_status_id_str + tweet.in_reply_to_user_id_str) > 0
+    )
 
 
 def test_search_as_not_replay():
@@ -27,9 +28,9 @@ def test_search_as_not_replay():
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+        tweet_outputs=[tweets_collector]
     ).run()
-    assert all([
-        len(it.in_reply_to_status_id_str + it.in_reply_to_user_id_str) == 0
-        for it in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: len(tweet.in_reply_to_status_id_str + tweet.in_reply_to_user_id_str) == 0
+    )

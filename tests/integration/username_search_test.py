@@ -1,5 +1,5 @@
 import stweet as st
-from tests.test_util import to_base_text
+from tests.test_util import to_base_text, tweet_list_assert_condition
 
 
 def test_search_to_username():
@@ -13,11 +13,10 @@ def test_search_to_username():
         search_tweets_task=search_tweets_task,
         tweet_outputs=[tweets_collector]
     ).run()
-    assert len(tweets_collector.get_scrapped_tweets()) > 0
-    assert all([
-        to_base_text(username) in to_base_text(tweet.full_text)
-        for tweet in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: to_base_text(username) in to_base_text(tweet.full_text)
+    )
 
 
 def test_return_tweets_from_user():
@@ -31,7 +30,7 @@ def test_return_tweets_from_user():
         search_tweets_task=search_tweets_task,
         tweet_outputs=[tweets_collector]
     ).run()
-    assert all([
-        it.user_name == username
-        for it in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: tweet.user_name == username
+    )

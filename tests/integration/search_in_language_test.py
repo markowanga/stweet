@@ -1,4 +1,5 @@
 import stweet as st
+from tests.test_util import tweet_list_assert_condition
 
 
 def _run_search_test_covid_tweets_in_language(language: st.Language):
@@ -10,12 +11,12 @@ def _run_search_test_covid_tweets_in_language(language: st.Language):
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+        tweet_outputs=[tweets_collector]
     ).run()
-    assert all([
-        it.lang == language.short_value
-        for it in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: tweet.lang == language.short_value
+    )
 
 
 def test_search_tweets_in_english():

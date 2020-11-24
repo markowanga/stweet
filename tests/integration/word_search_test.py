@@ -1,5 +1,5 @@
 import stweet as st
-from tests.test_util import to_base_text
+from tests.test_util import to_base_text, tweet_list_assert_condition
 
 
 def search_by_hashtag():
@@ -25,13 +25,12 @@ def test_exact_words():
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+        tweet_outputs=[tweets_collector]
     ).run()
-    assert len(tweets_collector.get_scrapped_tweets()) > 0
-    assert all([
-        to_base_text(exact_phrase) in to_base_text(tweet.full_text)
-        for tweet in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: to_base_text(exact_phrase) in to_base_text(tweet.full_text)
+    )
 
 
 def contains_any_word(words: str, value: str) -> bool:
@@ -47,12 +46,11 @@ def test_any_word():
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
-        tweet_outputs=[tweets_collector, st.PrintTweetOutput()]
+        tweet_outputs=[tweets_collector]
     ).run()
 
-    assert len(tweets_collector.get_scrapped_tweets()) > 0
-    assert all([
-        contains_any_word(any_phrase, tweet.full_text) or contains_any_word(any_phrase, tweet.user_full_name) or
-        contains_any_word(any_phrase, tweet.user_name)
-        for tweet in tweets_collector.get_scrapped_tweets()
-    ]) is True
+    tweet_list_assert_condition(
+        tweets_collector.get_scrapped_tweets(),
+        lambda tweet: contains_any_word(any_phrase, tweet.full_text) or contains_any_word(
+            any_phrase, tweet.user_full_name) or contains_any_word(any_phrase, tweet.user_name)
+    )

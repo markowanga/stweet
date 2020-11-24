@@ -5,7 +5,6 @@ from datetime import datetime
 from typing import Optional
 
 from .language import Language
-from .link_filter import LinkFilter
 from .replies_filter import RepliesFilter
 
 
@@ -25,7 +24,6 @@ class SearchTweetsTask:
     since: Optional[datetime]
     until: Optional[datetime]
     language: Optional[Language]
-    link_filter: Optional[LinkFilter]
     tweets_count: Optional[int]
     replies_filter: Optional[RepliesFilter]
 
@@ -39,7 +37,6 @@ class SearchTweetsTask:
             since: Optional[datetime] = None,
             until: Optional[datetime] = None,
             language: Optional[Language] = None,
-            link_filter: Optional[LinkFilter] = None,
             tweets_count: Optional[int] = None,
             replies_filter: Optional[RepliesFilter] = None
     ):
@@ -52,7 +49,6 @@ class SearchTweetsTask:
         object.__setattr__(self, 'since', since)
         object.__setattr__(self, 'until', until)
         object.__setattr__(self, 'language', language)
-        object.__setattr__(self, 'link_filter', link_filter)
         object.__setattr__(self, 'tweets_count', tweets_count)
         object.__setattr__(self, 'replies_filter', replies_filter)
         return
@@ -76,14 +72,10 @@ class SearchTweetsTask:
             query += f" until:{_format_date(self.until)}"
         if self.to_username:
             query += f" to:{self.to_username}"
-        if self.link_filter is not None:
-            if self.link_filter == LinkFilter.ONLY_WITH_LINKS:
-                query += " filter:links"
-            elif self.link_filter == LinkFilter.ONLY_WITHOUT_LINKS:
-                query += " -filter:links"
         if self.replies_filter is not None:
             if self.replies_filter == RepliesFilter.ONLY_REPLIES:
                 query += " filter:replies"
             elif self.replies_filter == RepliesFilter.ONLY_ORIGINAL:
                 query += " -filter:replies"
+        print('query: ' + query)
         return query

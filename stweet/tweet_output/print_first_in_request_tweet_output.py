@@ -11,8 +11,6 @@ class PrintFirstInRequestTweetOutput(TweetOutput):
 
     def export_tweets(self, tweets: List[Tweet]):
         """Method print first tweet in console, when tweets list is empty there message will be printed."""
-        if len(tweets) > 0:
-            print(tweets[0])
-        else:
-            print('PrintFirstInRequestTweetOutput -- no tweets to print')
+        message = str(tweets[0]) if tweets[0] else 'PrintFirstInRequestTweetOutput -- no tweets to print'
+        print(message)
         return

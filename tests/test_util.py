@@ -64,6 +64,6 @@ def tweet_two_lists_assert_equal(tweets_1: List[st.Tweet], tweets_2: List[st.Twe
         if tweets_1[tweet_id] != tweets_2[tweet_id]:
             print('-----')
             print(tweets_1[tweet_id])
-            print(tweets_1[tweet_id])
+            print(tweets_2[tweet_id])
             print('--')
     assert tweets_1 == tweets_2

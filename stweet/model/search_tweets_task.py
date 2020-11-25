@@ -77,5 +77,4 @@ class SearchTweetsTask:
                 query += " filter:replies"
             elif self.replies_filter == RepliesFilter.ONLY_ORIGINAL:
                 query += " -filter:replies"
-        print('query: ' + query)
         return query

@@ -93,7 +93,10 @@ class TwintBasedTweetParser(TweetParser):
             user_verified=tweet['user_data']['verified'],
             in_reply_to_status_id_str=_default_string_value(tweet['in_reply_to_status_id_str'], ''),
             in_reply_to_user_id_str=_default_string_value(
-                tweet['in_reply_to_user_id_str'], '')
+                tweet['in_reply_to_user_id_str'], ''),
+            hashtags=['#' + it['text'] for it in tweet['entities']['hashtags']],
+            mentions=[it['screen_name'] for it in tweet['entities']['user_mentions']],
+            urls=[it['url'] for it in tweet['entities']['urls']]
         )
 
     @staticmethod

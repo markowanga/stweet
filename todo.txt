@@ -2,13 +2,10 @@
 # https://opensource.com/article/18/12/tips-open-sourcing-python-libraries
 
 # TODO add package publishing
-# TODO try change datetime format
 # TODO add params to search task
 
 # TODO try scrap user profile, followings, followers, favourite?
 # TODO add custom logger
 # TODO add debugging logs, and logs config
-# TODO add unit tests
-# TODO add integration tests
 # TODO prepare CI for projekct (public for opensource)
 # TODO prepare README

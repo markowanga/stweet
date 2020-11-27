@@ -8,8 +8,8 @@ from .language import Language
 from .replies_filter import RepliesFilter
 
 
-def _format_date(date) -> int:
-    return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())
+def _format_date(date: datetime) -> int:
+    return int(date.timestamp())
 
 
 @dataclass(frozen=True)

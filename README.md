@@ -14,16 +14,16 @@ The code was not simple to understand. All tasks have one config and user must k
 Last important thing is fact that api can change — Twitter is api owner and changes are dependent of them. 
 It is annoying when something does not work and users must report bugs is issues.
 
-## Main advantages of the solution
- - Simple code — code is not mine, every user can contribute library
- - Domain objects and interfaces — main part of functionalities can be replaced (eg. calling web requests),
+## Main advantages of the library
+ - **Simple code** — code is not mine, every user can contribute library
+ - **Domain objects and interfaces** — main part of functionalities can be replaced (eg. calling web requests),
    library have basic simple solution, if you want to expand it you can do it very simple
- - 100% coverage with integration tests — this can find the api changes, 
+ - **100% coverage with integration tests** — this can find the api changes, 
    tests is run every week and when task is failed we can easily find the source of change
- - Custom tweets output — it's part of interface, it you want to save custom tweets it takes you a short moment
+ - **Custom tweets output** — it's part of interface, it you want to save custom tweets it takes you a short moment
 
 ## Basic usage
-To make simple request the scrap task must be prepared. Next task should be processed by runner.
+To make simple request the scrap **task** must be prepared. Next task should be processed by **runner**.
 ```python
 import stweet as st
 
@@ -38,3 +38,6 @@ st.TweetSearchRunner(
 ).run()
 tweets = tweets_collector.get_scrapped_tweets()
 ```
+This simple code snippet call for all tweets with hashtag **#covid19**.
+As a result in tweets object in the list are scrapped tweets. 
+All important things about task and runner will be describe below.

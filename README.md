@@ -24,7 +24,7 @@ It is annoying when something does not work and users must report bugs is issues
 
 ## Basic usage
 To make simple request the scrap task must be prepared. Next task should be processed by runner.
-```
+```python
 import stweet as st
 
 search_tweets_task = st.SearchTweetsTask(

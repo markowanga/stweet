@@ -60,3 +60,17 @@ This class represent the task to scrap tweets. Contain this properties:
 |language|Optional[st.Language]|None|Search for tweets with language|
 |tweets_count|Optional[int]|None|Search first tweets_count tweets|
 |replies_filter|Optional[st.RepliesFilter]|None|Filter tweets with reply/original status|
+
+All properties came from **Twitter advanced search** and are default None.
+
+## SearchRunner
+With this runner library can scrap tweets specified in SearchTweetsTask.
+Runner have properties:
+
+|Property|Type|Default value|Description|
+|---|---|---|---|
+|search_run_context|SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make next request to Twitter|
+|search_tweets_task|SearchTweetsTask|**Obligatory property**|Task specify which tweets runner should download|
+|tweet_outputs|SearchTweetsTask|**Obligatory property**|List of objects to export downloaded tweets|
+|web_client|st.WebClient|stweet.http_request.WebClientRequests|Implementation of web client, can be replaced for custom implementation|
+|tweet_parser|TweetParser|stweet.parse.TwintBasedTweetParser|Parser of tweets from web api response|

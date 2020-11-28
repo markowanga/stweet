@@ -7,13 +7,12 @@ from .request_details import RequestDetails
 from .request_response import RequestResponse
 
 
-class WebClientRequestsImpl(WebClient):
+class WebClientRequests(WebClient):
     """Request runner class. Implementation based on requests library."""
 
     def run_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""
         session = requests.Session()
-        # with debug_requests():
         response = session.request(
             method=params.http_method.name,
             url=params.url,

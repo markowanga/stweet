@@ -1,15 +1,17 @@
 """Domain SearchTweetsTask class."""
 
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Optional
+
+from arrow import Arrow
 
 from .language import Language
 from .replies_filter import RepliesFilter
 
 
-def _format_date(date) -> int:
-    return int(datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S").timestamp())
+def _format_date(arrow_time: Arrow) -> int:
+    print('arrow_time ' + str(arrow_time))
+    return arrow_time.int_timestamp
 
 
 @dataclass(frozen=True)
@@ -21,8 +23,8 @@ class SearchTweetsTask:
     any_word: Optional[str]
     from_username: Optional[str]
     to_username: Optional[str]
-    since: Optional[datetime]
-    until: Optional[datetime]
+    since: Optional[Arrow]
+    until: Optional[Arrow]
     language: Optional[Language]
     tweets_count: Optional[int]
     replies_filter: Optional[RepliesFilter]
@@ -34,8 +36,8 @@ class SearchTweetsTask:
             any_word: Optional[str] = None,
             from_username: Optional[str] = None,
             to_username: Optional[str] = None,
-            since: Optional[datetime] = None,
-            until: Optional[datetime] = None,
+            since: Optional[Arrow] = None,
+            until: Optional[Arrow] = None,
             language: Optional[Language] = None,
             tweets_count: Optional[int] = None,
             replies_filter: Optional[RepliesFilter] = None
@@ -54,7 +56,7 @@ class SearchTweetsTask:
         return
 
     def get_full_search_query(self) -> str:
-        """Method to return full search query. This will be contains many details from task, conditions from Twint."""
+        """Method to return full search query."""
         query = ''
         if self.all_words is not None:
             query += self.all_words

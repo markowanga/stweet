@@ -1,14 +1,11 @@
-from datetime import datetime
-
+from arrow import Arrow
 from dateutil import parser
 
 import stweet as st
 from tests.test_util import tweet_list_assert_condition
 
 
-def test_between_dates():
-    since = datetime(2020, 6, 11, 7, 0, 0, 0)
-    until = datetime(2020, 6, 11, 8, 0, 0, 0)
+def _run_test_between_dates(since: Arrow, until: Arrow):
     search_tweets_task = st.SearchTweetsTask(
         any_word="#koronawirus #covid19",
         since=since,
@@ -21,5 +18,20 @@ def test_between_dates():
     ).run()
     tweet_list_assert_condition(
         tweets_collector.get_scrapped_tweets(),
-        lambda tweet: since.astimezone() <= parser.parse(tweet.created_at).astimezone() <= until.astimezone()
+        lambda tweet: since <= parser.parse(tweet.created_at) <= until
+    )
+
+
+def test_for_polish_timezone():
+    _run_test_between_dates(
+        since=Arrow(year=2020, month=6, day=11, hour=7),
+        until=Arrow(year=2020, month=6, day=11, hour=8)
+    )
+
+
+def test_for_utc_timezone():
+    tz = 'Europe/Warsaw'
+    _run_test_between_dates(
+        since=Arrow(year=2020, month=6, day=11, hour=7, tzinfo=tz),
+        until=Arrow(year=2020, month=6, day=11, hour=8, tzinfo=tz)
     )

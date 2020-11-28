@@ -3,4 +3,4 @@ from .http_request.web_client import WebClient
 from .model import RepliesFilter, Language, SearchTweetsResult, SearchTweetsTask, Tweet
 from .runner.search_runner import TweetSearchRunner
 from .tweet_output import CollectorTweetOutput, CsvTweetOutput, JsonLineFileTweetOutput, \
-    PrintFirstInRequestTweetOutput, PrintTweetOutput, TweetOutput
+    PrintEveryNTweetOutput, PrintTweetOutput, TweetOutput, PrintFirstInRequestTweetOutput

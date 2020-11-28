@@ -49,6 +49,14 @@ All important things about task and runner will be describe below.
 This class represent the task to scrap tweets. Contain this properties:
 
 |Property|Type|Default value|Description|
-|--------|----|-------------|-----------|
+|---|---|---|---|
 |all_words|Optional[str]|None|Search for tweets having all words in this property|
 |exact_words|Optional[str]|None|Search for tweets with exacting words in this property|
+|any_word|Optional[str]|None|Search for tweets with any words in this property|
+|from_username|Optional[str]|None|Search for tweets from username|
+|to_username|Optional[str]|None|Search for tweets to username (tweets starts from mention to user)|
+|since|Optional[Arrow]|None|Search for tweets since time|
+|until|Optional[Arrow]|None|Search for tweets until time|
+|language|Optional[st.Language]|None|Search for tweets with language|
+|tweets_count|Optional[int]|None|Search first tweets_count tweets|
+|replies_filter|Optional[st.RepliesFilter]|None|Filter tweets with reply/original status|

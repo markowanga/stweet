@@ -34,8 +34,7 @@ To make a simple request the scrap **task** must be prepared. The next task shou
 import stweet as st
 
 search_tweets_task = st.SearchTweetsTask(
-    all_words='#covid19',
-    tweets_count=5
+    all_words='#covid19'
 )
 
 tweets_collector = st.CollectorTweetOutput()
@@ -97,5 +96,5 @@ Stweet has a few implementations described below:
 Additionally, TweetOutput can be implemented in many other ways.
 
 ## Known problems
- - Sometimes when Github Actions are run, auth token from Twitter does not income. 
-   Then all integration test fails. In this case best way is repeat the task.
+ - Sometimes when Github Actions run, auth token from Twitter does not income. 
+   Then the integration test fails. In this case the best solution is to repeat the test

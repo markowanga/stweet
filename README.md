@@ -77,5 +77,16 @@ The runner has the following properties:
 |tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser|Parser of tweets from web API response|
 
 ## TweetOutput
+TweetOutput is an interface which calls for exporting scrapped tweets. 
+Stweet has a few implementations described below:
 
-TODO
+|TweetOutput implementation|Description|
+|---|---|
+|CollectorTweetOutput|Output saves tweets in-memory, has the method **get_scrapped_tweets()** to return list of tweets|
+|CsvTweetOutput|Output exports tweets to csv file|
+|JsonLineFileTweetOutput|Output exports tweets as JSON objects, in each line of file there is one JSON object with a tweet|
+|PrintEveryNTweetOutput|Output prints every N tweet on screen, N value can be assigned in the constructor|
+|PrintFirstInRequestTweetOutput|Output prints the first tweet of an incoming request|
+|PrintTweetOutput|Output prints all tweets|
+
+Additionally, TweetOutput can be implemented in many other ways.

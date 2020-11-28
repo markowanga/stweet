@@ -31,13 +31,24 @@ search_tweets_task = st.SearchTweetsTask(
     all_words='#covid19',
     tweets_count=5
 )
+
 tweets_collector = st.CollectorTweetOutput()
+
 st.TweetSearchRunner(
     search_tweets_task=search_tweets_task,
     tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')]
 ).run()
+
 tweets = tweets_collector.get_scrapped_tweets()
 ```
 This simple code snippet call for all tweets with hashtag **#covid19**.
 As a result in tweets object in the list are scrapped tweets. 
 All important things about task and runner will be describe below.
+
+## SearchTweetsTask
+This class represent the task to scrap tweets. Contain this properties:
+
+|Property|Type|Default value|Description|
+|--------|----|-------------|-----------|
+|all_words|Optional[str]|None|Search for tweets having all words in this property|
+|exact_words|Optional[str]|None|Search for tweets with exacting words in this property|

@@ -2,7 +2,7 @@
 
 ![Python package](https://github.com/markowanga/stweet/workflows/Python%20package/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/markowanga/stweet/branch/master/graph/badge.svg?token=1PV6VC8HRF)](https://codecov.io/gh/markowanga/stweet)
-
+[![PyPI version](https://badge.fury.io/py/stweet.svg)](https://badge.fury.io/py/stweet)
 
 A modern fast python library to scrap tweets quickly from Twitter unofficial API.
 
@@ -22,6 +22,11 @@ It is annoying when something does not work and users must report bugs as issues
    tests are carried out every week and when the task fails, we can find the source of change easily
  - **Custom tweets output** — it is a part of the interface, if you want to save custom tweets, 
    it takes you a brief moment
+   
+## Installation
+```shell script
+pip install -U stweet
+```
 
 ## Basic usage
 To make a simple request the scrap **task** must be prepared. The next task should be processed by **runner**.
@@ -90,3 +95,7 @@ Stweet has a few implementations described below:
 |PrintTweetOutput|Output prints all tweets|
 
 Additionally, TweetOutput can be implemented in many other ways.
+
+## Known problems
+ - Sometimes when Github Actions are run, auth token from Twitter does not income. 
+   Then all integration test fails. In this case best way is repeat the task.

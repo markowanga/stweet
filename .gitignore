@@ -143,3 +143,4 @@ tmp/test_run.py
 clean.sh
 tmp
 sample_tweets.json
+.pypirc

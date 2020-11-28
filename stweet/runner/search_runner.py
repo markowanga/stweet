@@ -7,7 +7,7 @@ from ..auth.twitter_auth_token_provider import TwitterAuthTokenProvider
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
-from ..http_request.web_client_requests_impl import WebClientRequestsImpl
+from ..http_request.web_client_requests import WebClientRequests
 from ..model.search_run_context import SearchRunContext
 from ..model.search_tweets_result import SearchTweetsResult
 from ..model.search_tweets_task import SearchTweetsTask
@@ -23,7 +23,6 @@ class TweetSearchRunner:
     search_run_context: SearchRunContext
     search_tweets_task: SearchTweetsTask
     tweet_outputs: List[TweetOutput]
-    tweet_to_scrap_count: Optional[int]
     web_client: WebClient
     tweet_parser: TweetParser
 
@@ -32,15 +31,13 @@ class TweetSearchRunner:
             search_tweets_task: SearchTweetsTask,
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
-            tweet_to_scrap_count: Optional[int] = None,
-            web_client: WebClient = WebClientRequestsImpl(),
+            web_client: WebClient = WebClientRequests(),
             tweet_parser: TweetParser = TwintBasedTweetParser()
     ):
         """Constructor to create object."""
         self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context
         self.search_tweets_task = search_tweets_task
         self.tweet_outputs = tweet_outputs
-        self.tweet_to_scrap_count = tweet_to_scrap_count
         self.web_client = web_client
         self.tweet_parser = tweet_parser
         return

@@ -4,26 +4,27 @@
 [![codecov](https://codecov.io/gh/markowanga/stweet/branch/master/graph/badge.svg?token=1PV6VC8HRF)](https://codecov.io/gh/markowanga/stweet)
 
 
-Modern fast python library to quickly scrap tweets from Twitter unofficial API.
+A modern fast python library to scrap tweets quickly from Twitter unofficial API.
 
-This tool helps you to scrap tweet by search phrase. It uses the twitter api, same api is used on website.
+This tool helps you to scrap tweet by a search phrase. It uses the twitter API, the same API is used on website.
 
 ## Inspiration for the creation of the library
-I have used twint to scrap tweets, but it have many errors it doesn't work correct. 
-The code was not simple to understand. All tasks have one config and user must know what exactly parameter is.
-Last important thing is fact that api can change — Twitter is api owner and changes are dependent of them. 
-It is annoying when something does not work and users must report bugs is issues.
+I have used twint to scrap tweets, but it has many errors and it doesn't work properly. 
+The code was not simple to understand. All tasks have one config and the user has to know the exact parameter.
+The last important thing is the fact that Api can change — Twitter is the API owner and changes depend on it. 
+It is annoying when something does not work and users must report bugs as issues.
 
 ## Main advantages of the library
- - **Simple code** — code is not mine, every user can contribute library
- - **Domain objects and interfaces** — main part of functionalities can be replaced (eg. calling web requests),
-   library have basic simple solution, if you want to expand it you can do it very simple
- - **100% coverage with integration tests** — this can find the api changes, 
-   tests is run every week and when task is failed we can easily find the source of change
- - **Custom tweets output** — it's part of interface, it you want to save custom tweets it takes you a short moment
+ - **Simple code** — the code is not only mine, every user can contribute to the library
+ - **Domain objects and interfaces** — the main part of functionalities can be replaced (eg. calling web requests),
+   the library has basic simple solution — if you want to expand it, you can do it without any problems and forks
+ - **100% coverage with integration tests** — this advantage can find the API changes, 
+   tests are carried out every week and when the task fails, we can find the source of change easily
+ - **Custom tweets output** — it is a part of the interface, if you want to save custom tweets, 
+   it takes you a brief moment
 
 ## Basic usage
-To make simple request the scrap **task** must be prepared. Next task should be processed by **runner**.
+To make a simple request the scrap **task** must be prepared. The next task should be processed by **runner**.
 ```python
 import stweet as st
 
@@ -41,36 +42,40 @@ st.TweetSearchRunner(
 
 tweets = tweets_collector.get_scrapped_tweets()
 ```
-This simple code snippet call for all tweets with hashtag **#covid19**.
-As a result in tweets object in the list are scrapped tweets. 
-All important things about task and runner will be describe below.
+This simple code snippet calls for all tweets with hashtag **#covid19**.
+The result in **tweets** object is a list of scrapped tweets. 
+All important details of this library are described below.
 
 ## SearchTweetsTask
-This class represent the task to scrap tweets. Contain this properties:
+This class represents the task to scrap tweets. It contains the following properties:
 
 |Property|Type|Default value|Description|
 |---|---|---|---|
-|all_words|Optional[str]|None|Search for tweets having all words in this property|
-|exact_words|Optional[str]|None|Search for tweets with exacting words in this property|
+|all_words|Optional[str]|None|Search for tweets having all words in property|
+|exact_words|Optional[str]|None|Search for tweets with the unchanged order of words in property|
 |any_word|Optional[str]|None|Search for tweets with any words in this property|
-|from_username|Optional[str]|None|Search for tweets from username|
-|to_username|Optional[str]|None|Search for tweets to username (tweets starts from mention to user)|
+|from_username|Optional[str]|None|Search for tweets from the user|
+|to_username|Optional[str]|None|Search for tweets to the user (tweets starts from mentioning the user)|
 |since|Optional[Arrow]|None|Search for tweets since time|
 |until|Optional[Arrow]|None|Search for tweets until time|
 |language|Optional[st.Language]|None|Search for tweets with language|
 |tweets_count|Optional[int]|None|Search first tweets_count tweets|
 |replies_filter|Optional[st.RepliesFilter]|None|Filter tweets with reply/original status|
 
-All properties came from **Twitter advanced search** and are default None.
+All properties come from **Twitter advanced search** and are default None.
 
 ## SearchRunner
-With this runner library can scrap tweets specified in SearchTweetsTask.
-Runner have properties:
+With class SearchRunner library can scrap tweets specified in SearchTweetsTask.
+The runner has the following properties:
 
 |Property|Type|Default value|Description|
 |---|---|---|---|
-|search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make next request to Twitter|
-|search_tweets_task|st.SearchTweetsTask|**Obligatory property**|Task specify which tweets runner should download|
+|search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make the next request to Twitter|
+|search_tweets_task|st.SearchTweetsTask|**Obligatory property**|Property specifies which tweets should be downloaded by the runner|
 |tweet_outputs|List[st.TweetOutput]|**Obligatory property**|List of objects to export downloaded tweets|
-|web_client|st.WebClient|stweet.http_request.WebClientRequests|Implementation of web client, can be replaced for custom implementation|
-|tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser|Parser of tweets from web api response|
+|web_client|st.WebClient|stweet.http_request.WebClientRequests|Implementation of a WebClient, can be replaced for custom implementation|
+|tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser|Parser of tweets from web API response|
+
+## TweetOutput
+
+TODO

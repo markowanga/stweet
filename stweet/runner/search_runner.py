@@ -23,7 +23,6 @@ class TweetSearchRunner:
     search_run_context: SearchRunContext
     search_tweets_task: SearchTweetsTask
     tweet_outputs: List[TweetOutput]
-    tweet_to_scrap_count: Optional[int]
     web_client: WebClient
     tweet_parser: TweetParser
 
@@ -32,7 +31,6 @@ class TweetSearchRunner:
             search_tweets_task: SearchTweetsTask,
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
-            tweet_to_scrap_count: Optional[int] = None,
             web_client: WebClient = WebClientRequestsImpl(),
             tweet_parser: TweetParser = TwintBasedTweetParser()
     ):
@@ -40,7 +38,6 @@ class TweetSearchRunner:
         self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context
         self.search_tweets_task = search_tweets_task
         self.tweet_outputs = tweet_outputs
-        self.tweet_to_scrap_count = tweet_to_scrap_count
         self.web_client = web_client
         self.tweet_parser = tweet_parser
         return

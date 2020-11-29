@@ -1,5 +1,4 @@
 from arrow import Arrow
-from dateutil import parser
 
 import stweet as st
 from tests.test_util import tweet_list_assert_condition
@@ -18,7 +17,7 @@ def _run_test_between_dates(since: Arrow, until: Arrow):
     ).run()
     tweet_list_assert_condition(
         tweets_collector.get_scrapped_tweets(),
-        lambda tweet: since <= parser.parse(tweet.created_at) <= until
+        lambda tweet: since <= tweet.created_at <= until
     )
 
 

@@ -98,3 +98,7 @@ Additionally, TweetOutput can be implemented in many other ways.
 ## Known problems
  - Sometimes when Github Actions run, auth token from Twitter does not income. 
    Then the integration test fails. In this case the best solution is to repeat the test
+
+## Twint inspiration
+Small part of library uses code from [twint](https://github.com/twintproject/twint). 
+Twint was also main inspiration to create stweet.

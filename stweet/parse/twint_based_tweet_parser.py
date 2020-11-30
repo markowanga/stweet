@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 from typing import List, Optional, Dict
 
+from arrow import Arrow
 from dateutil import parser
 
 from . import TweetParser
@@ -69,7 +70,7 @@ class TwintBasedTweetParser(TweetParser):
     @staticmethod
     def _tweet_dict_to_tweet_object(tweet) -> Tweet:
         return Tweet(
-            created_at=str(parser.parse(tweet['created_at'])),
+            created_at=Arrow.fromdatetime(parser.parse(tweet['created_at'])),
             id_str=tweet['id_str'],
             conversation_id_str=tweet['conversation_id_str'],
             # there was the problem with pandas exporting because \r is old version of \n

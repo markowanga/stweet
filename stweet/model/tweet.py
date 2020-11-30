@@ -4,6 +4,9 @@ import json
 from dataclasses import dataclass
 from typing import Dict, List
 
+import arrow
+from arrow import Arrow
+
 _list_separator = ' , '
 
 
@@ -19,7 +22,7 @@ def _string_to_simple_string_list(value: str) -> List[str]:
 class Tweet:
     """Domain Tweet class."""
 
-    created_at: str
+    created_at: Arrow
     id_str: str
     conversation_id_str: str
     full_text: str
@@ -45,7 +48,7 @@ class Tweet:
 
     def to_json_string(self) -> str:
         """Method to prepare json of tweet. Used in JSON serialization."""
-        return json.dumps(self, default=lambda o: o.__dict__)
+        return json.dumps(self, default=lambda o: str(o) if isinstance(o, Arrow) else o.__dict__)
 
     def to_flat_dict(self):
         """Method to prepare flat dict of tweet. Used in CSV serialization."""
@@ -59,7 +62,7 @@ class Tweet:
     def create_tweet_from_dict(dictionary: Dict[str, any]):
         """Method to create Tweet from dictionary."""
         return Tweet(
-            dictionary['created_at'],
+            arrow.get(dictionary['created_at']),
             str(dictionary['id_str']),
             str(dictionary['conversation_id_str']),
             dictionary['full_text'],

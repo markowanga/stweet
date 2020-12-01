@@ -10,7 +10,6 @@ from .replies_filter import RepliesFilter
 
 
 def _format_date(arrow_time: Arrow) -> int:
-    print('arrow_time ' + str(arrow_time))
     return arrow_time.int_timestamp
 
 

@@ -13,7 +13,7 @@ from ..model.search_tweets_result import SearchTweetsResult
 from ..model.search_tweets_task import SearchTweetsTask
 from ..model.tweet import Tweet
 from ..parse.tweet_parser import TweetParser
-from ..parse.twint_based_tweet_parser import TwintBasedTweetParser
+from ..parse.base_tweet_parser import TwintBasedTweetParser
 from ..tweet_output.tweet_output import TweetOutput
 
 

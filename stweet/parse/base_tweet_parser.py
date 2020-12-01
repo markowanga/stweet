@@ -21,6 +21,18 @@ def _default_string_value(string: Optional[str], default_value: str) -> str:
     return string if string is not None else default_value
 
 
+def _starts_with_any_of(text: str, start_value: List[str]) -> bool:
+    for it in start_value:
+        if text.startswith(it):
+            return True
+    else:
+        return False
+
+
+def _timeline_entry_content_contains_tweet(entry: any) -> bool:
+    return 'tweet' in entry['content']['item']['content']
+
+
 class TwintBasedTweetParser(TweetParser):
     """Utils class to parse data from web response."""
 
@@ -29,12 +41,12 @@ class TwintBasedTweetParser(TweetParser):
         # main method part from twint -- https://github.com/twintproject/twint
         response_json = json.loads(response_text)
         if len(response_json['globalObjects']['tweets']) == 0:
-            return list()
+            return []
         feed = []
         for timeline_entry in response_json['timeline']['instructions'][0]['addEntries']['entries']:
             # this will handle the cases when the timeline entry is a tweet
-            if timeline_entry['entryId'].startswith('sq-I-t-') or timeline_entry['entryId'].startswith('tweet-'):
-                if 'tweet' in timeline_entry['content']['item']['content']:
+            if _starts_with_any_of(timeline_entry['entryId'], ['sq-I-t-', 'tweet-']):
+                if _timeline_entry_content_contains_tweet(timeline_entry):
                     _id = timeline_entry['content']['item']['content']['tweet']['id']
                     # skip the ads
                     if 'promotedMetadata' in timeline_entry['content']['item']['content']['tweet']:

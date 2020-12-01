@@ -21,7 +21,19 @@ def _default_string_value(string: Optional[str], default_value: str) -> str:
     return string if string is not None else default_value
 
 
-class TwintBasedTweetParser(TweetParser):
+def _starts_with_any_of(text: str, start_value: List[str]) -> bool:
+    for it in start_value:
+        if text.startswith(it):
+            return True
+    else:
+        return False
+
+
+def _timeline_entry_content_contains_tweet(entry: any) -> bool:
+    return 'tweet' in entry['content']['item']['content']
+
+
+class BaseTweetParser(TweetParser):
     """Utils class to parse data from web response."""
 
     def parse_tweets(self, response_text: str) -> List[Tweet]:
@@ -29,12 +41,12 @@ class TwintBasedTweetParser(TweetParser):
         # main method part from twint -- https://github.com/twintproject/twint
         response_json = json.loads(response_text)
         if len(response_json['globalObjects']['tweets']) == 0:
-            return list()
+            return []
         feed = []
         for timeline_entry in response_json['timeline']['instructions'][0]['addEntries']['entries']:
             # this will handle the cases when the timeline entry is a tweet
-            if timeline_entry['entryId'].startswith('sq-I-t-') or timeline_entry['entryId'].startswith('tweet-'):
-                if 'tweet' in timeline_entry['content']['item']['content']:
+            if _starts_with_any_of(timeline_entry['entryId'], ['sq-I-t-', 'tweet-']):
+                if _timeline_entry_content_contains_tweet(timeline_entry):
                     _id = timeline_entry['content']['item']['content']['tweet']['id']
                     # skip the ads
                     if 'promotedMetadata' in timeline_entry['content']['item']['content']['tweet']:
@@ -64,7 +76,7 @@ class TwintBasedTweetParser(TweetParser):
                         'retweet_id': rt_id,
                         'retweet_date': _dt,
                     }
-                feed.append(TwintBasedTweetParser._tweet_dict_to_tweet_object(temp_obj))
+                feed.append(BaseTweetParser._tweet_dict_to_tweet_object(temp_obj))
         return feed
 
     @staticmethod
@@ -82,11 +94,11 @@ class TwintBasedTweetParser(TweetParser):
             favorite_count=tweet['favorite_count'],
             reply_count=tweet['reply_count'],
             quote_count=tweet['quote_count'],
-            quoted_status_id_str=TwintBasedTweetParser._get_default_string_value_from_dict(
+            quoted_status_id_str=BaseTweetParser._get_default_string_value_from_dict(
                 tweet, 'quoted_status_id_str'),
-            quoted_status_short_url=TwintBasedTweetParser._get_default_string_value_from_dict(
+            quoted_status_short_url=BaseTweetParser._get_default_string_value_from_dict(
                 tweet, 'quoted_status_short_url'),
-            quoted_status_expand_url=TwintBasedTweetParser._get_default_string_value_from_dict(
+            quoted_status_expand_url=BaseTweetParser._get_default_string_value_from_dict(
                 tweet, 'quoted_status_expand_url'),
             user_id_str=tweet['user_data']['id_str'],
             user_name=tweet['user_data']['screen_name'],
@@ -127,7 +139,7 @@ class TwintBasedTweetParser(TweetParser):
     def parse_cursor(self, response_content: str) -> Optional[str]:
         """Method to extract next cursor to scrap request from web response."""
         response_json = json.loads(response_content)
-        next_cursor = TwintBasedTweetParser._parse_cursor_first_location(response_json)
+        next_cursor = BaseTweetParser._parse_cursor_first_location(response_json)
         if next_cursor is None:
-            next_cursor = TwintBasedTweetParser._parse_cursor_second_location(response_json)
+            next_cursor = BaseTweetParser._parse_cursor_second_location(response_json)
         return next_cursor

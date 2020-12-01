@@ -1,2 +1,2 @@
 [run]
-omit = stweet/parse/twint_based_tweet_parser.py
+omit = stweet/parse/base_tweet_parser.py

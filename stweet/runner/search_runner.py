@@ -13,7 +13,7 @@ from ..model.search_tweets_result import SearchTweetsResult
 from ..model.search_tweets_task import SearchTweetsTask
 from ..model.tweet import Tweet
 from ..parse.tweet_parser import TweetParser
-from ..parse.base_tweet_parser import TwintBasedTweetParser
+from ..parse.base_tweet_parser import BaseTweetParser
 from ..tweet_output.tweet_output import TweetOutput
 
 
@@ -32,7 +32,7 @@ class TweetSearchRunner:
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
             web_client: WebClient = WebClientRequests(),
-            tweet_parser: TweetParser = TwintBasedTweetParser()
+            tweet_parser: TweetParser = BaseTweetParser()
     ):
         """Constructor to create object."""
         self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context

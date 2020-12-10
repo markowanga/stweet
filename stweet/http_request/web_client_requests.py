@@ -1,4 +1,4 @@
-"""Request runner class."""
+"""Request search_runner class."""
 
 import requests
 
@@ -8,7 +8,7 @@ from .request_response import RequestResponse
 
 
 class WebClientRequests(WebClient):
-    """Request runner class. Implementation based on requests library."""
+    """Request search_runner class. Implementation based on requests library."""
 
     def run_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""

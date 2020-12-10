@@ -2,9 +2,9 @@
 from typing import Dict
 
 from ..http_request import RequestDetails
-from ..http_request.http_method import HttpMethod
-from ..model.search_run_context import SearchRunContext
-from ..model.search_tweets_task import SearchTweetsTask
+from ..http_request import HttpMethod
+from stweet.search_runner.search_run_context import SearchRunContext
+from stweet.search_runner.search_tweets_task import SearchTweetsTask
 
 _bearer_token = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4pu' \
                 'Ts%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA'

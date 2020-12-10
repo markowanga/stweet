@@ -3,7 +3,7 @@ import pytest
 import stweet as st
 from stweet.auth import TwitterAuthTokenProvider, SimpleAuthTokenProvider
 from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse
-from tests.integration.mock_web_client import MockWebClient
+from tests.mock_web_client import MockWebClient
 
 
 def test_get_auth_token_with_incorrect_response_1():

@@ -8,7 +8,7 @@ from arrow import Arrow
 from dateutil import parser
 
 from . import TweetParser
-from ..model.tweet import Tweet
+from stweet.model.tweet import Tweet
 
 _Tweet_formats = {
     'datetime': '%Y-%m-%d %H:%M:%S %Z',

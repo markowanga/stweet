@@ -5,8 +5,8 @@ from typing import Optional
 
 from arrow import Arrow
 
-from .language import Language
-from .replies_filter import RepliesFilter
+from stweet.model.language import Language
+from stweet.model.replies_filter import RepliesFilter
 
 
 def _format_date(arrow_time: Arrow) -> int:

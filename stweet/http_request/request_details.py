@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Dict
 
-from ..http_request.http_method import HttpMethod
+from .http_method import HttpMethod
 
 
 @dataclass

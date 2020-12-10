@@ -8,12 +8,12 @@ from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
 from ..http_request.web_client_requests import WebClientRequests
-from ..model.search_run_context import SearchRunContext
-from ..model.search_tweets_result import SearchTweetsResult
-from ..model.search_tweets_task import SearchTweetsTask
+from stweet.search_runner.search_run_context import SearchRunContext
+from stweet.search_runner.search_tweets_result import SearchTweetsResult
+from stweet.search_runner.search_tweets_task import SearchTweetsTask
 from ..model.tweet import Tweet
-from ..parse.base_tweet_parser import BaseTweetParser
-from ..parse.tweet_parser import TweetParser
+from stweet.search_runner.parse import BaseTweetParser
+from stweet.search_runner.parse import TweetParser
 from ..tweet_output.tweet_output import TweetOutput
 
 
@@ -46,7 +46,7 @@ class TweetSearchRunner:
         return
 
     def run(self) -> SearchTweetsResult:
-        """Main runner method."""
+        """Main search_runner method."""
         self._prepare_token()
         while not self._is_end_of_scrapping():
             self._execute_next_tweets_request()
@@ -56,7 +56,6 @@ class TweetSearchRunner:
         ctx = self.search_run_context
         return \
             ctx.last_tweets_download_count == 0 \
-            or ctx.was_no_more_data_raised \
             or (ctx.scroll_token is None) \
             or self.search_run_context.all_download_tweets_count == self.search_tweets_task.tweets_count
 

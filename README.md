@@ -77,8 +77,9 @@ The runner has the following properties:
 |search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make the next request to Twitter|
 |search_tweets_task|st.SearchTweetsTask|**Obligatory property**|Property specifies which tweets should be downloaded by the runner|
 |tweet_outputs|List[st.TweetOutput]|**Obligatory property**|List of objects to export downloaded tweets|
-|web_client|st.WebClient|stweet.http_request.WebClientRequests|Implementation of a WebClient, can be replaced for custom implementation|
-|tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser|Parser of tweets from web API response|
+|web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
+|tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|
+|auth_token_provider_factory|st.auth.AuthTokenProviderFactory|st.auth.SimpleAuthTokenProviderFactory()|Factory of AuthTokenProvider to provide auth tokens|
 
 ## TweetOutput
 TweetOutput is an interface which calls for exporting scrapped tweets. 

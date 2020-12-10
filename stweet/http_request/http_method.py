@@ -6,3 +6,4 @@ class HttpMethod(enum.Enum):
     """HttpMethod enum class."""
 
     GET = 1
+    POST = 2

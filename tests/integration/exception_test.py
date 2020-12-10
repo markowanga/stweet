@@ -1,24 +1,29 @@
 import pytest
 
 import stweet as st
-from stweet.auth import TwitterAuthTokenProvider
+from stweet.auth import TwitterAuthTokenProvider, SimpleAuthTokenProvider
 from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse
 from tests.integration.mock_web_client import MockWebClient
 
 
 def test_get_auth_token_with_incorrect_response_1():
     with pytest.raises(RefreshTokenException):
-        TwitterAuthTokenProvider(MockWebClient(None, None)).refresh()
+        TwitterAuthTokenProvider(MockWebClient(None, None)).get_new_token()
+
+
+def test_get_simple_auth_token_with_incorrect_response_1():
+    with pytest.raises(RefreshTokenException):
+        SimpleAuthTokenProvider(MockWebClient(None, None)).get_new_token()
 
 
 def test_get_auth_token_with_incorrect_response_2():
     with pytest.raises(RefreshTokenException):
-        TwitterAuthTokenProvider(MockWebClient(400, 'None')).refresh()
+        TwitterAuthTokenProvider(MockWebClient(400, 'None')).get_new_token()
 
 
 def test_get_auth_token_with_incorrect_response_3():
     with pytest.raises(RefreshTokenException):
-        TwitterAuthTokenProvider(MockWebClient(200, 'None')).refresh()
+        TwitterAuthTokenProvider(MockWebClient(200, 'None')).get_new_token()
 
 
 def test_runner_exceptions():
@@ -45,5 +50,7 @@ def test_runner_exceptions():
         st.TweetSearchRunner(
             search_tweets_task=search_tweets_task,
             tweet_outputs=[],
-            web_client=TokenExpiryExceptionWebClient()
+            web_client=TokenExpiryExceptionWebClient(),
+            auth_token_provider_factory=st.auth.TwitterAuthTokenProviderFactory()
+
         ).run()

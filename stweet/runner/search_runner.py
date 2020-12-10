@@ -3,7 +3,7 @@
 from typing import List, Optional
 
 from .request_details_builder import get_search_tweet_request_details
-from ..auth.twitter_auth_token_provider import TwitterAuthTokenProvider
+from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
@@ -12,8 +12,8 @@ from ..model.search_run_context import SearchRunContext
 from ..model.search_tweets_result import SearchTweetsResult
 from ..model.search_tweets_task import SearchTweetsTask
 from ..model.tweet import Tweet
-from ..parse.tweet_parser import TweetParser
 from ..parse.base_tweet_parser import BaseTweetParser
+from ..parse.tweet_parser import TweetParser
 from ..tweet_output.tweet_output import TweetOutput
 
 
@@ -25,6 +25,7 @@ class TweetSearchRunner:
     tweet_outputs: List[TweetOutput]
     web_client: WebClient
     tweet_parser: TweetParser
+    auth_token_provider_factory: AuthTokenProviderFactory
 
     def __init__(
             self,
@@ -32,7 +33,8 @@ class TweetSearchRunner:
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
             web_client: WebClient = WebClientRequests(),
-            tweet_parser: TweetParser = BaseTweetParser()
+            tweet_parser: TweetParser = BaseTweetParser(),
+            auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
     ):
         """Constructor to create object."""
         self.search_run_context = SearchRunContext() if search_run_context is None else search_run_context
@@ -40,6 +42,7 @@ class TweetSearchRunner:
         self.tweet_outputs = tweet_outputs
         self.web_client = web_client
         self.tweet_parser = tweet_parser
+        self.auth_token_provider_factory = auth_token_provider_factory
         return
 
     def run(self) -> SearchTweetsResult:
@@ -79,7 +82,8 @@ class TweetSearchRunner:
         return get_search_tweet_request_details(self.search_run_context, self.search_tweets_task)
 
     def _refresh_token(self):
-        self.search_run_context.guest_auth_token = TwitterAuthTokenProvider(self.web_client).refresh()
+        token_provider = self.auth_token_provider_factory.create(self.web_client)
+        self.search_run_context.guest_auth_token = token_provider.get_new_token()
         return
 
     def _prepare_token(self):

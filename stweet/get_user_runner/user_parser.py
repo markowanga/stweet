@@ -1,3 +1,4 @@
+"""Parser of JSON string to User."""
 import json
 
 from arrow import Arrow
@@ -7,6 +8,7 @@ from stweet.model import User
 
 
 def parse_user(response_content: str) -> User:
+    """Parser of JSON string to User."""
     print(response_content)
     user_json = json.loads(response_content)['data']['user']
     legacy_user_json = user_json['legacy']

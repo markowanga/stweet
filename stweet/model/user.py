@@ -1,4 +1,4 @@
-"""Domain Tweet class."""
+"""Domain User class."""
 
 from dataclasses import dataclass
 from typing import List
@@ -7,8 +7,8 @@ from arrow import Arrow
 
 
 @dataclass
-class Tweet:
-    """Domain Tweet class."""
+class User:
+    """Domain User class."""
 
     created_at: Arrow
     id_str: str

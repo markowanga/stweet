@@ -2,9 +2,11 @@
 
 from dataclasses import dataclass
 
+from ..model import User
+
 
 @dataclass
-class TweetsByIdsResult:
+class GetUserResult:
     """Class with result of TweetSearchRunner task."""
 
-    downloaded_count: int
+    user: User

@@ -6,6 +6,7 @@ from typing import List
 import pandas as pd
 
 from .tweet_output import TweetOutput
+from ..mapper.tweet_dict_mapper import tweet_to_flat_dict
 from ..model.tweet import Tweet
 
 _fields_list = ['created_at', 'id_str', 'conversation_id_str', 'full_text', 'lang', 'favorited', 'retweeted',
@@ -28,7 +29,7 @@ class CsvTweetOutput(TweetOutput):
 
     def export_tweets(self, tweets: List[Tweet]):
         """Export tweets to CSV."""
-        dict_list = [it.to_flat_dict() for it in tweets]
+        dict_list = [tweet_to_flat_dict(it) for it in tweets]
         df = pd.DataFrame(dict_list, columns=_fields_list)
         df.to_csv(
             path_or_buf=self.file_location,

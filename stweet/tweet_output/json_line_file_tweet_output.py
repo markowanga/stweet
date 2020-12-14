@@ -3,6 +3,7 @@
 from typing import List
 
 from .tweet_output import TweetOutput
+from ..mapper.tweet_json_mapper import tweet_to_json
 from ..model.tweet import Tweet
 
 
@@ -23,5 +24,5 @@ class JsonLineFileTweetOutput(TweetOutput):
         """Append new tweet JSON strings to file."""
         with open(self.file_name, 'a') as file:
             for tweet in tweets:
-                file.write(tweet.to_json_string() + '\n')
+                file.write(f'{tweet_to_json(tweet)}\n')
         return

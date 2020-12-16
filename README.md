@@ -120,13 +120,13 @@ With class SearchRunner library can scrap tweets specified in SearchTweetsTask. 
 |tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|
 |auth_token_provider_factory|st.auth.AuthTokenProviderFactory|st.auth.SimpleAuthTokenProviderFactory()|Factory of AuthTokenProvider to provide auth tokens|
 
-# TweetsByIdsTask
+## TweetsByIdsTask
 
-# TweetsByIdsRunner
+## TweetsByIdsRunner
 
-# GetUsersTask
+## GetUsersTask
 
-# GetUsersRunner
+## GetUsersRunner
 
 ## TweetOutput
 

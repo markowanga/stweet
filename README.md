@@ -6,7 +6,7 @@
 
 A modern fast python library to scrap tweets quickly from Twitter unofficial API.
 
-This tool helps you to scrap tweet by a search phrase. It uses the twitter API, the same API is used on website.
+This tool helps you to scrap tweet by a search phrase. It uses the Twitter API, the same API is used on website.
 
 ## Inspiration for the creation of the library
 
@@ -122,9 +122,21 @@ With class SearchRunner library can scrap tweets specified in SearchTweetsTask. 
 
 ## TweetsByIdsTask
 
+This class represents the task to scrap tweets by ids, it has simple property:
+
+|Property|Type|Description|
+|---|---|---|
+|tweet_ids|List[str]|ids of tweets to scrap|
+
 ## TweetsByIdsRunner
 
 ## GetUsersTask
+
+This class represents the task to scrap users, it has simple property:
+
+|Property|Type|Description|
+|---|---|---|
+|usernames|List[str]|usernames of users to scrap, username is usually used in Twitter with '@' prefix|
 
 ## GetUsersRunner
 
@@ -142,6 +154,8 @@ TweetOutput is an interface which calls for exporting scrapped tweets. Stweet ha
 |PrintTweetOutput|Output prints all tweets|
 
 Additionally, TweetOutput can be implemented in many other ways.
+
+## UserOutput
 
 ## Twint inspiration
 

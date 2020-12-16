@@ -7,7 +7,7 @@ from .user_dict_mapper import create_user_from_dict
 from ..model import User
 
 
-def tweet_to_json(user: User) -> str:
+def user_to_json(user: User) -> str:
     """Method to prepare json of user. Used in JSON serialization."""
     return json.dumps(user, default=lambda o: str(o) if isinstance(o, Arrow) else o.__dict__)
 

@@ -1,9 +1,9 @@
 import stweet as st
 
-_username = 'RealDonaldTrump'
+_usernames = ['RealDonaldTrump', 'ProtasiewiczJ', 'donaldtuskEPP']
 
 
 def test_get_user():
-    task = st.GetUserTask(_username)
-    task_result = st.GetUserRunner(task).run()
-    assert _username.lower() == task_result.user.screen_name.lower()
+    task = st.GetUsersTask(_usernames)
+    task_result = st.GetUsersRunner(task, [st.PrintUserOutput()]).run()
+    assert len(_usernames) == task_result.users_count

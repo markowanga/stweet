@@ -2,7 +2,7 @@ import sys
 from io import StringIO
 
 import stweet as st
-from tests.test_util import get_tweets_to_tweet_output_test
+from tests.test_util import get_tweets_to_tweet_output_test, get_users_to_tweet_output_test
 from tests.tweet_output_export_call_counter import TweetOutputExportCallCounter
 from tests.tweet_output_tweets_counter import TweetOutputTweetsCounter
 
@@ -18,6 +18,19 @@ def test_print_all_tweet_output():
     sys.stdout = sys.__stdout__
     captured_output.getvalue().count('Tweet(')
     assert captured_output.getvalue().count('Tweet(') == len(tweets_collector.get_scrapped_tweets())
+
+
+def test_print_all_user_output():
+    captured_output = StringIO()
+    sys.stdout = captured_output
+    users_collector = st.CollectorUserOutput()
+    get_users_to_tweet_output_test([
+        st.PrintUserOutput(),
+        users_collector
+    ])
+    sys.stdout = sys.__stdout__
+    captured_output.getvalue().count('User(')
+    assert captured_output.getvalue().count('User(') == len(users_collector.get_scrapped_users())
 
 
 def test_print_batch_single_tweet_tweet_output():

@@ -48,6 +48,15 @@ def get_tweets_to_tweet_output_test(tweet_output: List[st.TweetOutput]):
     ).run()
 
 
+def get_users_to_tweet_output_test(user_outputs: List[st.UserOutput]):
+    users = ['RealDonaldTrump', 'ProtasiewiczJ', 'donaldtuskEPP']
+    get_users_task = st.GetUsersTask(users)
+    st.GetUsersRunner(
+        get_user_task=get_users_task,
+        user_outputs=user_outputs
+    ).run()
+
+
 def tweet_list_assert_condition(tweets: List[st.Tweet], condition: Callable[[st.Tweet], bool]):
     for tweet in tweets:
         if not condition(tweet):

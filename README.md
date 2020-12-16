@@ -114,7 +114,8 @@ With class SearchRunner library can scrap tweets specified in SearchTweetsTask. 
 |Property|Type|Default value|Description|
 |---|---|---|---|
 |search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make the next request to Twitter|
-|search_tweets_task|st.SearchTweetsTask|**Obligatory property**|Property specifies which tweets should be downloaded by the runner|
+|search_tweets_task|st.SearchTweetsTask|**Obligatory
+property**|Property specifies which tweets should be downloaded by the runner|
 |tweet_outputs|List[st.TweetOutput]|**Obligatory property**|List of objects to export downloaded tweets|
 |web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
 |tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|
@@ -130,6 +131,19 @@ This class represents the task to scrap tweets by ids, it has simple property:
 
 ## TweetsByIdsRunner
 
+With class TweetsByIdsRunner library can scrap tweets specified in TweetsByIdsTask. The runner has the following
+properties:
+
+|Property|Type|Default value|Description|
+|---|---|---|---|
+|tweets_by_ids_task|st.TweetsByIdsTask|**Obligatory
+property**|Property specifies which tweets should be downloaded by the runner|
+|tweet_outputs|List[st.TweetOutput]|**Obligatory property**|List of objects to export downloaded tweets|
+|search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make the next request to Twitter|
+|web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
+|tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|
+|auth_token_provider_factory|st.auth.AuthTokenProviderFactory|st.auth.SimpleAuthTokenProviderFactory()|Factory of AuthTokenProvider to provide auth tokens|
+
 ## GetUsersTask
 
 This class represents the task to scrap users, it has simple property:
@@ -139,6 +153,17 @@ This class represents the task to scrap users, it has simple property:
 |usernames|List[str]|usernames of users to scrap, username is usually used in Twitter with '@' prefix|
 
 ## GetUsersRunner
+
+With class GetUsersRunner library can scrap users specified in GetUsersTask. The runner has the following properties:
+
+|Property|Type|Default value|Description|
+|---|---|---|---|
+|get_user_task|st.GetUsersTask|**Obligatory
+property**|Property specifies which users should be downloaded by the runner|
+|user_outputs|List[st.UserOutput]|**Obligatory property**|List of objects to export downloaded users|
+|get_user_context|st.GetUsersContext|None, in \_\_init\_\_() assign GetUsersContext()|Search context, contains all important properties to make the next request to Twitter|
+|web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
+|auth_token_provider_factory|st.auth.AuthTokenProviderFactory|st.auth.SimpleAuthTokenProviderFactory()|Factory of AuthTokenProvider to provide auth tokens|
 
 ## TweetOutput
 
@@ -156,6 +181,19 @@ TweetOutput is an interface which calls for exporting scrapped tweets. Stweet ha
 Additionally, TweetOutput can be implemented in many other ways.
 
 ## UserOutput
+
+UserOutput is an interface which calls for exporting scrapped users. Stweet has a few implementations described below:
+
+|UserOutput implementation|Description|
+|---|---|
+|CollectorUserOutput|Output saves users in-memory, has the method **get_scrapped_users()** to return list of users|
+|CsvUserOutput|Output exports users to csv file|
+|JsonLineFileUserOutput|Output exports users as JSON objects, in each line of file there is one JSON object with a user|
+|PrintEveryNUserOutput|Output prints every N user on screen, N value can be assigned in the constructor|
+|PrintFirstInRequestUserOutput|Output prints the first user of an incoming request|
+|PrintUserOutput|Output prints all users|
+
+Additionally, UserOutput can be implemented in many other ways.
 
 ## Twint inspiration
 

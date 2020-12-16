@@ -4,8 +4,8 @@ import re
 
 from .auth_token_provider import AuthTokenProvider, AuthTokenProviderFactory
 from ..exceptions import RefreshTokenException
-from ..http_request import RequestDetails, WebClient
 from ..http_request import HttpMethod
+from ..http_request import RequestDetails, WebClient
 
 _retries = 5
 _timeout = 20

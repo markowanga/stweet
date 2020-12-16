@@ -4,7 +4,7 @@ import json
 from arrow import Arrow
 from dateutil import parser
 
-from stweet.model import User
+from ..model import User
 
 
 def parse_user(response_content: str) -> User:

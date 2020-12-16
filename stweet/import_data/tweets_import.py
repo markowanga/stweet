@@ -4,9 +4,9 @@ from typing import List
 
 import pandas as pd
 
-from stweet.mapper.tweet_dict_mapper import create_tweet_from_flat_dict
-from stweet.mapper.tweet_json_mapper import create_tweet_from_json
-from stweet.model.tweet import Tweet
+from ..mapper.tweet_dict_mapper import create_tweet_from_flat_dict
+from ..mapper.tweet_json_mapper import create_tweet_from_json
+from ..model.tweet import Tweet
 
 
 def read_tweets_from_csv_file(file_path: str) -> List[Tweet]:

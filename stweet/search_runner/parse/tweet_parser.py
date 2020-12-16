@@ -3,7 +3,7 @@
 from abc import abstractmethod
 from typing import List, Optional
 
-from stweet.model.tweet import Tweet
+from ...model.tweet import Tweet
 
 
 class TweetParser:

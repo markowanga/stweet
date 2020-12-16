@@ -12,8 +12,6 @@ from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
 from ..http_request.web_client_requests import WebClientRequests
 from ..model import User
-from ..search_runner.parse import BaseTweetParser
-from ..search_runner.parse import TweetParser
 from ..user_output import UserOutput
 
 
@@ -31,7 +29,6 @@ class GetUsersRunner:
     get_user_task: GetUsersTask
     user_outputs: List[UserOutput]
     web_client: WebClient
-    tweet_parser: TweetParser
     auth_token_provider_factory: AuthTokenProviderFactory
 
     def __init__(
@@ -40,7 +37,6 @@ class GetUsersRunner:
             user_outputs: List[UserOutput],
             get_user_context: Optional[GetUsersContext] = None,
             web_client: WebClient = WebClientRequests(),
-            tweet_parser: TweetParser = BaseTweetParser(),
             auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
     ):
         """Constructor to create object."""
@@ -48,7 +44,6 @@ class GetUsersRunner:
         self.get_user_task = get_user_task
         self.user_outputs = user_outputs
         self.web_client = web_client
-        self.tweet_parser = tweet_parser
         self.auth_token_provider_factory = auth_token_provider_factory
         return
 

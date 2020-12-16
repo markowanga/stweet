@@ -2,9 +2,9 @@
 from typing import List
 
 from .util import clear_file
-from ..tweet_output import JsonLineFileTweetOutput
 from ..model import Tweet
 from ..tweet_output import CsvTweetOutput
+from ..tweet_output import JsonLineFileTweetOutput
 
 
 def export_tweets_to_csv(tweets: List[Tweet], filename: str):

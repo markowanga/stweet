@@ -5,7 +5,7 @@ def test_return_tweets_objects():
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
-        tweets_count=200
+        tweets_limit=200
     )
     tweets_collector = st.CollectorTweetOutput()
     result = st.TweetSearchRunner(

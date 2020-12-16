@@ -5,7 +5,7 @@ from tests.test_util import tweet_list_assert_condition
 def test_search_as_replay():
     search_tweets_task = st.SearchTweetsTask(
         all_words='#covid19',
-        tweets_count=500,
+        tweets_limit=500,
         replies_filter=st.RepliesFilter.ONLY_REPLIES
     )
     tweets_collector = st.CollectorTweetOutput()
@@ -22,7 +22,7 @@ def test_search_as_replay():
 def test_search_as_not_replay():
     search_tweets_task = st.SearchTweetsTask(
         all_words='#covid19',
-        tweets_count=500,
+        tweets_limit=500,
         replies_filter=st.RepliesFilter.ONLY_ORIGINAL
     )
     tweets_collector = st.CollectorTweetOutput()

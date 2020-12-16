@@ -2,7 +2,7 @@ import pytest
 
 import stweet as st
 from tests.test_util import get_temp_test_file_name, remove_all_temp_files, get_tweets_to_tweet_output_test, \
-    tweet_two_lists_assert_equal
+    two_lists_assert_equal
 
 
 @pytest.fixture(autouse=True)
@@ -18,8 +18,8 @@ def test_csv_serialization():
         st.CsvTweetOutput(csv_filename),
         tweets_collector
     ])
-    tweets_from_csv = st.read_from_csv(csv_filename)
-    tweet_two_lists_assert_equal(tweets_from_csv, tweets_collector.get_scrapped_tweets())
+    tweets_from_csv = st.read_tweets_from_csv_file(csv_filename)
+    two_lists_assert_equal(tweets_from_csv, tweets_collector.get_scrapped_tweets())
 
 
 def test_file_json_lines_serialization():
@@ -29,5 +29,5 @@ def test_file_json_lines_serialization():
         st.JsonLineFileTweetOutput(jl_filename),
         tweets_collector
     ])
-    tweets_from_jl = st.read_from_json_lines(jl_filename)
-    tweet_two_lists_assert_equal(tweets_from_jl, tweets_collector.get_scrapped_tweets())
+    tweets_from_jl = st.read_tweets_from_json_lines_file(jl_filename)
+    two_lists_assert_equal(tweets_from_jl, tweets_collector.get_scrapped_tweets())

@@ -54,3 +54,9 @@ def test_runner_exceptions():
             auth_token_provider_factory=st.auth.TwitterAuthTokenProviderFactory()
 
         ).run()
+
+
+def test_get_not_existing_user():
+    task = st.GetUsersTask(['fcbewkjdsncvjwkfs'])
+    result = st.GetUsersRunner(task, []).run()
+    assert result.users_count == 0

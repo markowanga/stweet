@@ -4,12 +4,12 @@ from typing import List
 
 import pandas as pd
 
-from ..mapper.tweet_dict_mapper import create_tweet_from_flat_dict
-from ..mapper.tweet_json_mapper import create_tweet_from_json
-from ..model.tweet import Tweet
+from stweet.mapper.tweet_dict_mapper import create_tweet_from_flat_dict
+from stweet.mapper.tweet_json_mapper import create_tweet_from_json
+from stweet.model.tweet import Tweet
 
 
-def read_from_csv(file_path: str) -> List[Tweet]:
+def read_tweets_from_csv_file(file_path: str) -> List[Tweet]:
     """Method to read tweets from csv file."""
     df = pd.read_csv(file_path, dtype={
         'quoted_status_id_str': str,
@@ -27,7 +27,7 @@ def read_from_csv(file_path: str) -> List[Tweet]:
     return [create_tweet_from_flat_dict(row) for _, row in df.iterrows()]
 
 
-def read_from_json_lines(file_path: str) -> List[Tweet]:
+def read_tweets_from_json_lines_file(file_path: str) -> List[Tweet]:
     """Method to read tweets from csv file."""
     file = open(file_path, 'r')
     return [create_tweet_from_json(line) for line in file.readlines()]

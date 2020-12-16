@@ -6,7 +6,7 @@ def run_test_for_single_language(language: st.Language):
     print(language)
     search_tweets_task = st.SearchTweetsTask(
         all_words='#covid19',
-        tweets_count=10,
+        tweets_limit=10,
         language=language
     )
     tweets_collector = st.CollectorTweetOutput()

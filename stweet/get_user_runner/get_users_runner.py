@@ -1,9 +1,10 @@
 """Runner for get tweets by ids."""
+import traceback
 from dataclasses import dataclass
 from typing import Optional, List
 
-from .get_users_context import GetUsersContext
 from .get_user_request_details_builder import get_user_details_request_details
+from .get_users_context import GetUsersContext
 from .get_users_result import GetUsersResult
 from .get_users_task import GetUsersTask
 from .user_parser import parse_user
@@ -66,7 +67,8 @@ class GetUsersRunner:
             self.get_user_context.add_one_scrapped_user()
             self._process_user_to_output(full_user)
         except Exception as e:
-            print(e)
+            print(f'error during scrap user -- {username}', e)
+            traceback.print_exc()
 
     def _refresh_token(self):
         token_provider = self.auth_token_provider_factory.create(self.web_client)

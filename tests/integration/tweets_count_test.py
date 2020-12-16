@@ -7,7 +7,7 @@ def _scrap_tweets_with_count_assert(count: int):
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
-        tweets_count=count
+        tweets_limit=count
     )
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(

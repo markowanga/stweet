@@ -16,7 +16,6 @@ def test_print_all_tweet_output():
         tweets_collector
     ])
     sys.stdout = sys.__stdout__
-    captured_output.getvalue().count('Tweet(')
     assert captured_output.getvalue().count('Tweet(') == len(tweets_collector.get_scrapped_tweets())
 
 
@@ -29,7 +28,6 @@ def test_print_all_user_output():
         users_collector
     ])
     sys.stdout = sys.__stdout__
-    captured_output.getvalue().count('User(')
     assert captured_output.getvalue().count('User(') == len(users_collector.get_scrapped_users())
 
 
@@ -42,7 +40,6 @@ def test_print_batch_single_tweet_tweet_output():
         tweet_output_counter
     ])
     sys.stdout = sys.__stdout__
-    captured_output.getvalue().count('Tweet(')
     print_tweet_count = captured_output.getvalue().count('Tweet(')
     print_no_tweets_line = captured_output.getvalue().count('PrintFirstInRequestTweetOutput -- no tweets to print')
     assert (print_tweet_count + print_no_tweets_line) == tweet_output_counter.get_output_call_count()
@@ -58,6 +55,15 @@ def test_print_each_n_tweet_tweet_output():
         tweet_output_counter
     ])
     sys.stdout = sys.__stdout__
-    captured_output.getvalue().count('Tweet(')
     print_tweet_count = captured_output.getvalue().count('Tweet(')
     assert print_tweet_count == int(tweet_output_counter.get_output_call_count() / each_n)
+
+
+def test_print_each_n_tweet_user_output():
+    captured_output = StringIO()
+    each_n = 2
+    sys.stdout = captured_output
+    scrap_result = get_users_to_tweet_output_test([st.PrintEveryNUserOutput(each_n)])
+    sys.stdout = sys.__stdout__
+    print_tweet_count = captured_output.getvalue().count('User(')
+    assert print_tweet_count == int(scrap_result.users_count / each_n)

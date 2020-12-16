@@ -6,7 +6,7 @@ def search_by_hashtag():
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
-        tweets_count=200
+        tweets_limit=200
     )
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
@@ -41,7 +41,7 @@ def test_any_word():
     any_phrase = 'kaczynski tusk'
     search_tweets_task = st.SearchTweetsTask(
         any_word=any_phrase,
-        tweets_count=100
+        tweets_limit=100
     )
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(

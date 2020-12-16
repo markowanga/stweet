@@ -6,7 +6,7 @@ def test_search_to_username():
     username = 'realDonaldTrump'
     search_tweets_task = st.SearchTweetsTask(
         to_username=username,
-        tweets_count=100
+        tweets_limit=100
     )
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(
@@ -23,7 +23,7 @@ def test_return_tweets_from_user():
     username = 'realDonaldTrump'
     search_tweets_task = st.SearchTweetsTask(
         from_username=username,
-        tweets_count=100
+        tweets_limit=100
     )
     tweets_collector = st.CollectorTweetOutput()
     st.TweetSearchRunner(

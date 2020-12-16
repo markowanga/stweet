@@ -40,7 +40,7 @@ def get_tweets_to_tweet_output_test(tweet_output: List[st.TweetOutput]):
     phrase = '#koronawirus'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
-        tweets_count=200
+        tweets_limit=200
     )
     st.TweetSearchRunner(
         search_tweets_task=search_tweets_task,
@@ -48,10 +48,10 @@ def get_tweets_to_tweet_output_test(tweet_output: List[st.TweetOutput]):
     ).run()
 
 
-def get_users_to_tweet_output_test(user_outputs: List[st.UserOutput]):
-    users = ['RealDonaldTrump', 'ProtasiewiczJ', 'donaldtuskEPP']
+def get_users_to_tweet_output_test(user_outputs: List[st.UserOutput]) -> st.GetUsersResult:
+    users = ['RealDonaldTrump', 'ProtasiewiczJ', 'donaldtuskEPP', 'RealDonaldTrump', 'ProtasiewiczJ', 'donaldtuskEPP']
     get_users_task = st.GetUsersTask(users)
-    st.GetUsersRunner(
+    return st.GetUsersRunner(
         get_user_task=get_users_task,
         user_outputs=user_outputs
     ).run()
@@ -67,7 +67,7 @@ def tweet_list_assert_condition(tweets: List[st.Tweet], condition: Callable[[st.
     ]) is True
 
 
-def tweet_two_lists_assert_equal(tweets_1: List[st.Tweet], tweets_2: List[st.Tweet]):
+def two_lists_assert_equal(tweets_1: List[any], tweets_2: List[any]):
     assert len(tweets_1) == len(tweets_2)
     for tweet_id in range(len(tweets_1)):
         if tweets_1[tweet_id] != tweets_2[tweet_id]:

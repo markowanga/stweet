@@ -9,7 +9,6 @@ from stweet.model import User
 
 def parse_user(response_content: str) -> User:
     """Parser of JSON string to User."""
-    print(response_content)
     user_json = json.loads(response_content)['data']['user']
     legacy_user_json = user_json['legacy']
     return User(
@@ -28,7 +27,7 @@ def parse_user(response_content: str) -> User:
         media_count=legacy_user_json['media_count'],
         name=legacy_user_json['name'],
         pinned_tweet_ids_str=legacy_user_json['pinned_tweet_ids_str'],
-        profile_banner_url=legacy_user_json['profile_banner_url'],
+        profile_banner_url=legacy_user_json['profile_banner_url'] if 'profile_banner_url' in legacy_user_json else '',
         profile_image_url_https=legacy_user_json['profile_image_url_https'],
         protected=legacy_user_json['protected'],
         screen_name=legacy_user_json['screen_name'],

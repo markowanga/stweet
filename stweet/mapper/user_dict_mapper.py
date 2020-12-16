@@ -1,18 +1,11 @@
 """User - dict mapper."""
-import json
 from copy import copy
 from typing import Dict
 
-from arrow import Arrow, get as arrow_get
+from arrow import get as arrow_get
 
-from .tweet_dict_mapper import create_tweet_from_dict
 from .util import simple_string_list_to_string, string_to_simple_string_list
 from ..model import User
-
-
-def user_to_json_string(user: User) -> str:
-    """Method to prepare json of tweet. Used in JSON serialization."""
-    return json.dumps(user, default=lambda o: str(o) if isinstance(o, Arrow) else o.__dict__)
 
 
 def user_to_flat_dict(self):
@@ -53,4 +46,4 @@ def create_user_from_flat_dict(dictionary: Dict[str, any]) -> User:
     """Method to create Tweet from flat dictionary."""
     dictionary = copy(dictionary)
     dictionary['pinned_tweet_ids_str'] = string_to_simple_string_list(dictionary['pinned_tweet_ids_str'])
-    return create_tweet_from_dict(dictionary)
+    return create_user_from_dict(dictionary)

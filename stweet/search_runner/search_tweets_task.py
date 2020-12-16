@@ -5,8 +5,8 @@ from typing import Optional
 
 from arrow import Arrow
 
-from .language import Language
 from .replies_filter import RepliesFilter
+from ..model.language import Language
 
 
 def _format_date(arrow_time: Arrow) -> int:
@@ -38,7 +38,7 @@ class SearchTweetsTask:
             since: Optional[Arrow] = None,
             until: Optional[Arrow] = None,
             language: Optional[Language] = None,
-            tweets_count: Optional[int] = None,
+            tweets_limit: Optional[int] = None,
             replies_filter: Optional[RepliesFilter] = None
     ):
         """Class constructor."""
@@ -50,7 +50,7 @@ class SearchTweetsTask:
         object.__setattr__(self, 'since', since)
         object.__setattr__(self, 'until', until)
         object.__setattr__(self, 'language', language)
-        object.__setattr__(self, 'tweets_count', tweets_count)
+        object.__setattr__(self, 'tweets_count', tweets_limit)
         object.__setattr__(self, 'replies_filter', replies_filter)
         return
 

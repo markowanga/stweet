@@ -5,7 +5,7 @@ from tests.test_util import tweet_list_assert_condition
 def _run_search_test_covid_tweets_in_language(language: st.Language):
     search_tweets_task = st.SearchTweetsTask(
         all_words='#covid19',
-        tweets_count=100,
+        tweets_limit=100,
         language=language
     )
     tweets_collector = st.CollectorTweetOutput()

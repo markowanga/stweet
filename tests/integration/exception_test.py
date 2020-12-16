@@ -3,7 +3,7 @@ import pytest
 import stweet as st
 from stweet.auth import TwitterAuthTokenProvider, SimpleAuthTokenProvider
 from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse
-from tests.integration.mock_web_client import MockWebClient
+from tests.mock_web_client import MockWebClient
 
 
 def test_get_auth_token_with_incorrect_response_1():
@@ -54,3 +54,9 @@ def test_runner_exceptions():
             auth_token_provider_factory=st.auth.TwitterAuthTokenProviderFactory()
 
         ).run()
+
+
+def test_get_not_existing_user():
+    task = st.GetUsersTask(['fcbewkjdsncvjwkfs'])
+    result = st.GetUsersRunner(task, []).run()
+    assert result.users_count == 0

@@ -1,4 +1,4 @@
-# [WIP] stweet
+# stweet
 
 ![Python package](https://github.com/markowanga/stweet/workflows/Python%20package/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/markowanga/stweet/branch/master/graph/badge.svg?token=1PV6VC8HRF)](https://codecov.io/gh/markowanga/stweet)
@@ -9,34 +9,38 @@ A modern fast python library to scrap tweets quickly from Twitter unofficial API
 This tool helps you to scrap tweet by a search phrase. It uses the twitter API, the same API is used on website.
 
 ## Inspiration for the creation of the library
-I have used twint to scrap tweets, but it has many errors and it doesn't work properly. 
-The code was not simple to understand. All tasks have one config and the user has to know the exact parameter.
-The last important thing is the fact that Api can change — Twitter is the API owner and changes depend on it. 
-It is annoying when something does not work and users must report bugs as issues.
+
+I have used twint to scrap tweets, but it has many errors and it doesn't work properly. The code was not simple to
+understand. All tasks have one config and the user has to know the exact parameter. The last important thing is the fact
+that Api can change — Twitter is the API owner and changes depend on it. It is annoying when something does not work and
+users must report bugs as issues.
 
 ## Main advantages of the library
- - **Simple code** — the code is not only mine, every user can contribute to the library
- - **Domain objects and interfaces** — the main part of functionalities can be replaced (eg. calling web requests),
-   the library has basic simple solution — if you want to expand it, you can do it without any problems and forks
- - **100% coverage with integration tests** — this advantage can find the API changes, 
-   tests are carried out every week and when the task fails, we can find the source of change easily
- - **Custom tweets output** — it is a part of the interface, if you want to save custom tweets, 
-   it takes you a brief moment
-   
+
+- **Simple code** — the code is not only mine, every user can contribute to the library
+- **Domain objects and interfaces** — the main part of functionalities can be replaced (eg. calling web requests), the
+  library has basic simple solution — if you want to expand it, you can do it without any problems and forks
+- **100% coverage with integration tests** — this advantage can find the API changes, tests are carried out every week
+  and when the task fails, we can find the source of change easily
+- **Custom tweets output** — it is a part of the interface, if you want to save custom tweets, it takes you a brief
+  moment
+
 ## Installation
+
 ```shell script
 pip install -U stweet
 ```
 
 ## Basic usage
+
 To make a simple request the scrap **task** must be prepared. The next task should be processed by **runner**.
+
 ```python
 import stweet as st
 
 search_tweets_task = st.SearchTweetsTask(
     all_words='#covid19'
 )
-
 tweets_collector = st.CollectorTweetOutput()
 
 st.TweetSearchRunner(
@@ -46,11 +50,46 @@ st.TweetSearchRunner(
 
 tweets = tweets_collector.get_scrapped_tweets()
 ```
-This simple code snippet calls for all tweets with hashtag **#covid19**.
-The result in **tweets** object is a list of scrapped tweets. 
-All important details of this library are described below.
+
+This simple code snippet calls for all tweets with hashtag **#covid19**. The result in **tweets** object is a list of
+scrapped tweets.
+
+Above example shows how to scrap tweets by search phrase. Stweet has also scrapping by tweet id:
+
+```python
+import stweet as st
+
+tweets_by_ids_task = st.TweetsByIdsTask(['1336002732717727752'])
+tweets_collector = st.CollectorTweetOutput()
+
+st.TweetsByIdsRunner(
+    tweets_by_ids_task=tweets_by_ids_task,
+    tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')]
+).run()
+
+tweets = tweets_collector.get_scrapped_tweets()
+```
+
+Stweet allows scrapping user information by users screen name:
+
+```python
+import stweet as st
+
+get_users_task = st.GetUsersTask(['donaldtuskEPP', 'JoeBiden', 'realDonaldTrump'])
+users_collector = st.CollectorUserOutput()
+
+st.GetUsersRunner(
+    get_user_task=get_users_task,
+    user_outputs=[users_collector]
+).run()
+
+users = users_collector.get_scrapped_users()
+```
+
+All important details and classes of this library are described below.
 
 ## SearchTweetsTask
+
 This class represents the task to scrap tweets. It contains the following properties:
 
 |Property|Type|Default value|Description|
@@ -69,21 +108,22 @@ This class represents the task to scrap tweets. It contains the following proper
 All properties come from **Twitter advanced search** and are default None.
 
 ## SearchRunner
-With class SearchRunner library can scrap tweets specified in SearchTweetsTask.
-The runner has the following properties:
+
+With class SearchRunner library can scrap tweets specified in SearchTweetsTask. The runner has the following properties:
 
 |Property|Type|Default value|Description|
 |---|---|---|---|
 |search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make the next request to Twitter|
-|search_tweets_task|st.SearchTweetsTask|**Obligatory property**|Property specifies which tweets should be downloaded by the runner|
+|search_tweets_task|st.SearchTweetsTask|**Obligatory
+property**|Property specifies which tweets should be downloaded by the runner|
 |tweet_outputs|List[st.TweetOutput]|**Obligatory property**|List of objects to export downloaded tweets|
 |web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
 |tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|
 |auth_token_provider_factory|st.auth.AuthTokenProviderFactory|st.auth.SimpleAuthTokenProviderFactory()|Factory of AuthTokenProvider to provide auth tokens|
 
 ## TweetOutput
-TweetOutput is an interface which calls for exporting scrapped tweets. 
-Stweet has a few implementations described below:
+
+TweetOutput is an interface which calls for exporting scrapped tweets. Stweet has a few implementations described below:
 
 |TweetOutput implementation|Description|
 |---|---|
@@ -97,5 +137,6 @@ Stweet has a few implementations described below:
 Additionally, TweetOutput can be implemented in many other ways.
 
 ## Twint inspiration
-Small part of library uses code from [twint](https://github.com/twintproject/twint). 
-Twint was also main inspiration to create stweet.
+
+Small part of library uses code from [twint](https://github.com/twintproject/twint). Twint was also main inspiration to
+create stweet.

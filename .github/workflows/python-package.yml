@@ -33,4 +33,4 @@ jobs:
           pip install curl
           curl https://twitter.com -s | tail -3
       - name: Run tox
-        run: tox -vv
+        run: tox -v

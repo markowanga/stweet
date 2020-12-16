@@ -14,11 +14,13 @@ def read_users_from_csv_file(file_path: str) -> List[User]:
     df = pd.read_csv(file_path, dtype={
         'pinned_tweet_ids_str': str,
         'profile_banner_url': str,
-        'location': str
+        'location': str,
+        'description': str
     })
     df.pinned_tweet_ids_str.fillna('', inplace=True)
     df.profile_banner_url.fillna('', inplace=True)
     df.location.fillna('', inplace=True)
+    df.description.fillna('', inplace=True)
     return [create_user_from_flat_dict(row) for _, row in df.iterrows()]
 
 

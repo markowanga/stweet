@@ -59,7 +59,7 @@ Above example shows how to scrap tweets by search phrase. Stweet has also scrapp
 ```python
 import stweet as st
 
-tweets_by_ids_task = st.TweetsByIdsTask(['1336002732717727752'])
+tweets_by_ids_task = st.TweetsByIdsTask(['1336002732717727752', '1338916735479496704'])
 tweets_collector = st.CollectorTweetOutput()
 
 st.TweetsByIdsRunner(
@@ -92,18 +92,18 @@ All important details and classes of this library are described below.
 
 This class represents the task to scrap tweets. It contains the following properties:
 
-|Property|Type|Default value|Description|
-|---|---|---|---|
-|all_words|Optional[str]|None|Search for tweets having all words in property|
-|exact_words|Optional[str]|None|Search for tweets with the unchanged order of words in property|
-|any_word|Optional[str]|None|Search for tweets with any words in this property|
-|from_username|Optional[str]|None|Search for tweets from the user|
-|to_username|Optional[str]|None|Search for tweets to the user (tweets starts from mentioning the user)|
-|since|Optional[Arrow]|None|Search for tweets since time|
-|until|Optional[Arrow]|None|Search for tweets until time|
-|language|Optional[st.Language]|None|Search for tweets with language|
-|tweets_count|Optional[int]|None|Search first tweets_count tweets|
-|replies_filter|Optional[st.RepliesFilter]|None|Filter tweets with reply/original status|
+|Property|Type|Description|
+|---|---|---|
+|all_words|Optional[str]|Search for tweets having all words in property|
+|exact_words|Optional[str]|Search for tweets with the unchanged order of words in property|
+|any_word|Optional[str]|Search for tweets with any words in this property|
+|from_username|Optional[str]|Search for tweets from the user|
+|to_username|Optional[str]|Search for tweets to the user (tweets starts from mentioning the user)|
+|since|Optional[Arrow]|Search for tweets since time|
+|until|Optional[Arrow]|Search for tweets until time|
+|language|Optional[st.Language]|Search for tweets with language|
+|tweets_count|Optional[int]|Search first tweets_count tweets|
+|replies_filter|Optional[st.RepliesFilter]|Filter tweets with reply/original status|
 
 All properties come from **Twitter advanced search** and are default None.
 
@@ -120,6 +120,14 @@ property**|Property specifies which tweets should be downloaded by the runner|
 |web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
 |tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|
 |auth_token_provider_factory|st.auth.AuthTokenProviderFactory|st.auth.SimpleAuthTokenProviderFactory()|Factory of AuthTokenProvider to provide auth tokens|
+
+# TweetsByIdsTask
+
+# TweetsByIdsRunner
+
+# GetUsersTask
+
+# GetUsersRunner
 
 ## TweetOutput
 

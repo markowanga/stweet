@@ -114,8 +114,7 @@ With class SearchRunner library can scrap tweets specified in SearchTweetsTask. 
 |Property|Type|Default value|Description|
 |---|---|---|---|
 |search_run_context|st.SearchRunContext|None, in \_\_init\_\_() assign SearchRunContext()|Search context, contains all important properties to make the next request to Twitter|
-|search_tweets_task|st.SearchTweetsTask|**Obligatory
-property**|Property specifies which tweets should be downloaded by the runner|
+|search_tweets_task|st.SearchTweetsTask|**Obligatory property**|Property specifies which tweets should be downloaded by the runner|
 |tweet_outputs|List[st.TweetOutput]|**Obligatory property**|List of objects to export downloaded tweets|
 |web_client|st.WebClient|stweet.http_request.WebClientRequests()|Implementation of a WebClient, can be replaced for custom implementation|
 |tweet_parser|st.TweetParser|stweet.parse.TwintBasedTweetParser()|Parser of tweets from web API response|

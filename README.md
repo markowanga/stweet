@@ -4,14 +4,15 @@
 [![codecov](https://codecov.io/gh/markowanga/stweet/branch/master/graph/badge.svg?token=1PV6VC8HRF)](https://codecov.io/gh/markowanga/stweet)
 [![PyPI version](https://badge.fury.io/py/stweet.svg)](https://badge.fury.io/py/stweet)
 
-A modern fast python library to scrap tweets quickly from Twitter unofficial API.
+A modern fast python library to scrap tweets and users quickly from Twitter unofficial API.
 
-This tool helps you to scrap tweet by a search phrase. It uses the Twitter API, the same API is used on website.
+This tool helps you to scrap tweets by a search phrase, tweets by ids and user by usernames.
+It uses the Twitter API, the same API is used on a website.
 
 ## Inspiration for the creation of the library
 
-I have used twint to scrap tweets, but it has many errors and it doesn't work properly. The code was not simple to
-understand. All tasks have one config and the user has to know the exact parameter. The last important thing is the fact
+I have used twint to scrap tweets, but it has many errors, and it doesn't work properly. The code was not simple to
+understand. All tasks have one config, and the user has to know the exact parameter. The last important thing is the fact
 that Api can change — Twitter is the API owner and changes depend on it. It is annoying when something does not work and
 users must report bugs as issues.
 
@@ -22,8 +23,8 @@ users must report bugs as issues.
   library has basic simple solution — if you want to expand it, you can do it without any problems and forks
 - **100% coverage with integration tests** — this advantage can find the API changes, tests are carried out every week
   and when the task fails, we can find the source of change easily
-- **Custom tweets output** — it is a part of the interface, if you want to save custom tweets, it takes you a brief
-  moment
+- **Custom tweets and users output** — it is a part of the interface, if you want to save tweets and users custom 
+  format, it takes you a brief moment
 
 ## Installation
 

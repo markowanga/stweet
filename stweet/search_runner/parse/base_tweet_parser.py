@@ -7,8 +7,8 @@ from typing import List, Optional, Dict
 from arrow import Arrow
 from dateutil import parser
 
-from . import TweetParser
-from ..model import Tweet
+from .tweet_parser import TweetParser
+from ...model import Tweet
 
 _Tweet_formats = {
     'datetime': '%Y-%m-%d %H:%M:%S %Z',

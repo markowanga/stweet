@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  squid_proxy:
+    image: docker.io/salrashid123/squidproxy
+    command: /apps/squid/sbin/squid -NsY -f /apps/squid.conf.forward
+    ports:
+      - 3128:3128

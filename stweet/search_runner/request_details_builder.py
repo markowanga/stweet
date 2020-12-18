@@ -19,9 +19,9 @@ def _scrap_tweets_get_params(
 ) -> Dict[str, str]:
     """Method to prepare requests params to get tweets."""
     count_in_batch = _default_tweets_count_in_batch \
-        if search_tweets_task.tweets_count is None \
+        if search_tweets_task.tweets_limit is None \
         else min(_default_tweets_count_in_batch,
-                 search_tweets_task.tweets_count - search_run_context.all_download_tweets_count)
+                 search_tweets_task.tweets_limit - search_run_context.all_download_tweets_count)
     return dict([
         ('include_can_media_tag', '1'),
         ('include_ext_alt_text', 'true'),

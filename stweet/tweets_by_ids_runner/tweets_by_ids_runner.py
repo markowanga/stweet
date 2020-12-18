@@ -9,7 +9,7 @@ from .tweets_by_ids_result import TweetsByIdsResult
 from .tweets_by_ids_task import TweetsByIdsTask
 from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
-from ..http_request.web_client_requests import WebClientRequests
+from ..http_request.requests_web_client import RequestsWebClient
 from ..model import Tweet
 from ..search_runner import TweetSearchRunner
 from ..search_runner.parse import BaseTweetParser
@@ -41,7 +41,7 @@ class TweetsByIdsRunner:
             tweets_by_ids_task: TweetsByIdsTask,
             tweet_outputs: List[TweetOutput],
             tweets_by_ids_context: Optional[TweetsByIdsContext] = None,
-            web_client: WebClient = WebClientRequests(),
+            web_client: WebClient = RequestsWebClient(),
             tweet_parser: TweetParser = BaseTweetParser(),
             auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
     ):

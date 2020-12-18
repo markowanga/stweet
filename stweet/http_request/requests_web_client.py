@@ -7,7 +7,7 @@ from .request_details import RequestDetails
 from .request_response import RequestResponse
 
 
-class WebClientRequests(WebClient):
+class RequestsWebClient(WebClient):
     """Request search_runner class. Implementation based on requests library."""
 
     def run_request(self, params: RequestDetails) -> RequestResponse:

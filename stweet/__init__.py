@@ -2,7 +2,7 @@ from .export_data import export_users_to_csv, export_users_to_json_lines, export
     export_tweets_to_json_lines
 from .get_user_runner import GetUsersTask, GetUsersRunner, GetUsersResult
 from .http_request.web_client import WebClient
-from .http_request.proxy_client_requests import ProxyClientRequests
+from .http_request.proxy_requests_web_client import ProxyRequestsWebClient
 from .import_data import read_tweets_from_csv_file, read_tweets_from_json_lines_file, read_users_from_csv_file, \
     read_users_from_json_lines_file
 from .model import Language, Tweet, User

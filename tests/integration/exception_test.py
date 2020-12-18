@@ -2,8 +2,18 @@ import pytest
 
 import stweet as st
 from stweet.auth import TwitterAuthTokenProvider, SimpleAuthTokenProvider
-from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse
+from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse, InvalidRequestsParamException
 from tests.mock_web_client import MockWebClient
+
+
+def test_proxy_client_with_incorrect_proxies():
+    with pytest.raises(InvalidRequestsParamException):
+        st.ProxyClientRequests(2)
+
+
+def test_proxy_client_with_incorrect_options():
+    with pytest.raises(InvalidRequestsParamException):
+        st.ProxyClientRequests(None, 4)
 
 
 def test_get_auth_token_with_incorrect_response_1():

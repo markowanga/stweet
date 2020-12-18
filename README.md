@@ -87,6 +87,37 @@ st.GetUsersRunner(
 users = users_collector.get_scrapped_users()
 ```
 
+Stweets has a default `WebClient` implementation that supports proxies `st.ProxyClientRequests`
+
+This snippet shows how to use it:
+```python
+import stweet as st
+
+search_tweets_task = st.SearchTweetsTask(
+    all_words='#covid19',
+)
+tweets_collector = st.CollectorTweetOutput()
+
+proxies = {
+    "http": "<Your http proxy URL>",
+    "https": "<Your https proxy URL>",
+}
+
+# Optional, can add additional parameters to `requests.request` method
+# if needed by your proxy
+options = {
+    "verify": False
+}
+
+st.TweetSearchRunner(
+    search_tweets_task=search_tweets_task,
+    tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')],
+    web_client=st.ProxyClientRequests(proxies, options),
+).run()
+
+tweets = tweets_collector.get_scrapped_tweets()
+```
+
 All important details and classes of this library are described below.
 
 ## SearchTweetsTask
@@ -195,6 +226,17 @@ UserOutput is an interface which calls for exporting scrapped users. Stweet has 
 |PrintUserOutput|Output prints all users|
 
 Additionally, UserOutput can be implemented in many other ways.
+
+## ProxyClientRequests
+
+`ProxyClientRequests` is an implementation of a `st.WebClient` that allows using proxies as well as supply additional options that can be used in [requests.request](https://requests.readthedocs.io/en/latest/api/#requests.request) method.
+
+|Property|Type|Description|
+|---|---|---|
+|proxies|Dict[str, str]|Dictionary mapping protocol to the URL of the proxy.|
+|options|Dict[str, Any]|Dictionary mapping a `requests.request` method param to its value.
+
+Additionally, you can implement you own WebClient.
 
 ## Twint inspiration
 

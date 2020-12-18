@@ -6,6 +6,7 @@ from typing import Dict, Any, Optional
 from . import WebClient
 from .request_details import RequestDetails
 from .request_response import RequestResponse
+from stweet.exceptions.invalid_requests_param_exception import InvalidRequestsParamException
 
 
 class ProxyClientRequests(WebClient):
@@ -15,7 +16,11 @@ class ProxyClientRequests(WebClient):
         """Constructor to create a web client."""
         super().__init__()
         self.proxies = proxies
-        self.options = options
+        self.options = dict() if options is None else options
+        if self.proxies is not None and not isinstance(self.proxies, dict):
+            raise InvalidRequestsParamException("Proxies must be a dict or None to use default network.")
+        if not isinstance(self.options, dict):
+            raise InvalidRequestsParamException("Options must be a dict.")
 
     def run_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""

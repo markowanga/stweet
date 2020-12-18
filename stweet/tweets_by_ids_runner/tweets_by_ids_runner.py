@@ -9,7 +9,7 @@ from .tweets_by_ids_result import TweetsByIdsResult
 from .tweets_by_ids_task import TweetsByIdsTask
 from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
-from ..http_request.requests_web_client import RequestsWebClient
+from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from ..model import Tweet
 from ..search_runner import TweetSearchRunner
 from ..search_runner.parse import BaseTweetParser

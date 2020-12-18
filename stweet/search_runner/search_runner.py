@@ -12,7 +12,7 @@ from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
-from ..http_request.requests_web_client import RequestsWebClient
+from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from ..model.tweet import Tweet
 from ..tweet_output.tweet_output import TweetOutput
 

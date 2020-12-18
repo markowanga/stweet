@@ -10,7 +10,7 @@ from .get_users_task import GetUsersTask
 from .user_parser import parse_user
 from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
-from ..http_request.requests_web_client import RequestsWebClient
+from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from ..model import User
 from ..user_output import UserOutput
 

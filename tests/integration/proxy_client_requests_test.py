@@ -6,9 +6,11 @@ def test_using_proxy_client():
         all_words='#covid19',
         tweets_limit=200
     )
-    proxy_client = st.ProxyRequestsWebClient(
-        http_proxy='http://localhost:3128',
-        https_proxy='http://localhost:3128'
+    proxy_client = st.RequestsWebClient(
+        st.RequestsWebClientProxyConfig(
+            http_proxy='http://localhost:3128',
+            https_proxy='http://localhost:3128'
+        )
     )
     tweets_collector = st.CollectorTweetOutput()
     result = st.TweetSearchRunner(

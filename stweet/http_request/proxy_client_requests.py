@@ -1,4 +1,4 @@
-"""Request search_runner class."""
+"""Request search_runner class with proxy support."""
 
 import requests
 from typing import Dict, Any, Optional
@@ -12,6 +12,7 @@ class ProxyClientRequests(WebClient):
     """Request search_runner class with proxy support. Implementation based on requests library."""
 
     def __init__(self, proxies: Dict[str, str], options: Optional[Dict[str, Any]] = None):
+        """Constructor to create a web client."""
         super().__init__()
         self.proxies = proxies
         self.options = options

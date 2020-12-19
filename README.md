@@ -87,8 +87,8 @@ st.GetUsersRunner(
 users = users_collector.get_scrapped_users()
 ```
 
-Stweet has a default `WebClient` implementation that is based on `requests` library — `st.RequestsWebClient`.
-Class have all properties with default values, but by changing them user can set proxy or disable ssl verification. 
+Stweet has a default `WebClient` implementation that is based on `requests` library — `st.RequestsWebClient`. Class have
+all properties with default values, but by changing them user can set proxy or disable ssl verification.
 
 This snippet shows how to use it:
 
@@ -234,6 +234,21 @@ options that can be used in [requests.request](https://requests.readthedocs.io/e
 |options|Dict[str, Any]|Dictionary mapping a `requests.request` method param to its value.
 
 Additionally, you can implement you own WebClient.
+
+## How to contribute
+
+If you want to improve stweet library then please read the instruction
+in [first-contributions repo](https://github.com/firstcontributions/first-contributions). Remember to create pull
+request to `develop` branch.
+
+You must have `docker` and `docker-compose` to run all tests on your computer. These dependencies start the proxy
+service which is required to run proxy tests. If you want to run tests locally please run `tox` command:
+
+```bash
+tox -v
+```
+
+Thank you for your every pull request. Together we can make this library better.
 
 ## Twint inspiration
 

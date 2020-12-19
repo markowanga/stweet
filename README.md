@@ -241,7 +241,7 @@ If you want to improve stweet library then please read the instruction
 in [first-contributions repo](https://github.com/firstcontributions/first-contributions). Remember to create pull
 request to `develop` branch.
 
-You must have `docker` and `docker-compose` to run all tests on your computer. These dependencies start the proxy
+You must have `docker` and `docker-compose` to run all tests on your computer. These dependencies run the proxy
 service which is required to run proxy tests. If you want to run tests locally please run `tox` command:
 
 ```bash

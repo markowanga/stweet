@@ -6,15 +6,15 @@
 
 A modern fast python library to scrap tweets and users quickly from Twitter unofficial API.
 
-This tool helps you to scrap tweets by a search phrase, tweets by ids and user by usernames.
-It uses the Twitter API, the same API is used on a website.
+This tool helps you to scrap tweets by a search phrase, tweets by ids and user by usernames. It uses the Twitter API,
+the same API is used on a website.
 
 ## Inspiration for the creation of the library
 
 I have used twint to scrap tweets, but it has many errors, and it doesn't work properly. The code was not simple to
-understand. All tasks have one config, and the user has to know the exact parameter. The last important thing is the fact
-that Api can change — Twitter is the API owner and changes depend on it. It is annoying when something does not work and
-users must report bugs as issues.
+understand. All tasks have one config, and the user has to know the exact parameter. The last important thing is the
+fact that Api can change — Twitter is the API owner and changes depend on it. It is annoying when something does not
+work and users must report bugs as issues.
 
 ## Main advantages of the library
 
@@ -23,7 +23,7 @@ users must report bugs as issues.
   library has basic simple solution — if you want to expand it, you can do it without any problems and forks
 - **100% coverage with integration tests** — this advantage can find the API changes, tests are carried out every week
   and when the task fails, we can find the source of change easily
-- **Custom tweets and users output** — it is a part of the interface, if you want to save tweets and users custom 
+- **Custom tweets and users output** — it is a part of the interface, if you want to save tweets and users custom
   format, it takes you a brief moment
 
 ## Installation
@@ -87,9 +87,11 @@ st.GetUsersRunner(
 users = users_collector.get_scrapped_users()
 ```
 
-Stweets has a default `WebClient` implementation that supports proxies `st.ProxyClientRequests`
+Stweet has a default `WebClient` implementation that is based on `requests` library — `st.RequestsWebClient`.
+Class have all properties with default values, but by changing them user can set proxy or disable ssl verification. 
 
 This snippet shows how to use it:
+
 ```python
 import stweet as st
 
@@ -98,21 +100,15 @@ search_tweets_task = st.SearchTweetsTask(
 )
 tweets_collector = st.CollectorTweetOutput()
 
-proxies = {
-    "http": "<Your http proxy URL>",
-    "https": "<Your https proxy URL>",
-}
-
-# Optional, can add additional parameters to `requests.request` method
-# if needed by your proxy
-options = {
-    "verify": False
-}
+proxies_config = st.RequestsWebClientProxyConfig(
+    http_proxy="<Your http proxy URL>",
+    https_proxy="<Your https proxy URL>"
+)
 
 st.TweetSearchRunner(
     search_tweets_task=search_tweets_task,
     tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')],
-    web_client=st.ProxyClientRequests(proxies, options),
+    web_client=st.RequestsWebClient(proxy=proxies_config, verify=False),
 ).run()
 
 tweets = tweets_collector.get_scrapped_tweets()
@@ -229,7 +225,8 @@ Additionally, UserOutput can be implemented in many other ways.
 
 ## ProxyClientRequests
 
-`ProxyClientRequests` is an implementation of a `st.WebClient` that allows using proxies as well as supply additional options that can be used in [requests.request](https://requests.readthedocs.io/en/latest/api/#requests.request) method.
+`ProxyClientRequests` is an implementation of a `st.WebClient` that allows using proxies as well as supply additional
+options that can be used in [requests.request](https://requests.readthedocs.io/en/latest/api/#requests.request) method.
 
 |Property|Type|Description|
 |---|---|---|

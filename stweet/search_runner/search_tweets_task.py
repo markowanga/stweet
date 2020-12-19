@@ -25,7 +25,7 @@ class SearchTweetsTask:
     since: Optional[Arrow]
     until: Optional[Arrow]
     language: Optional[Language]
-    tweets_count: Optional[int]
+    tweets_limit: Optional[int]
     replies_filter: Optional[RepliesFilter]
 
     def __init__(
@@ -50,7 +50,7 @@ class SearchTweetsTask:
         object.__setattr__(self, 'since', since)
         object.__setattr__(self, 'until', until)
         object.__setattr__(self, 'language', language)
-        object.__setattr__(self, 'tweets_count', tweets_limit)
+        object.__setattr__(self, 'tweets_limit', tweets_limit)
         object.__setattr__(self, 'replies_filter', replies_filter)
         return
 

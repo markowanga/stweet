@@ -12,7 +12,7 @@ from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
-from ..http_request.web_client_requests import WebClientRequests
+from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from ..model.tweet import Tweet
 from ..tweet_output.tweet_output import TweetOutput
 
@@ -32,7 +32,7 @@ class TweetSearchRunner:
             search_tweets_task: SearchTweetsTask,
             tweet_outputs: List[TweetOutput],
             search_run_context: Optional[SearchRunContext] = None,
-            web_client: WebClient = WebClientRequests(),
+            web_client: WebClient = RequestsWebClient(),
             tweet_parser: TweetParser = BaseTweetParser(),
             auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
     ):
@@ -57,7 +57,7 @@ class TweetSearchRunner:
         return \
             ctx.last_tweets_download_count == 0 \
             or (ctx.scroll_token is None) \
-            or self.search_run_context.all_download_tweets_count == self.search_tweets_task.tweets_count
+            or self.search_run_context.all_download_tweets_count == self.search_tweets_task.tweets_limit
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()

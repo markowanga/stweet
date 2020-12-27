@@ -85,17 +85,13 @@ class TweetsByIdsRunner:
 
     @staticmethod
     def _get_base_tweet_info_from_text_response(tweet_id: str, response_text: str) -> _TweetByIdBaseInfo:
-        try:
-            parsed_json = json.loads(response_text)
-            return _TweetByIdBaseInfo(
-                tweet_id,
-                parsed_json['user']['screen_name'],
-                parsed_json['text'],
-                arrow_get(parsed_json['created_at'])
-            )
-        except Exception as e:
-            print(response_text)
-            raise e
+        parsed_json = json.loads(response_text)
+        return _TweetByIdBaseInfo(
+            tweet_id,
+            parsed_json['user']['screen_name'],
+            parsed_json['text'],
+            arrow_get(parsed_json['created_at'])
+        )
 
     def _scrap_full_tweet(self, tweet_base_info: _TweetByIdBaseInfo) -> Optional[Tweet]:
         search_tweets_task = SearchTweetsTask(

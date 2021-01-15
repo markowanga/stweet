@@ -1,6 +1,7 @@
 """Runner for get tweets by ids."""
 import json
 from dataclasses import dataclass
+from json import JSONDecodeError
 from typing import List, Optional
 
 from .tweets_by_ids_context import TweetsByIdsContext
@@ -59,9 +60,10 @@ class TweetsByIdsRunner:
         self._prepare_token()
         for tweet_id_to_scrap in self.tweets_by_ids_task.tweet_ids:
             tweet_base_info = self._get_base_tweet_info(tweet_id_to_scrap)
-            tweet = self._scrap_full_tweet(tweet_base_info)
-            self.tweets_by_ids_context.add_downloaded_tweets_count(1)
-            self._process_new_tweets_to_output([tweet])
+            if tweet_base_info is not None:
+                tweet = self._scrap_full_tweet(tweet_base_info)
+                self.tweets_by_ids_context.add_downloaded_tweets_count(1)
+                self._process_new_tweets_to_output([tweet])
         return TweetsByIdsResult(self.tweets_by_ids_context.all_download_tweets_count)
 
     def _get_base_tweet_info(self, tweet_id: str) -> _TweetByIdBaseInfo:
@@ -70,9 +72,12 @@ class TweetsByIdsRunner:
         return self._get_base_tweet_info_from_text_response(tweet_id, request_result.text)
 
     @staticmethod
-    def _get_base_tweet_info_from_text_response(tweet_id: str, response_text: str) -> _TweetByIdBaseInfo:
-        parsed_json = json.loads(response_text)
-        return _TweetByIdBaseInfo(tweet_id, parsed_json['user']['screen_name'], parsed_json['text'])
+    def _get_base_tweet_info_from_text_response(tweet_id: str, response_text: str) -> Optional[_TweetByIdBaseInfo]:
+        try:
+            parsed_json = json.loads(response_text)
+            return _TweetByIdBaseInfo(tweet_id, parsed_json['user']['screen_name'], parsed_json['text'])
+        except JSONDecodeError:
+            return None
 
     def _scrap_full_tweet(self, tweet_base_info: _TweetByIdBaseInfo) -> Tweet:
         search_tweets_task = SearchTweetsTask(

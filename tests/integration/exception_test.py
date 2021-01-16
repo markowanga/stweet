@@ -60,6 +60,3 @@ def test_get_not_existing_user():
     task = st.GetUsersTask(['fcbewkjdsncvjwkfs'])
     result = st.GetUsersRunner(task, []).run()
     assert result.users_count == 0
-
-
-test_get_auth_token_with_incorrect_response_1()

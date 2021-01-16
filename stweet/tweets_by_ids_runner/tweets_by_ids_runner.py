@@ -62,9 +62,7 @@ class TweetsByIdsRunner:
         self._prepare_token()
         tweet_ids_not_scrapped = []
         for tweet_id_to_scrap in self.tweets_by_ids_task.tweet_ids:
-            print('run', tweet_id_to_scrap)
             tweet_base_info = self._get_base_tweet_info(tweet_id_to_scrap)
-            print('base info', tweet_base_info)
             if tweet_base_info is None:
                 tweet_ids_not_scrapped.append(tweet_id_to_scrap)
             else:
@@ -84,7 +82,7 @@ class TweetsByIdsRunner:
             else None
 
     @staticmethod
-    def _get_base_tweet_info_from_text_response(tweet_id: str, response_text: str) -> _TweetByIdBaseInfo:
+    def _get_base_tweet_info_from_text_response(tweet_id: str, response_text: str) -> Optional[_TweetByIdBaseInfo]:
         parsed_json = json.loads(response_text)
         return _TweetByIdBaseInfo(
             tweet_id,
@@ -109,7 +107,6 @@ class TweetsByIdsRunner:
             tweet_parser=self.tweet_parser,
             auth_token_provider_factory=self.auth_token_provider_factory
         ).run()
-        print([it.id_str for it in tweets_collector.get_scrapped_tweets()])
         self.tweets_by_ids_context.guest_auth_token = search_context.guest_auth_token
         filtered_list = [it for it in tweets_collector.get_scrapped_tweets() if it.id_str == tweet_base_info.id]
         return filtered_list[0] if len(filtered_list) > 0 else None

@@ -1,14 +1,14 @@
 import pytest
 
 import stweet as st
-from stweet.auth import TwitterAuthTokenProvider, SimpleAuthTokenProvider
+from stweet.auth import SimpleAuthTokenProvider
 from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse
 from tests.mock_web_client import MockWebClient
 
 
 def test_get_auth_token_with_incorrect_response_1():
     with pytest.raises(RefreshTokenException):
-        TwitterAuthTokenProvider(MockWebClient(None, None)).get_new_token()
+        SimpleAuthTokenProvider(MockWebClient(None, None)).get_new_token()
 
 
 def test_get_simple_auth_token_with_incorrect_response_1():
@@ -18,12 +18,12 @@ def test_get_simple_auth_token_with_incorrect_response_1():
 
 def test_get_auth_token_with_incorrect_response_2():
     with pytest.raises(RefreshTokenException):
-        TwitterAuthTokenProvider(MockWebClient(400, 'None')).get_new_token()
+        SimpleAuthTokenProvider(MockWebClient(400, 'None')).get_new_token()
 
 
 def test_get_auth_token_with_incorrect_response_3():
     with pytest.raises(RefreshTokenException):
-        TwitterAuthTokenProvider(MockWebClient(200, 'None')).get_new_token()
+        SimpleAuthTokenProvider(MockWebClient(200, 'None')).get_new_token()
 
 
 def test_runner_exceptions():
@@ -41,7 +41,7 @@ def test_runner_exceptions():
                 else:
                     return st.http_request.RequestResponse(400, '')
             else:
-                return st.http_request.RequestResponse(200, 'decodeURIComponent("gt=1330640566170869763; Max=10800;')
+                return st.http_request.RequestResponse(200, '{"guest_token":"1350356785648062465"}')
 
     with pytest.raises(ScrapBatchBadResponse):
         search_tweets_task = st.SearchTweetsTask(
@@ -51,7 +51,7 @@ def test_runner_exceptions():
             search_tweets_task=search_tweets_task,
             tweet_outputs=[],
             web_client=TokenExpiryExceptionWebClient(),
-            auth_token_provider_factory=st.auth.TwitterAuthTokenProviderFactory()
+            auth_token_provider_factory=st.auth.SimpleAuthTokenProviderFactory()
 
         ).run()
 
@@ -60,3 +60,6 @@ def test_get_not_existing_user():
     task = st.GetUsersTask(['fcbewkjdsncvjwkfs'])
     result = st.GetUsersRunner(task, []).run()
     assert result.users_count == 0
+
+
+test_get_auth_token_with_incorrect_response_1()

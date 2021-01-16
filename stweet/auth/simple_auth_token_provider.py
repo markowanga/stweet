@@ -1,6 +1,7 @@
 """Util to process access token to Twitter api."""
 
 import json
+from json import JSONDecoder
 
 from .auth_token_provider import AuthTokenProvider, AuthTokenProviderFactory
 from ..exceptions import RefreshTokenException
@@ -35,8 +36,12 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
 
     def get_new_token(self) -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
-        token_html = self._request_for_response_body()
-        return json.loads(token_html)['guest_token']
+        try:
+            token_html = self._request_for_response_body()
+            print(token_html)
+            return json.loads(token_html)['guest_token']
+        except JSONDecoder:
+            raise RefreshTokenException('Error during request for token')
 
 
 class SimpleAuthTokenProviderFactory(AuthTokenProviderFactory):

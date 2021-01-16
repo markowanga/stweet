@@ -38,7 +38,6 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
         try:
             token_html = self._request_for_response_body()
-            print(token_html)
             return json.loads(token_html)['guest_token']
         except JSONDecodeError:
             raise RefreshTokenException('Error during request for token')

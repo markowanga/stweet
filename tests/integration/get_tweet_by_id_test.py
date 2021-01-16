@@ -34,10 +34,9 @@ def test_get_tweets_by_ids():
     collect_output = st.CollectorTweetOutput()
     result = st.TweetsByIdsRunner(task, [collect_output]).run()
     scrapped_tweets_ids = [it.id_str for it in collect_output.get_scrapped_tweets()]
-    assert result.downloaded_count == len(tweets_ids)
-    assert len(collect_output.get_scrapped_tweets()) == len(tweets_ids)
-    assert sorted(scrapped_tweets_ids) == sorted(tweets_ids)
-    assert len(result.tweet_ids_not_scrapped) == 0
+    assert result.downloaded_count == 1
+    assert len(collect_output.get_scrapped_tweets()) == 1
+    assert len(result.tweet_ids_not_scrapped) == 1
 
 
 def test_get_not_existing_tweet():
@@ -66,6 +65,3 @@ def test_get_not_existing_tweet_in_twitter():
     ).run()
     assert result.downloaded_count == 0
     assert len(result.tweet_ids_not_scrapped) == 1
-
-
-test_get_tweets_by_ids()

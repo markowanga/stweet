@@ -1,6 +1,6 @@
 import stweet as st
 
-_usernames = ['RealDonaldTrump', 'ProtasiewiczJ', 'donaldtuskEPP']
+_usernames = ['ProtasiewiczJ', 'donaldtuskEPP']
 
 
 def test_get_user():

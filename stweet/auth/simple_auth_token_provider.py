@@ -1,7 +1,7 @@
 """Util to process access token to Twitter api."""
 
 import json
-from json import JSONDecoder
+from json import JSONDecodeError
 
 from .auth_token_provider import AuthTokenProvider, AuthTokenProviderFactory
 from ..exceptions import RefreshTokenException
@@ -40,7 +40,7 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
             token_html = self._request_for_response_body()
             print(token_html)
             return json.loads(token_html)['guest_token']
-        except JSONDecoder:
+        except JSONDecodeError:
             raise RefreshTokenException('Error during request for token')
 
 

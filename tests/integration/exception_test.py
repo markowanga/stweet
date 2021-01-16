@@ -29,8 +29,8 @@ def test_get_auth_token_with_incorrect_response_3():
 def test_runner_exceptions():
     class TokenExpiryExceptionWebClient(st.WebClient):
         count_dict = dict({
-            'https://twitter.com': 0,
-            'https://api.twitter.com/2/search/adaptive.json': 0
+            'https://api.twitter.com/2/search/adaptive.json': 0,
+            'https://api.twitter.com/1.1/guest/activate.json': 0
         })
 
         def run_request(self, params: st.http_request.RequestDetails) -> st.http_request.RequestResponse:

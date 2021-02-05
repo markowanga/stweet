@@ -15,4 +15,6 @@ def tweet_to_json(tweet: Tweet) -> str:
 def create_tweet_from_json(json_value: str) -> Tweet:
     """Method creates tweet from json string."""
     tweet_dict = json.loads(json_value)
+    if 'media_url' not in tweet_dict:
+        tweet_dict['media_url'] = ''
     return create_tweet_from_dict(tweet_dict)

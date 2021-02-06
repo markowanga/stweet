@@ -4,6 +4,7 @@
 ![Python package](https://github.com/markowanga/stweet/workflows/Python%20package/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/markowanga/stweet/branch/master/graph/badge.svg?token=1PV6VC8HRF)](https://codecov.io/gh/markowanga/stweet)
 [![PyPI version](https://badge.fury.io/py/stweet.svg)](https://badge.fury.io/py/stweet)
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
 A modern fast python library to scrap tweets and users quickly from Twitter unofficial API.
 

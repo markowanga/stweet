@@ -5,6 +5,8 @@ from typing import List
 
 from arrow import Arrow
 
+from .media import Media
+
 
 @dataclass
 class Tweet:
@@ -30,7 +32,7 @@ class Tweet:
     user_verified: bool
     in_reply_to_status_id_str: str
     in_reply_to_user_id_str: str
-    media_url: str
+    media: List[Media]
     hashtags: List[str]
     mentions: List[str]
     urls: List[str]

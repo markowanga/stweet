@@ -9,6 +9,7 @@ from dateutil import parser
 
 from .tweet_parser import TweetParser
 from ...model import Tweet
+from ...model.media import Media
 
 _Tweet_formats = {
     'datetime': '%Y-%m-%d %H:%M:%S %Z',
@@ -107,11 +108,18 @@ class BaseTweetParser(TweetParser):
             in_reply_to_status_id_str=_default_string_value(tweet['in_reply_to_status_id_str'], ''),
             in_reply_to_user_id_str=_default_string_value(
                 tweet['in_reply_to_user_id_str'], ''),
-            media_url=tweet['media_url'] if 'media_url' in tweet else '',
+            media=BaseTweetParser._get_media_list_from_tweet_object(tweet),
             hashtags=['#' + it['text'] for it in tweet['entities']['hashtags']],
             mentions=[it['screen_name'] for it in tweet['entities']['user_mentions']],
             urls=[it['url'] for it in tweet['entities']['urls']]
         )
+
+    @staticmethod
+    def _get_media_list_from_tweet_object(tweet: Dict[str, any]) -> List[Media]:
+        if 'media' in tweet['entities']:
+            return [Media(it['media_url_https'], it['type']) for it in tweet['entities']['media']]
+        else:
+            return []
 
     @staticmethod
     def _get_default_string_value_from_dict(tweet_dict: Dict[str, any], field: str, default_value: str = ''):

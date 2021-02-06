@@ -4,7 +4,7 @@ import stweet as st
 
 
 def _scrap_tweets_with_count_assert(count: int):
-    phrase = '#koronawirus'
+    phrase = '#covid19'
     search_tweets_task = st.SearchTweetsTask(
         all_words=phrase,
         tweets_limit=count

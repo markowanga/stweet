@@ -81,6 +81,7 @@ class BaseTweetParser(TweetParser):
 
     @staticmethod
     def _tweet_dict_to_tweet_object(tweet) -> Tweet:
+        print(json.dumps(tweet))
         return Tweet(
             created_at=Arrow.fromdatetime(parser.parse(tweet['created_at'])),
             id_str=tweet['id_str'],
@@ -107,6 +108,7 @@ class BaseTweetParser(TweetParser):
             in_reply_to_status_id_str=_default_string_value(tweet['in_reply_to_status_id_str'], ''),
             in_reply_to_user_id_str=_default_string_value(
                 tweet['in_reply_to_user_id_str'], ''),
+            media_url=tweet['media_url'] if 'media_url' in tweet else '',
             hashtags=['#' + it['text'] for it in tweet['entities']['hashtags']],
             mentions=[it['screen_name'] for it in tweet['entities']['user_mentions']],
             urls=[it['url'] for it in tweet['entities']['urls']]

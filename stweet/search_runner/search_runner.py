@@ -62,6 +62,7 @@ class TweetSearchRunner:
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()
         response = self.web_client.run_request(request_params)
+        # print(response.text)
         if response.is_token_expired():
             self._refresh_token()
         elif response.is_success():

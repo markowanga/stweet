@@ -40,6 +40,7 @@ def create_tweet_from_dict(dictionary: Dict[str, any]):
         dictionary['user_verified'],
         str(dictionary['in_reply_to_status_id_str']),
         str(dictionary['in_reply_to_user_id_str']),
+        dictionary['media_url'],
         dictionary['hashtags'],
         dictionary['mentions'],
         dictionary['urls']

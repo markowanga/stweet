@@ -1,5 +1,6 @@
 # stweet
 
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 ![Python package](https://github.com/markowanga/stweet/workflows/Python%20package/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/markowanga/stweet/branch/master/graph/badge.svg?token=1PV6VC8HRF)](https://codecov.io/gh/markowanga/stweet)
 [![PyPI version](https://badge.fury.io/py/stweet.svg)](https://badge.fury.io/py/stweet)

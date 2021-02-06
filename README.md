@@ -32,6 +32,14 @@ work and users must report bugs as issues.
 pip install -U stweet
 ```
 
+## Donate
+If you want to sponsor me, in thanks for the project, please send me some crypto:
+
+|Coin|Wallet address|
+|---|---|
+|Bitcoin (segwit)|3EajE9DbLvEmBHLRzjDfG86LyZB4jzsZyg|
+|Etherum|0xE43d8C2c7a9af286bc2fc0568e2812151AF9b1FD|
+
 ## Basic usage
 
 To make a simple request the scrap **task** must be prepared. The next task should be processed by **runner**.

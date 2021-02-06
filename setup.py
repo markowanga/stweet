@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name="stweet",
-    version="1.2.0",
+    version="1.2.1",
     author="Marcin Wątroba",
     author_email="markowanga@gmail.com",
     description="Package to scrap tweets",

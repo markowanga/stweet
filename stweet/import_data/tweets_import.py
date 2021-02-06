@@ -14,8 +14,11 @@ def read_tweets_from_csv_file(file_path: str) -> List[Tweet]:
     df = pd.read_csv(file_path, dtype={
         'quoted_status_id_str': str,
         'in_reply_to_status_id_str': str,
-        'in_reply_to_user_id_str': str
+        'in_reply_to_user_id_str': str,
+        'media_url': str
     })
+    if 'media_url' not in df.columns:
+        df['media_url'] = ''
     df.quoted_status_id_str.fillna('', inplace=True)
     df.quoted_status_short_url.fillna('', inplace=True)
     df.quoted_status_expand_url.fillna('', inplace=True)

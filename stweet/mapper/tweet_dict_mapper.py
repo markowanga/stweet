@@ -4,7 +4,7 @@ from typing import Dict
 
 from arrow import get as arrow_get
 
-from .util import simple_string_list_to_string, string_to_simple_string_list
+from .util import simple_string_list_to_string, string_to_simple_string_list, media_list_to_string, string_to_media_list
 from ..model import Tweet
 
 
@@ -14,6 +14,7 @@ def tweet_to_flat_dict(self):
     dictionary['hashtags'] = simple_string_list_to_string(dictionary['hashtags'])
     dictionary['mentions'] = simple_string_list_to_string(dictionary['mentions'])
     dictionary['urls'] = simple_string_list_to_string(dictionary['urls'])
+    dictionary['media'] = media_list_to_string(dictionary['media'])
     return dictionary
 
 
@@ -40,7 +41,7 @@ def create_tweet_from_dict(dictionary: Dict[str, any]):
         dictionary['user_verified'],
         str(dictionary['in_reply_to_status_id_str']),
         str(dictionary['in_reply_to_user_id_str']),
-        dictionary['media_url'],
+        dictionary['media'],
         dictionary['hashtags'],
         dictionary['mentions'],
         dictionary['urls']
@@ -53,4 +54,5 @@ def create_tweet_from_flat_dict(dictionary: Dict[str, any]) -> Tweet:
     dictionary['hashtags'] = string_to_simple_string_list(dictionary['hashtags'])
     dictionary['mentions'] = string_to_simple_string_list(dictionary['mentions'])
     dictionary['urls'] = string_to_simple_string_list(dictionary['urls'])
+    dictionary['media'] = string_to_media_list(dictionary['media'] if 'media' in dictionary else '[]')
     return create_tweet_from_dict(dictionary)

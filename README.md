@@ -33,7 +33,7 @@ pip install -U stweet
 ```
 
 ## Donate
-If you want to sponsor me, in thanks for the project, please send me some crypto:
+If you want to sponsor me, in thanks for the project, please send me some crypto 😁:
 
 |Coin|Wallet address|
 |---|---|

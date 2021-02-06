@@ -81,7 +81,6 @@ class BaseTweetParser(TweetParser):
 
     @staticmethod
     def _tweet_dict_to_tweet_object(tweet) -> Tweet:
-        print(json.dumps(tweet))
         return Tweet(
             created_at=Arrow.fromdatetime(parser.parse(tweet['created_at'])),
             id_str=tweet['id_str'],

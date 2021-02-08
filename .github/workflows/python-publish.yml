@@ -6,8 +6,8 @@ name: Python package & deploy
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      - 'README.md'
+    paths:
+      - 'setup.py'
 
 jobs:
   deploy:

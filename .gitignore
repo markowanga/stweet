@@ -144,3 +144,6 @@ clean.sh
 tmp
 sample_tweets.json
 .pypirc
+
+
+.DS_Store

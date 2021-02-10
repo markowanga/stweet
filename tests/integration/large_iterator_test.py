@@ -15,6 +15,7 @@ def test_user_json_lines_read_iterator():
             list_from_iterator.append(next(iterator))
         except StopIteration:
             break
+    iterator.close()
     two_lists_assert_equal(list_from_iterator, collector.get_scrapped_users())
 
 
@@ -30,4 +31,5 @@ def test_tweet_json_lines_read_iterator():
             list_from_iterator.append(next(iterator))
         except StopIteration:
             break
+    iterator.close()
     two_lists_assert_equal(list_from_iterator, collector.get_scrapped_tweets())

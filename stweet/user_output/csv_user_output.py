@@ -41,7 +41,7 @@ class CsvUserOutput(UserOutput):
         return
 
     def _header_to_add(self):
-        return (not self._file_exists()) or self._file_is_empty()
+        return ((not self._file_exists()) or self._file_is_empty()) and self.add_header_on_start
 
     def _file_exists(self) -> bool:
         return os.path.isfile(self.file_location)

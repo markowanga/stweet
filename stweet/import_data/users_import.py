@@ -1,6 +1,7 @@
 """Methods to read users from files."""
 
-from typing import List
+from io import StringIO
+from typing import List, Union
 
 import pandas as pd
 
@@ -11,7 +12,23 @@ from ..model import User
 
 def read_users_from_csv_file(file_path: str) -> List[User]:
     """Method to read tweets from csv file."""
-    df = pd.read_csv(file_path, dtype={
+    return _read_users_from_csv(file_path)
+
+
+def parse_user_from_csv_line(csv_line: str) -> User:
+    """Parse user from csv line."""
+    return _read_users_from_csv(StringIO(csv_line))[0]
+
+
+def read_users_from_json_lines_file(file_path: str) -> List[User]:
+    """Method to read tweets from csv file."""
+    file = open(file_path, 'r')
+    return [create_user_from_json(line) for line in file.readlines()]
+
+
+def _read_users_from_csv(csv_input: Union[str, StringIO]) -> List[User]:
+    """Method to read tweets from csv buffer or file."""
+    df = pd.read_csv(csv_input, dtype={
         'pinned_tweet_ids_str': str,
         'profile_banner_url': str,
         'location': str,
@@ -22,9 +39,3 @@ def read_users_from_csv_file(file_path: str) -> List[User]:
     df.location.fillna('', inplace=True)
     df.description.fillna('', inplace=True)
     return [create_user_from_flat_dict(row) for _, row in df.iterrows()]
-
-
-def read_users_from_json_lines_file(file_path: str) -> List[User]:
-    """Method to read tweets from csv file."""
-    file = open(file_path, 'r')
-    return [create_user_from_json(line) for line in file.readlines()]

@@ -1,1 +1,1 @@
-from .user_csv_file_iterator import UserCsvFileIterator
+from .user_json_line_file_iterator import UserJsonLineFileIterator

@@ -29,5 +29,4 @@ class ObjectFileIterator(Generic[T], ABC):
 
     def next(self) -> Optional[T]:
         line = self.lines_iterator.next_line()
-        print(line)
         return self._parse_line(line) if line is not None else None

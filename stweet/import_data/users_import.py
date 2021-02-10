@@ -15,11 +15,6 @@ def read_users_from_csv_file(file_path: str) -> List[User]:
     return _read_users_from_csv(file_path)
 
 
-def parse_user_from_csv_line(csv_line: str) -> User:
-    """Parse user from csv line."""
-    return _read_users_from_csv(StringIO(csv_line))[0]
-
-
 def read_users_from_json_lines_file(file_path: str) -> List[User]:
     """Method to read tweets from csv file."""
     file = open(file_path, 'r')

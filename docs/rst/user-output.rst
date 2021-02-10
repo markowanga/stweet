@@ -8,7 +8,7 @@ Under the hood it has abstract method
 
 There are few implementations of ``UserOutput``
 
-.. code:: ipython3
+.. code:: python
 
     import stweet as st
 
@@ -17,7 +17,7 @@ PrintUserOutput
 
 ``PrintUserOutput`` prints all scrapper user.
 
-.. code:: ipython3
+.. code:: python
 
     st.PrintUserOutput();
 
@@ -38,7 +38,7 @@ when sbd need to process small part of tweets.
 
 To get all tweets you need to run ``get_scrapped_users()``.
 
-.. code:: ipython3
+.. code:: python
 
     st.CollectorUserOutput();
 
@@ -61,7 +61,7 @@ When ``add_header_on_start`` is ``True`` header is adding only when file
 is empty. It is possible to continue storing the users in file in next
 tasks.
 
-.. code:: ipython3
+.. code:: python
 
     st.CsvUserOutput(
         file_location='my_csv_file.csv',
@@ -89,7 +89,7 @@ memory.
 Class have only one property – ``file_name``, this is the file to store
 users in json line format.
 
-.. code:: ipython3
+.. code:: python
 
     st.JsonLineFileUserOutput(
         file_name='my_jl_file.jl'
@@ -113,7 +113,7 @@ solution to track that new users are scrapping.
 Class have only one parameter – ``each_n``, this is the N value
 described above.
 
-.. code:: ipython3
+.. code:: python
 
     st.PrintEveryNUserOutput(
         each_n=100

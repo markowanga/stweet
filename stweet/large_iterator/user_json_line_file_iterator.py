@@ -1,3 +1,4 @@
+"""Iterator to parse Users from JSON lines."""
 from .object_file_iterator import ObjectFileIterator
 from ..mapper.user_json_mapper import create_user_from_json
 from ..model import User

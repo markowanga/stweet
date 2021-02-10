@@ -1,14 +1,9 @@
-import pytest
-
 import stweet as st
-from tests.test_util import get_temp_test_file_name, remove_all_temp_files, get_tweets_to_tweet_output_test, \
+from tests.test_file_manager import prepare_removing_new_files
+from tests.test_util import get_temp_test_file_name, get_tweets_to_tweet_output_test, \
     two_lists_assert_equal
 
-
-@pytest.fixture(autouse=True)
-def run_around_tests():
-    yield
-    remove_all_temp_files()
+prepare_removing_new_files()
 
 
 def test_csv_serialization():

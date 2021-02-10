@@ -1,1 +1,2 @@
 from .user_json_line_file_iterator import UserJsonLineFileIterator
+from .tweet_json_line_file_iterator import TweetJsonLineFileIterator

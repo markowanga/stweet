@@ -21,12 +21,10 @@ class CsvUserOutput(UserOutput):
     """CsvUserOutput saves user data by request received users batch to CSV file."""
 
     file_location: str
-    add_header_on_start: bool
 
-    def __init__(self, file_location: str, add_header_on_start: bool = True):
+    def __init__(self, file_location: str):
         """Create instance of CsvUserOutput."""
         self.file_location = file_location
-        self.add_header_on_start = add_header_on_start
 
     def export_users(self, users: List[User]):
         """Export users to CSV."""

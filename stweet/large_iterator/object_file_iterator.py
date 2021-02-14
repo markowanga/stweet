@@ -1,6 +1,6 @@
 """Iterator of objects in file."""
 from abc import abstractmethod, ABC
-from typing import TypeVar, Generic, Optional, Iterator
+from typing import TypeVar, Generic, Optional, Iterator, List
 
 from .file_lines_iterator import FileLinesIterator
 
@@ -12,11 +12,13 @@ class ObjectFileIterator(Generic[T], ABC, Iterator):
 
     file_path: str
     lines_iterator: Optional[FileLinesIterator]
+    chunk_size: int
 
-    def __init__(self, file_path: str):
+    def __init__(self, file_path: str, chunk_size: int):
         """Constructor of ObjectFileIterator."""
         self.file_path = file_path
         self.lines_iterator = None
+        self.chunk_size = chunk_size
 
     def open(self):
         """Method opens fileIterator."""
@@ -33,7 +35,15 @@ class ObjectFileIterator(Generic[T], ABC, Iterator):
     def _parse_line(self, line: str) -> T:
         """Abstract method to parse line to object."""
 
-    def __next__(self) -> Optional[T]:
+    def __next__(self) -> List[T]:
         """Iterator method next."""
-        line = self.lines_iterator.next_line()
-        return self._parse_line(line) if line is not None else None
+        lines = []
+        counter = 0
+        last = None
+        while counter < self.chunk_size and (counter == 0 or last is not None):
+            last = self.lines_iterator.next_line()
+            if last is not None:
+                lines.append(last)
+        if len(lines) == 0:
+            raise StopIteration
+        return [self._parse_line(line) for line in lines]

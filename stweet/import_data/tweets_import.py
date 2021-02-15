@@ -39,6 +39,7 @@ def _read_tweets_from_csv_object(filepath_or_buffer_path: Union[str, StringIO]) 
 
 
 def df_to_tweets(df: pd.DataFrame) -> List[Tweet]:
+    """Parse DataFrame to List[Tweet]."""
     if 'media_url' not in df.columns:
         df['media_url'] = ''
     df.quoted_status_id_str.fillna('', inplace=True)

@@ -1,3 +1,5 @@
+"""Iterator of objects in csv file."""
+
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, Iterator, Optional, List
 
@@ -7,7 +9,7 @@ T = TypeVar('T')
 
 
 class CsvObjectIterator(Generic[T], ABC, Iterator):
-    """Iterator of objects in file."""
+    """Iterator of objects in csv file."""
 
     file_path: str
     df_iterator: Optional[Iterator[pd.DataFrame]]

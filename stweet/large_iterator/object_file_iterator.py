@@ -41,6 +41,7 @@ class ObjectFileIterator(Generic[T], ABC, Iterator):
         counter = 0
         last = None
         while counter < self.chunk_size and (counter == 0 or last is not None):
+            counter = counter + 1
             last = self.lines_iterator.next_line()
             if last is not None:
                 lines.append(last)

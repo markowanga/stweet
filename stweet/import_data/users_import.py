@@ -40,6 +40,7 @@ def get_users_df_chunked(file_path: str, chunk_size: int) -> Iterator[pd.DataFra
 
 
 def df_to_users(df: pd.DataFrame) -> List[User]:
+    """Converts DataFrame to List[User]."""
     df.pinned_tweet_ids_str.fillna('', inplace=True)
     df.profile_banner_url.fillna('', inplace=True)
     df.location.fillna('', inplace=True)

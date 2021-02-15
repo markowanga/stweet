@@ -1,6 +1,6 @@
 """Iterator to parse Tweet from JSON lines."""
 from .object_file_iterator import ObjectFileIterator
-from .. import Tweet
+from ..model import Tweet
 from ..mapper.tweet_json_mapper import create_tweet_from_json
 
 

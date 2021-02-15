@@ -19,11 +19,10 @@ class LoggingRequestsWebClientInterceptor(WebClient.WebClientInterceptor):
         requests_log = logging.getLogger("requests.packages.urllib3")
         requests_log.setLevel(logging.DEBUG)
         requests_log.propagate = True
-        requests_log.propagate = True
 
     @staticmethod
     def _debug_requests_off():
-        """Switches off logging of the requests module, might be some side-effects"""
+        """Switches off logging of the requests module, might be some side-effects."""
         HTTPConnection.debuglevel = 0
 
         root_logger = logging.getLogger()
@@ -36,7 +35,8 @@ class LoggingRequestsWebClientInterceptor(WebClient.WebClientInterceptor):
     def logs_to_show(self, params: RequestDetails) -> bool:
         """Method to decide that show logs of request.
 
-        Method can be overridden and then the logs will be filtered – example by request url."""
+        Method can be overridden and then the logs will be filtered – example by request url.
+        """
         return True
 
     def intercept(

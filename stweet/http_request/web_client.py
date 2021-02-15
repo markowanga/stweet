@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod, ABC
-from typing import List
+from typing import List, Optional
 
 from .request_details import RequestDetails
 from .request_response import RequestResponse
@@ -22,9 +22,9 @@ class WebClient:
 
     _interceptors: List[WebClientInterceptor]
 
-    def __init__(self, interceptors: List[WebClientInterceptor]):
+    def __init__(self, interceptors: Optional[List[WebClientInterceptor]]):
         """Base constructor of class."""
-        self._interceptors = interceptors
+        self._interceptors = [] if interceptors is None else interceptors
 
     def run_request(self, requests_details: RequestDetails) -> RequestResponse:
         """Method process the request. Method wrap request with interceptors."""
@@ -56,4 +56,5 @@ class WebClient:
             """Interceptor method of request.
 
             Method need to call WebClientInterceptor.get_response to process request by next interceptors
-            and client."""
+            and client.
+            """

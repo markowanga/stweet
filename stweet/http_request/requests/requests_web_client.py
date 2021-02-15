@@ -1,7 +1,6 @@
 """Request search_runner class."""
 from __future__ import annotations
 
-from abc import abstractmethod, ABC
 from typing import Optional, Dict, List
 
 import requests
@@ -25,7 +24,7 @@ class RequestsWebClient(WebClient):
             interceptors: Optional[List[WebClient.WebClientInterceptor]] = None
     ):
         """Constructor of RequestsWebClient."""
-        super(RequestsWebClient, self).__init__([] if interceptors is None else interceptors)
+        super(RequestsWebClient, self).__init__(interceptors)
         self.proxy = proxy
         self.verify = verify
 

@@ -8,12 +8,14 @@ from .. import RequestsWebClient, WebClient, RequestDetails, RequestResponse
 class ParamsResponseLogWebClientInterceptor(WebClient.WebClientInterceptor):
     """Class of ParamsResponseLogWebClientInterceptor.
 
-    Interceptor log input params and out response."""
+    Interceptor log input params and out response.
+    """
 
     _counter: int
     _lock: threading.Lock
 
     def __init__(self):
+        """Constructor of ParamsResponseLogWebClientInterceptor."""
         self._value = 0
         self._lock = threading.Lock()
 
@@ -27,7 +29,8 @@ class ParamsResponseLogWebClientInterceptor(WebClient.WebClientInterceptor):
     def logs_to_show(self, params: RequestDetails) -> bool:
         """Method to decide that show logs of request.
 
-        Method can be overridden and then the logs will be filtered – example by request url."""
+        Method can be overridden and then the logs will be filtered – example by request url.
+        """
         return True
 
     def intercept(

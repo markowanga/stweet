@@ -3,7 +3,6 @@ from tests.test_util import tweet_list_assert_condition
 
 
 def run_test_for_single_language(language: st.Language):
-    print(language)
     search_tweets_task = st.SearchTweetsTask(
         all_words='#covid19',
         tweets_limit=10,

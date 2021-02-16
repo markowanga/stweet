@@ -23,8 +23,10 @@ class _TweetByIdBaseInfo:
 
 
 class AuthLoggingInterceptor(ParamsResponseLogWebClientInterceptor):
+    """AuthLoggingInterceptor class."""
 
     def logs_to_show(self, params: RequestDetails) -> bool:
+        """Method logs_to_show."""
         return params.url == 'https://api.twitter.com/1.1/guest/activate.json'
 
 

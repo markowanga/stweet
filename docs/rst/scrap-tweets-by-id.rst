@@ -1,7 +1,7 @@
 Scrap tweets by ids
 ===================
 
-.. code:: ipython3
+.. code:: python
 
     import stweet as st
 
@@ -11,7 +11,7 @@ Prepare task
 Task named ``TweetsByIdsRunner`` has only one property, which define
 tweet ids – ``tweet_ids: List[str]``.
 
-.. code:: ipython3
+.. code:: python
 
     task = st.TweetsByIdsTask(['1357358278746005508', '1115978039534297088', '56546745646545646574'])
 
@@ -20,7 +20,7 @@ Prepate TweetOutputs
 
 Tweet output collect the result of scrapped tweets.
 
-.. code:: ipython3
+.. code:: python
 
     tweet_outputs = [st.PrintTweetOutput()]
 
@@ -43,7 +43,7 @@ response from Twitter -
 **``auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()``**
 – provider of auth token
 
-.. code:: ipython3
+.. code:: python
 
     run_result = st.TweetsByIdsRunner(task, tweet_outputs).run()
 
@@ -56,7 +56,7 @@ response from Twitter -
 
 The result of task show how many tweets scrapped and how many can’t.
 
-.. code:: ipython3
+.. code:: python
 
     run_result
 

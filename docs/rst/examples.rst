@@ -3,7 +3,7 @@ Examples of usage
 
 Here are simple examples of using stweet
 
-.. code:: ipython3
+.. code:: python
 
     import stweet as st
     import arrow
@@ -19,7 +19,7 @@ Scrap tweets with ``#covid19`` between
 ``'2020-05-11T20:01:00.000+01:00'``. Collect all tweets in memory and
 save to CSV file.
 
-.. code:: ipython3
+.. code:: python
 
     task = st.SearchTweetsTask(
         '#covid19',
@@ -36,7 +36,7 @@ save to CSV file.
     scrapping task result: SearchTweetsResult(downloaded_count=465)
 
 
-.. code:: ipython3
+.. code:: python
 
     print('first tweet content:')
     print(tweets_collector.get_scrapped_tweets()[0].full_text)
@@ -50,7 +50,7 @@ save to CSV file.
     #JVS #JCFS #HereForYou #communityresources #advocacy #COVID19 #coronavirus #coping https://t.co/nA0CDn8QyT
 
 
-.. code:: ipython3
+.. code:: python
 
     print(f'first tweet time: {tweets_collector.get_scrapped_tweets()[0].created_at}')
 
@@ -69,7 +69,7 @@ Example 1.2.
 Scrap first 70 tweets with exact phrase ``crypto is awesome`` and save
 them in memory and in JSON lines file.
 
-.. code:: ipython3
+.. code:: python
 
     task = st.SearchTweetsTask(
         exact_words='crypto is awesome',
@@ -85,7 +85,7 @@ them in memory and in JSON lines file.
     scrapping task result: SearchTweetsResult(downloaded_count=70)
 
 
-.. code:: ipython3
+.. code:: python
 
     print('first tweet content:')
     print(tweets_collector.get_scrapped_tweets()[0].full_text)
@@ -99,7 +99,7 @@ them in memory and in JSON lines file.
     Crypto is awesome.
 
 
-.. code:: ipython3
+.. code:: python
 
     print('last tweet content:')
     print(tweets_collector.get_scrapped_tweets()[-1].full_text)
@@ -117,7 +117,7 @@ Example 1.3.
 Scrap first 1000 tweets with any of hashtags: ``#covid19`` or ``#bbc``
 using proxy. Save it in memory.
 
-.. code:: ipython3
+.. code:: python
 
     task = st.SearchTweetsTask(
         any_word='#covid19 #bbc',
@@ -139,12 +139,12 @@ using proxy. Save it in memory.
 Twitter index hashtags without case sensitive. There is a need to create
 simple function to check that tweet contains hashtag.
 
-.. code:: ipython3
+.. code:: python
 
     def tweet_cointain_hashtag(tweet: st.Tweet, hashtag: str) -> bool:
         return hashtag.lower() in tweet.full_text.lower()
 
-.. code:: ipython3
+.. code:: python
 
     tweets = tweets_collector.get_scrapped_tweets()
     
@@ -168,7 +168,7 @@ Example 1.4.
 
 Scrap tweets by ids and save in memory, check that all are existing.
 
-.. code:: ipython3
+.. code:: python
 
     task = st.TweetsByIdsTask(['1337071849772093442', '1337067073051238400'])
     tweets_collector = st.CollectorTweetOutput()
@@ -194,7 +194,7 @@ Example 2.1.
 
 Scrap users by usernames. Save them into memry, CSV and JSON lines.
 
-.. code:: ipython3
+.. code:: python
 
     usernames = ['ProtasiewiczJ', 'donaldtuskEPP']
     task = st.GetUsersTask(usernames)
@@ -226,7 +226,7 @@ Example 3.1.
 
 Export previous scrapped tweets into CSV and JSON line file.
 
-.. code:: ipython3
+.. code:: python
 
     tweets = tweets_collector.get_scrapped_tweets()
     st.export_tweets_to_csv(tweets, 'export_tweets.csv')
@@ -237,7 +237,7 @@ Example 3.2.
 
 Export previous scrapped users into CSV and JSON line file.
 
-.. code:: ipython3
+.. code:: python
 
     users = user_collector.get_scrapped_users()
     st.export_users_to_csv(users, 'export_users.csv')
@@ -251,7 +251,7 @@ Example 4.1.
 
 Import tweets from JSON lines file.
 
-.. code:: ipython3
+.. code:: python
 
     tweets = st.read_tweets_from_json_lines_file('export_tweets.jl')
 
@@ -260,7 +260,7 @@ Example 4.2.
 
 Import tweets from CSV file.
 
-.. code:: ipython3
+.. code:: python
 
     tweets = st.read_tweets_from_csv_file('export_tweets.csv')
 
@@ -269,7 +269,7 @@ Example 4.3.
 
 Import users from JSON lines file.
 
-.. code:: ipython3
+.. code:: python
 
     users = st.read_users_from_json_lines_file('export_users.jl')
 
@@ -278,7 +278,7 @@ Example 4.4.
 
 Import users from CSV file.
 
-.. code:: ipython3
+.. code:: python
 
     users = st.read_users_from_csv_file('export_users.csv')
 

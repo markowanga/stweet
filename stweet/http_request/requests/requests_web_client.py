@@ -1,5 +1,7 @@
 """Request search_runner class."""
-from typing import Optional, Dict
+from __future__ import annotations
+
+from typing import Optional, Dict, List
 
 import requests
 
@@ -18,13 +20,15 @@ class RequestsWebClient(WebClient):
     def __init__(
             self,
             proxy: Optional[RequestsWebClientProxyConfig] = None,
-            verify: bool = True
+            verify: bool = True,
+            interceptors: Optional[List[WebClient.WebClientInterceptor]] = None
     ):
         """Constructor of RequestsWebClient."""
+        super(RequestsWebClient, self).__init__(interceptors)
         self.proxy = proxy
         self.verify = verify
 
-    def run_request(self, params: RequestDetails) -> RequestResponse:
+    def run_clear_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""
         session = requests.Session()
         response = session.request(

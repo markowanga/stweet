@@ -2,6 +2,7 @@
 
 import json
 from json import JSONDecodeError
+from retrying import retry
 
 from .auth_token_provider import AuthTokenProvider, AuthTokenProviderFactory
 from ..exceptions import RefreshTokenException
@@ -25,15 +26,20 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
         self.web_client = web_client
         return
 
+    @staticmethod
+    def _get_auth_request_details() -> RequestDetails:
+        return RequestDetails(HttpMethod.POST, _url, {'Authorization': _auth_token}, dict(), _timeout)
+
     def _request_for_response_body(self):
         """Method from Twint."""
-        token_request_details = RequestDetails(HttpMethod.POST, _url, {'Authorization': _auth_token}, dict(), _timeout)
+        token_request_details = SimpleAuthTokenProvider._get_auth_request_details()
         token_response = self.web_client.run_request(token_request_details)
         if token_response.is_success():
             return token_response.text
         else:
             raise RefreshTokenException('Error during request for token')
 
+    @retry(stop_max_attempt_number=8)
     def get_new_token(self) -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
         try:

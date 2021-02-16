@@ -7,12 +7,12 @@ Library have 2 domain objects: - Tweet - User
 
 This objects are DTO’s of data scrapped with stweet library.
 
-.. code:: ipython3
+.. code:: python
 
     import stweet as st
     from typing import List
 
-.. code:: ipython3
+.. code:: python
 
     def get_some_tweets() -> List[st.Tweet]:
         task = st.SearchTweetsTask('#covid19', tweets_limit=10)
@@ -20,7 +20,7 @@ This objects are DTO’s of data scrapped with stweet library.
         st.TweetSearchRunner(task, [tweets_collector]).run()
         return tweets_collector.get_scrapped_tweets()
 
-.. code:: ipython3
+.. code:: python
 
     def get_some_users() -> List[st.Tweet]:
         usernames = ['ProtasiewiczJ', 'donaldtuskEPP']
@@ -29,7 +29,7 @@ This objects are DTO’s of data scrapped with stweet library.
         task_result = st.GetUsersRunner(task, [user_collector]).run()
         return user_collector.get_scrapped_users()
 
-.. code:: ipython3
+.. code:: python
 
     some_tweets = get_some_tweets()
     some_users = get_some_users()
@@ -49,7 +49,7 @@ Method ``export_tweets_to_csv`` needs two parameters: -
 **``tweets: List[Tweet]``** – list of tweets to export -
 **``filename: str``** – destination file
 
-.. code:: ipython3
+.. code:: python
 
     st.export_tweets_to_csv(some_tweets, 'tweets.csv')
 
@@ -60,7 +60,7 @@ Method ``export_tweets_to_json_lines`` needs two parameters: -
 **``tweets: List[Tweet]``** – list of tweets to export -
 **``filename: str``** – destination file
 
-.. code:: ipython3
+.. code:: python
 
     st.export_tweets_to_json_lines(some_tweets, 'tweets.jl')
 
@@ -72,7 +72,7 @@ Method ``read_tweets_from_csv_file`` have parameter: -
 
 Method returns ``List[Tweet]``
 
-.. code:: ipython3
+.. code:: python
 
     tweets = st.read_tweets_from_csv_file('tweets.csv')
 
@@ -84,7 +84,7 @@ Method ``read_tweets_from_json_lines_file`` have parameter: -
 
 Method returns ``List[Tweet]``
 
-.. code:: ipython3
+.. code:: python
 
     tweets = st.read_tweets_from_json_lines_file('tweets.jl')
 
@@ -103,7 +103,7 @@ Method ``export_users_to_csv`` needs two parameters: -
 **``users: List[User]``** – list of users to export -
 **``filename: str``** – destination file
 
-.. code:: ipython3
+.. code:: python
 
     st.export_users_to_csv(some_users, 'users.csv')
 
@@ -114,7 +114,7 @@ Method ``export_users_to_json_lines`` needs two parameters: -
 **``users: List[User]``** – list of users to export -
 **``filename: str``** – destination file
 
-.. code:: ipython3
+.. code:: python
 
     st.export_users_to_json_lines(some_users, 'users.jl')
 
@@ -126,7 +126,7 @@ Method ``read_users_from_csv_file`` have parameter: -
 
 Method returns ``List[User]``
 
-.. code:: ipython3
+.. code:: python
 
     users = st.read_users_from_csv_file('users.csv')
 
@@ -138,7 +138,7 @@ Method ``read_users_from_json_lines_file`` have parameter: -
 
 Method returns ``List[User]``
 
-.. code:: ipython3
+.. code:: python
 
     tweets = st.read_users_from_json_lines_file('users.jl')
 

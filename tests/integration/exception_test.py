@@ -3,6 +3,7 @@ import pytest
 import stweet as st
 from stweet.auth import SimpleAuthTokenProvider
 from stweet.exceptions import RefreshTokenException, ScrapBatchBadResponse
+from stweet.http_request import RequestDetails, RequestResponse
 from tests.mock_web_client import MockWebClient
 
 
@@ -28,12 +29,13 @@ def test_get_auth_token_with_incorrect_response_3():
 
 def test_runner_exceptions():
     class TokenExpiryExceptionWebClient(st.WebClient):
+
         count_dict = dict({
             'https://api.twitter.com/2/search/adaptive.json': 0,
             'https://api.twitter.com/1.1/guest/activate.json': 0
         })
 
-        def run_request(self, params: st.http_request.RequestDetails) -> st.http_request.RequestResponse:
+        def run_clear_request(self, params: st.http_request.RequestDetails) -> st.http_request.RequestResponse:
             self.count_dict[params.url] = self.count_dict[params.url] + 1
             if params.url == 'https://api.twitter.com/2/search/adaptive.json':
                 if self.count_dict[params.url] == 1:
@@ -50,7 +52,7 @@ def test_runner_exceptions():
         st.TweetSearchRunner(
             search_tweets_task=search_tweets_task,
             tweet_outputs=[],
-            web_client=TokenExpiryExceptionWebClient(),
+            web_client=TokenExpiryExceptionWebClient(None),
             auth_token_provider_factory=st.auth.SimpleAuthTokenProviderFactory()
 
         ).run()

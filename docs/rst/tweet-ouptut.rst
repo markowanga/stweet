@@ -8,7 +8,7 @@ Under the hood it has abstract method
 
 There are few implementations of ``TweetOutput``
 
-.. code:: ipython3
+.. code:: python
 
     import stweet as st
 
@@ -18,7 +18,7 @@ PrintTweetOutput
 PrintTweetOutput prints all tweets in console. It does not store tweets
 anywhere.
 
-.. code:: ipython3
+.. code:: python
 
     st.PrintTweetOutput();
 
@@ -39,7 +39,7 @@ way when we want to analyse small part of tweets.
 
 To get all tweets run method ``get_scrapped_tweets()``
 
-.. code:: ipython3
+.. code:: python
 
     st.CollectorTweetOutput();
 
@@ -62,7 +62,7 @@ When ``add_header_on_start`` is ``True`` header is adding only when file
 is empty. It is possible to continue storing the tweets in file in next
 tasks.
 
-.. code:: ipython3
+.. code:: python
 
     st.CsvTweetOutput(
         file_location='my_csv_file.csv',
@@ -90,7 +90,7 @@ memory.
 Class have only one property – ``file_name``, this is the file to store
 tweets in json line format.
 
-.. code:: ipython3
+.. code:: python
 
     st.JsonLineFileTweetOutput(
         file_name='my_jl_file.jl'
@@ -114,7 +114,7 @@ solution to track that new tweets are scrapping.
 Class have only one parameter – ``each_n``, this is the N value
 described above.
 
-.. code:: ipython3
+.. code:: python
 
     st.PrintEveryNTweetOutput(
         each_n=1000
@@ -135,7 +135,7 @@ PrintFirstInRequestTweetOutput
 PrintFirstInRequestTweetOutput is a debug TweetOutput. It allow to track
 every request and shows the first part of response.
 
-.. code:: ipython3
+.. code:: python
 
     st.PrintFirstInRequestTweetOutput();
 

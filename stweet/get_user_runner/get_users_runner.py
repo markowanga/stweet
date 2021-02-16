@@ -10,6 +10,7 @@ from .get_users_task import GetUsersTask
 from .user_parser import parse_user
 from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
+from ..http_request.interceptor.params_response_log_web_client_interceptor import ParamsResponseLogWebClientInterceptor
 from ..model import User
 from ..user_output import UserOutput
 
@@ -35,7 +36,7 @@ class GetUsersRunner:
             get_user_task: GetUsersTask,
             user_outputs: List[UserOutput],
             get_user_context: Optional[GetUsersContext] = None,
-            web_client: WebClient = RequestsWebClient(),
+            web_client: WebClient = RequestsWebClient(interceptors=[ParamsResponseLogWebClientInterceptor()]),
             auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
     ):
         """Constructor to create object."""

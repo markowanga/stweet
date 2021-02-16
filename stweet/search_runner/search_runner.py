@@ -62,7 +62,7 @@ class TweetSearchRunner:
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()
         response = self.web_client.run_request(request_params)
-        if response.is_token_expired():
+        if response.is_429():
             self._refresh_token()
         elif response.is_success():
             parsed_tweets = self.tweet_parser.parse_tweets(response.text)

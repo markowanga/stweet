@@ -2,10 +2,12 @@
 
 import json
 from json import JSONDecodeError
+
 from retrying import retry
 
 from .auth_token_provider import AuthTokenProvider, AuthTokenProviderFactory
 from ..exceptions import RefreshTokenException
+from ..exceptions.too_many_requests_exception import TooManyRequestsException
 from ..http_request import HttpMethod
 from ..http_request import RequestDetails, WebClient
 
@@ -36,10 +38,16 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
         token_response = self.web_client.run_request(token_request_details)
         if token_response.is_success():
             return token_response.text
+        elif token_response.is_429():
+            raise TooManyRequestsException(token_request_details.url)
         else:
             raise RefreshTokenException('Error during request for token')
 
-    @retry(stop_max_attempt_number=8)
+    @retry(
+        wait_fixed=60 * 1000,
+        stop_max_delay=30 * 60 * 1000,
+        retry_on_exception=lambda e: isinstance(e, TooManyRequestsException)
+    )
     def get_new_token(self) -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
         try:

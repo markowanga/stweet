@@ -9,7 +9,7 @@ from .get_users_result import GetUsersResult
 from .get_users_task import GetUsersTask
 from .user_parser import parse_user
 from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
-from ..http_request import WebClient
+from ..http_request import WebClient, RequestDetails
 from ..http_request.interceptor.params_response_log_web_client_interceptor import ParamsResponseLogWebClientInterceptor
 from ..model import User
 from ..user_output import UserOutput
@@ -20,6 +20,12 @@ class _TweetByIdBaseInfo:
     id: str
     username: str
     tweet_content: str
+
+
+class AuthLoggingInterceptor(ParamsResponseLogWebClientInterceptor):
+
+    def logs_to_show(self, params: RequestDetails) -> bool:
+        return params.url == 'https://api.twitter.com/1.1/guest/activate.json'
 
 
 class GetUsersRunner:
@@ -36,7 +42,7 @@ class GetUsersRunner:
             get_user_task: GetUsersTask,
             user_outputs: List[UserOutput],
             get_user_context: Optional[GetUsersContext] = None,
-            web_client: WebClient = RequestsWebClient(interceptors=[ParamsResponseLogWebClientInterceptor()]),
+            web_client: WebClient = RequestsWebClient(interceptors=[AuthLoggingInterceptor()]),
             auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
     ):
         """Constructor to create object."""

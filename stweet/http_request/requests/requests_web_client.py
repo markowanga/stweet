@@ -6,16 +6,9 @@ from typing import Optional, Dict, List
 import requests
 
 from .requests_web_client_proxy_config import RequestsWebClientProxyConfig
-from ..interceptor.params_response_log_web_client_interceptor import ParamsResponseLogWebClientInterceptor
 from ..request_details import RequestDetails
 from ..request_response import RequestResponse
 from ..web_client import WebClient
-
-
-class AuthLoggingInterceptor(ParamsResponseLogWebClientInterceptor):
-
-    def logs_to_show(self, params: RequestDetails) -> bool:
-        return params.url == 'https://api.twitter.com/1.1/guest/activate.json'
 
 
 class RequestsWebClient(WebClient):
@@ -28,7 +21,7 @@ class RequestsWebClient(WebClient):
             self,
             proxy: Optional[RequestsWebClientProxyConfig] = None,
             verify: bool = True,
-            interceptors: Optional[List[WebClient.WebClientInterceptor]] = [AuthLoggingInterceptor()]
+            interceptors: Optional[List[WebClient.WebClientInterceptor]] = None
     ):
         """Constructor of RequestsWebClient."""
         super(RequestsWebClient, self).__init__(interceptors)

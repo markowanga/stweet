@@ -8,7 +8,6 @@ from typing import Optional, List, Tuple
 class GetUsersContext:
     """Domain TweetsByIdsContext class."""
 
-    guest_auth_token: Optional[str] = None
     scrapped_count: int = 0
     usernames_with_error: List[Tuple[str, Exception]] = field(default_factory=list)
 

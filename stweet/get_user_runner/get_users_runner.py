@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Optional, List
 
 from stweet.http_request.requests.requests_web_client import RequestsWebClient
-from .get_user_request_details_builder import get_user_details_request_details
 from .get_users_context import GetUsersContext
 from .get_users_result import GetUsersResult
 from .get_users_task import GetUsersTask
@@ -12,6 +11,7 @@ from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
 from ..http_request.interceptor.params_response_log_web_client_interceptor import ParamsResponseLogWebClientInterceptor
 from ..model import User
+from ..twitter_api.guest_token_request import TwitterApi
 from ..user_output import UserOutput
 
 
@@ -55,7 +55,7 @@ class GetUsersRunner:
 
     def _try_get_user(self, username: str):
         try:
-            request_details = get_user_details_request_details(username, self.get_user_context)
+            request_details = TwitterApi().get_user_details_request_details(username)
             user_request_response = self.web_client.run_request(request_details)
             full_user = parse_user(user_request_response.text)
             self.get_user_context.add_one_scrapped_user()

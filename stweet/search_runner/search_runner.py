@@ -4,7 +4,6 @@ from typing import List, Optional
 
 from .parse import BaseTweetParser
 from .parse import TweetParser
-from .request_details_builder import get_search_tweet_request_details
 from .search_run_context import SearchRunContext
 from .search_tweets_result import SearchTweetsResult
 from .search_tweets_task import SearchTweetsTask

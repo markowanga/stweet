@@ -1,5 +1,5 @@
 from .twitter_auth_web_client_interceptor import TwitterAuthWebClientInterceptor
-from .. import WebClient, RequestsWebClient
+from ..http_request import WebClient, RequestsWebClient
 
 
 class DefaultTwitterWebClientProvider:

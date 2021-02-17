@@ -17,7 +17,7 @@ from ..search_runner.parse import TweetParser
 from ..search_runner.search_run_context import SearchRunContext
 from ..search_runner.search_tweets_task import SearchTweetsTask
 from ..tweet_output import TweetOutput, CollectorTweetOutput
-from ..twitter_api.guest_token_request import TwitterApi
+from ..twitter_api.twitter_api_requests import TwitterApiRequests
 
 
 @dataclass
@@ -70,7 +70,7 @@ class TweetsByIdsRunner:
         return TweetsByIdsResult(self.tweets_by_ids_context.all_download_tweets_count, tweet_ids_not_scrapped)
 
     def _get_base_tweet_info(self, tweet_id: str) -> Optional[_TweetByIdBaseInfo]:
-        request_params = TwitterApi().get_request_details_for_base_tweet_info(tweet_id)
+        request_params = TwitterApiRequests().get_request_details_for_base_tweet_info(tweet_id)
         request_result = self.web_client.run_request(request_params)
         return self._get_base_tweet_info_from_text_response(tweet_id, request_result.text) \
             if request_result.is_success() \

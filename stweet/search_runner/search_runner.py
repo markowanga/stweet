@@ -13,7 +13,7 @@ from ..http_request.web_client import WebClient
 from ..model.tweet import Tweet
 from ..tweet_output.tweet_output import TweetOutput
 from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
-from ..twitter_api.guest_token_request import TwitterApi
+from ..twitter_api.twitter_api_requests import TwitterApiRequests
 
 
 class TweetSearchRunner:
@@ -73,7 +73,12 @@ class TweetSearchRunner:
         self.search_run_context.add_downloaded_tweets_count(len(parsed_tweets))
 
     def _get_next_request_details(self) -> RequestDetails:
-        return TwitterApi().get_search_tweet_request_details(self.search_run_context, self.search_tweets_task)
+        return TwitterApiRequests().get_search_tweet_request_details(
+            self.search_run_context.all_download_tweets_count,
+            self.search_run_context.scroll_token,
+            self.search_tweets_task.tweets_limit,
+            self.search_tweets_task.get_full_search_query()
+        )
 
     def _process_new_tweets_to_output(self, new_tweets: List[Tweet]):
         for tweet_output in self.tweet_outputs:

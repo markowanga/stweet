@@ -1,13 +1,13 @@
 import json
+from typing import Optional
 
-from ..http_request import RequestDetails, HttpMethod
-from ..search_runner import SearchRunContext
-from ..search_runner.search_tweets_task import SearchTweetsTask
+from ..http_request.http_method import HttpMethod
+from ..http_request.request_details import RequestDetails
 
 _default_tweets_count_in_batch = 100
 
 
-class TwitterApi:
+class TwitterApiRequests:
     timeout: int
 
     def __init__(self, timeout: int = 20):
@@ -24,10 +24,15 @@ class TwitterApi:
 
     def get_search_tweet_request_details(
             self,
-            search_run_context: SearchRunContext,
-            search_tweets_task: SearchTweetsTask
+            all_download_tweets_count: int,
+            scroll_token: str,
+            tweets_limit: Optional[int],
+            full_search_query: str
     ) -> RequestDetails:
         """Returns the RequestDetails for simple request for tweets."""
+        count = _default_tweets_count_in_batch \
+            if tweets_limit is None \
+            else min(_default_tweets_count_in_batch, tweets_limit - all_download_tweets_count)
         return RequestDetails(
             HttpMethod.GET,
             url='https://api.twitter.com/2/search/adaptive.json',
@@ -43,16 +48,13 @@ class TwitterApi:
                 ('include_ext_media_availability', 'true'),
                 ('send_error_codes', 'true'),
                 ('simple_quoted_tweet', 'true'),
-                ('count', _default_tweets_count_in_batch \
-                    if search_tweets_task.tweets_limit is None \
-                    else min(_default_tweets_count_in_batch,
-                             search_tweets_task.tweets_limit - search_run_context.all_download_tweets_count)),
-                ('cursor', search_run_context.scroll_token),
+                ('count', count),
+                ('cursor', scroll_token),
                 ('spelling_corrections', '1'),
                 ('ext', 'mediaStats%2ChighlightedLabel'),
                 ('tweet_search_mode', 'live'),
                 ('f', 'tweets'),  # if not config.Popular_tweets
-                ('q', search_tweets_task.get_full_search_query())
+                ('q', full_search_query)
             ]),
             timeout=self.timeout
         )

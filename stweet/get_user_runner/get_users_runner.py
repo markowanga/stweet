@@ -11,7 +11,7 @@ from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
 from ..http_request.interceptor.params_response_log_web_client_interceptor import ParamsResponseLogWebClientInterceptor
 from ..model import User
-from ..twitter_api.guest_token_request import TwitterApi
+from ..twitter_api.twitter_api_requests import TwitterApiRequests
 from ..user_output import UserOutput
 
 
@@ -55,7 +55,7 @@ class GetUsersRunner:
 
     def _try_get_user(self, username: str):
         try:
-            request_details = TwitterApi().get_user_details_request_details(username)
+            request_details = TwitterApiRequests().get_user_details_request_details(username)
             user_request_response = self.web_client.run_request(request_details)
             full_user = parse_user(user_request_response.text)
             self.get_user_context.add_one_scrapped_user()

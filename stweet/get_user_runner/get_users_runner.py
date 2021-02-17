@@ -49,7 +49,6 @@ class GetUsersRunner:
 
     def run(self) -> GetUsersResult:
         """Main search_runner method."""
-        self._prepare_token()
         for username in self.get_user_task.usernames:
             self._try_get_user(username)
         return GetUsersResult(self.get_user_context.scrapped_count, self.get_user_context.usernames_with_error)
@@ -63,16 +62,6 @@ class GetUsersRunner:
             self._process_user_to_output(full_user)
         except Exception as exception:
             self.get_user_context.add_user_with_scrap_error(username, exception)
-
-    def _refresh_token(self):
-        token_provider = self.auth_token_provider_factory.create(self.web_client)
-        self.get_user_context.guest_auth_token = token_provider.get_new_token()
-        return
-
-    def _prepare_token(self):
-        if self.get_user_context.guest_auth_token is None:
-            self._refresh_token()
-        return
 
     def _process_user_to_output(self, user: User):
         for user_output in self.user_outputs:

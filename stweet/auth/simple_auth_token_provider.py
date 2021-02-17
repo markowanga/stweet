@@ -11,47 +11,34 @@ from ..exceptions.too_many_requests_exception import TooManyRequestsException
 from ..http_request import HttpMethod
 from ..http_request import RequestDetails, WebClient
 
-_retries = 5
-_timeout = 20
-_url = 'https://api.twitter.com/1.1/guest/activate.json'
-_auth_token = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81' \
-              'IUq16cHjhLTvJu4FA33AGWWjCpTnA'
+_TIMEOUT = 20
+_URL = 'https://api.twitter.com/1.1/guest/activate.json'
 
 
 class SimpleAuthTokenProvider(AuthTokenProvider):
     """Class to manage Twitter token api."""
 
-    web_client: WebClient
+    def _get_auth_request_details(self) -> RequestDetails:
+        return RequestDetails(HttpMethod.POST, _URL, dict(), dict(), _TIMEOUT)
 
-    def __init__(self, web_client: WebClient):
-        """Constructor of TokenRequest."""
-        self.web_client = web_client
-        return
-
-    @staticmethod
-    def _get_auth_request_details() -> RequestDetails:
-        return RequestDetails(HttpMethod.POST, _url, {'Authorization': _auth_token}, dict(), _timeout)
-
-    def _request_for_response_body(self):
+    def _request_for_response_body(self, web_client: WebClient):
         """Method from Twint."""
-        token_request_details = SimpleAuthTokenProvider._get_auth_request_details()
-        token_response = self.web_client.run_request(token_request_details)
+        token_request_details = self._get_auth_request_details()
+        token_response = web_client.run_request(token_request_details)
         if token_response.is_success():
             return token_response.text
-        elif token_response.is_429():
-            raise TooManyRequestsException(token_request_details.url)
         else:
-            raise RefreshTokenException('Error during request for token')
+            raise RefreshTokenException(f'Error during request for token -- {token_response}')
 
     @retry(
         wait_fixed=60 * 1000,
-        stop_max_delay=30 * 60 * 1000,
+        stop_max_delay=40 * 60 * 1000,
         retry_on_exception=lambda e: isinstance(e, TooManyRequestsException)
     )
-    def get_new_token(self) -> str:
+    def get_new_token(self, web_client: WebClient) -> str:
         """Method to get refreshed token. In case of error raise RefreshTokenException."""
         try:
-            token_html = self._request_for_response_body()
+            token_html = self._request_for_response_body(web_client)
             return json.loads(token_html)['guest_token']
         except JSONDecodeError:
             raise RefreshTokenException('Error during request for token')
@@ -60,6 +47,6 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
 class SimpleAuthTokenProviderFactory(AuthTokenProviderFactory):
     """Provider of SimpleAuthTokenProviderFactory."""
 
-    def create(self, web_client: WebClient) -> AuthTokenProvider:
+    def create(self) -> AuthTokenProvider:
         """Method to create SimpleAuthTokenProvider from web_client."""
-        return SimpleAuthTokenProvider(web_client)
+        return SimpleAuthTokenProvider()

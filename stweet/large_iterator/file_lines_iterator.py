@@ -25,5 +25,7 @@ class FileLinesIterator:
 
     def next_line(self) -> Optional[str]:
         """Next line method."""
-        line = next(self._file)
+        line = next(self._file, None)
+        if line is None:
+            return None
         return line[:-1] if len(line) > 0 else None

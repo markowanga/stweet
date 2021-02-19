@@ -4,8 +4,8 @@ from typing import Iterator, List
 import pandas as pd
 
 from .csv_object_iterator import CsvObjectIterator
-from ..model import User
 from ..import_data.users_import import df_to_users, get_users_df_chunked
+from ..model import User
 
 
 class UserCsvFileIterator(CsvObjectIterator[User]):

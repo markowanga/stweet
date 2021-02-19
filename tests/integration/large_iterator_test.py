@@ -7,7 +7,7 @@ def test_user_json_lines_read_iterator():
     file_name = get_temp_test_file_name('jl')
     collector = st.CollectorUserOutput()
     get_users_to_tweet_output_test([collector, st.JsonLineFileUserOutput(file_name)])
-    iterator = st.UserJsonLineFileIterator(file_name, 4)
+    iterator = st.UserJsonLineFileIterator(file_name, 2)
     list_from_iterator = []
     iterator.open()
     while True:
@@ -16,6 +16,21 @@ def test_user_json_lines_read_iterator():
         except StopIteration:
             break
     iterator.close()
+    two_lists_assert_equal(list_from_iterator, collector.get_scrapped_users())
+
+
+def test_user_csv_read_iterator():
+    file_name = get_temp_test_file_name('csv')
+    collector = st.CollectorUserOutput()
+    get_users_to_tweet_output_test([collector, st.CsvUserOutput(file_name)])
+    iterator = st.UserCsvFileIterator(file_name, 4)
+    list_from_iterator = []
+    iterator.open()
+    while True:
+        try:
+            list_from_iterator.extend(next(iterator))
+        except StopIteration:
+            break
     two_lists_assert_equal(list_from_iterator, collector.get_scrapped_users())
 
 
@@ -35,6 +50,16 @@ def test_tweet_json_lines_read_iterator():
     two_lists_assert_equal(list_from_iterator, collector.get_scrapped_tweets())
 
 
-if __name__ == '__main__':
-    test_tweet_json_lines_read_iterator()
-    test_user_json_lines_read_iterator()
+def test_tweet_csv_read_iterator():
+    file_name = get_temp_test_file_name('csv')
+    collector = st.CollectorTweetOutput()
+    get_tweets_to_tweet_output_test([collector, st.CsvTweetOutput(file_name)])
+    iterator = st.TweetCsvFileIterator(file_name, 4)
+    list_from_iterator = []
+    iterator.open()
+    while True:
+        try:
+            list_from_iterator.extend(next(iterator))
+        except StopIteration:
+            break
+    two_lists_assert_equal(list_from_iterator, collector.get_scrapped_tweets())

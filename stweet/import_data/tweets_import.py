@@ -22,11 +22,6 @@ def read_tweets_from_csv_file(file_path: str) -> List[Tweet]:
     return _read_tweets_from_csv_object(file_path)
 
 
-def read_tweets_from_csv_buffer(buffer: StringIO) -> List[Tweet]:
-    """Method to read tweets from csv string buffer."""
-    return _read_tweets_from_csv_object(buffer)
-
-
 def get_tweets_df_chunked(file_path: str, chunk_size: int) -> Iterator[pd.DataFrame]:
     """Method to read tweets from csv file or buffer."""
     return pd.read_csv(file_path, dtype=_TWEET_DF_DTYPE, chunksize=chunk_size)

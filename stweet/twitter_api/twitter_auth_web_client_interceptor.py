@@ -3,7 +3,6 @@ from threading import Lock
 from typing import List, Optional
 
 from stweet.auth import SimpleAuthTokenProvider, AuthTokenProvider
-from stweet.exceptions.guest_auth_exception import GuestAuthException
 from stweet.exceptions.too_many_requests_exception import TooManyRequestsException
 from stweet.http_request import RequestsWebClient, WebClient, RequestDetails, RequestResponse
 
@@ -47,8 +46,8 @@ class TwitterAuthWebClientInterceptor(WebClient.WebClientInterceptor):
                or 'https://api.twitter.com' in request_details.url
 
     def _is_guest_token_to_add(self, request_details: RequestDetails) -> bool:
-        is_guest_request = '/1.1/guest/activate.json' not in request_details.url
-        return self._is_auth_token_to_add(request_details) and is_guest_request
+        is_guest_request = '/1.1/guest/activate.json' in request_details.url
+        return self._is_auth_token_to_add(request_details) and not is_guest_request
 
     def _call_for_new_auth_request(self, web_client: WebClient):
         old_token = self._current_token
@@ -82,9 +81,6 @@ class TwitterAuthWebClientInterceptor(WebClient.WebClientInterceptor):
             tries_counter = tries_counter + 1
 
         if response.is_429():
-            if not need_guest_token:
-                raise TooManyRequestsException(requests_details.url)
-            else:
-                raise GuestAuthException(requests_details.url)
+            raise TooManyRequestsException(requests_details.url)
 
         return response

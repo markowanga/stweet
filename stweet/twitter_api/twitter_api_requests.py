@@ -17,7 +17,7 @@ class TwitterApiRequests:
         """Constructor TwitterApiRequests."""
         self.timeout = timeout
 
-    def get_guest_token(self):
+    def get_guest_token_request_details(self):
         """Method return request details to get guest token."""
         return RequestDetails(
             HttpMethod.POST,

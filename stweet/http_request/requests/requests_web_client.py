@@ -24,7 +24,10 @@ class RequestsWebClient(WebClient):
             interceptors: Optional[List[WebClient.WebClientInterceptor]] = None
     ):
         """Constructor of RequestsWebClient."""
-        super(RequestsWebClient, self).__init__(interceptors)
+        interceptors_to_super = interceptors \
+            if interceptors is not None \
+            else []
+        super(RequestsWebClient, self).__init__(interceptors_to_super)
         self.proxy = proxy
         self.verify = verify
 

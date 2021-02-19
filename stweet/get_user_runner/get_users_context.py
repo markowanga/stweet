@@ -1,14 +1,13 @@
 """Domain TweetsByIdsContext class."""
 
 from dataclasses import dataclass, field
-from typing import Optional, List, Tuple
+from typing import List, Tuple
 
 
 @dataclass
 class GetUsersContext:
     """Domain TweetsByIdsContext class."""
 
-    guest_auth_token: Optional[str] = None
     scrapped_count: int = 0
     usernames_with_error: List[Tuple[str, Exception]] = field(default_factory=list)
 

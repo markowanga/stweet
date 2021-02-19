@@ -7,6 +7,7 @@ from stweet.http_request import HttpMethod
 from stweet.http_request.interceptor.logging_requests_web_client_interceptor import LoggingRequestsWebClientInterceptor
 from stweet.http_request.interceptor.params_response_log_web_client_interceptor import \
     ParamsResponseLogWebClientInterceptor
+from stweet.twitter_api.twitter_api_requests import TwitterApiRequests
 
 
 def get_example_request_details() -> st.http_request.RequestDetails:
@@ -33,8 +34,8 @@ def stop_redirect_output():
 
 def test_logging_requests_web_client_interceptor():
     captured_output = start_redirect_output()
-    st.RequestsWebClient(interceptors=[LoggingRequestsWebClientInterceptor()]).run_request(
-        SimpleAuthTokenProvider._get_auth_request_details())
+    request = TwitterApiRequests().get_guest_token_request_details()
+    st.RequestsWebClient(interceptors=[LoggingRequestsWebClientInterceptor()]).run_request(request)
     stop_redirect_output()
     content = captured_output.getvalue()
     assert "send: b'POST /1.1/guest/activate.json HTTP/1.1" in content
@@ -43,7 +44,7 @@ def test_logging_requests_web_client_interceptor():
 def test_params_response_log_web_client_interceptor():
     captured_output = start_redirect_output()
     st.RequestsWebClient(interceptors=[ParamsResponseLogWebClientInterceptor()]).run_request(
-        SimpleAuthTokenProvider._get_auth_request_details())
+        TwitterApiRequests().get_guest_token_request_details())
     stop_redirect_output()
     content = captured_output.getvalue()
     assert "RequestDetails(" in content

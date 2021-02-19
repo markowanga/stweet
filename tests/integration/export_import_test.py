@@ -1,10 +1,12 @@
 from typing import List
 
+import pytest
+
 import stweet as st
-from tests.test_file_manager import prepare_removing_new_files
+from tests.test_file_manager import run_around_tests
 from tests.test_util import get_temp_test_file_name, two_lists_assert_equal
 
-prepare_removing_new_files()
+# pytest.fixture(autouse=True)(run_around_tests)
 
 
 def get_tweets() -> List[st.Tweet]:

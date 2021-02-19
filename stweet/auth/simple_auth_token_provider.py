@@ -5,7 +5,7 @@ from json import JSONDecodeError
 
 from retrying import retry
 
-from .auth_token_provider import AuthTokenProvider, AuthTokenProviderFactory
+from .auth_token_provider import AuthTokenProvider
 from ..exceptions import RefreshTokenException
 from ..exceptions.too_many_requests_exception import TooManyRequestsException
 from ..http_request import HttpMethod
@@ -42,11 +42,3 @@ class SimpleAuthTokenProvider(AuthTokenProvider):
             return json.loads(token_html)['guest_token']
         except JSONDecodeError:
             raise RefreshTokenException('Error during request for token')
-
-
-class SimpleAuthTokenProviderFactory(AuthTokenProviderFactory):
-    """Provider of SimpleAuthTokenProviderFactory."""
-
-    def create(self) -> AuthTokenProvider:
-        """Method to create SimpleAuthTokenProvider from web_client."""
-        return SimpleAuthTokenProvider()

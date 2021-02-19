@@ -1,4 +1,5 @@
 import stweet as st
+from stweet.twitter_api.twitter_auth_web_client_interceptor import TwitterAuthWebClientInterceptor
 
 
 def test_using_proxy_client():
@@ -7,10 +8,11 @@ def test_using_proxy_client():
         tweets_limit=200
     )
     proxy_client = st.RequestsWebClient(
-        st.RequestsWebClientProxyConfig(
+        proxy=st.RequestsWebClientProxyConfig(
             http_proxy='http://localhost:3128',
             https_proxy='http://localhost:3128'
-        )
+        ),
+        interceptors=[TwitterAuthWebClientInterceptor()]
     )
     tweets_collector = st.CollectorTweetOutput()
     result = st.TweetSearchRunner(

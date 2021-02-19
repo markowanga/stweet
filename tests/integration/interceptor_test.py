@@ -33,8 +33,8 @@ def stop_redirect_output():
 
 def test_logging_requests_web_client_interceptor():
     captured_output = start_redirect_output()
-    st.RequestsWebClient(interceptors=[LoggingRequestsWebClientInterceptor()]).run_request(
-        SimpleAuthTokenProvider._get_auth_request_details())
+    request = SimpleAuthTokenProvider()._get_auth_request_details()
+    st.RequestsWebClient(interceptors=[LoggingRequestsWebClientInterceptor()]).run_request(request)
     stop_redirect_output()
     content = captured_output.getvalue()
     assert "send: b'POST /1.1/guest/activate.json HTTP/1.1" in content
@@ -43,7 +43,7 @@ def test_logging_requests_web_client_interceptor():
 def test_params_response_log_web_client_interceptor():
     captured_output = start_redirect_output()
     st.RequestsWebClient(interceptors=[ParamsResponseLogWebClientInterceptor()]).run_request(
-        SimpleAuthTokenProvider._get_auth_request_details())
+        SimpleAuthTokenProvider()._get_auth_request_details())
     stop_redirect_output()
     content = captured_output.getvalue()
     assert "RequestDetails(" in content

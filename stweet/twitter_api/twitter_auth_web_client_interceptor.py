@@ -47,8 +47,8 @@ class TwitterAuthWebClientInterceptor(WebClient.WebClientInterceptor):
                or 'https://api.twitter.com' in request_details.url
 
     def _is_guest_token_to_add(self, request_details: RequestDetails) -> bool:
-        return self._is_auth_token_to_add(request_details) \
-               and '/1.1/guest/activate.json' not in request_details.url
+        is_guest_request = '/1.1/guest/activate.json' not in request_details.url
+        return self._is_auth_token_to_add(request_details) and is_guest_request
 
     def _call_for_new_auth_request(self, web_client: WebClient):
         old_token = self._current_token
@@ -62,7 +62,7 @@ class TwitterAuthWebClientInterceptor(WebClient.WebClientInterceptor):
             next_interceptors: List[WebClient.WebClientInterceptor],
             web_client: RequestsWebClient
     ) -> RequestResponse:
-        """"""
+        """Method intercepts request. It manage with auth headers."""
         need_guest_token = self._is_guest_token_to_add(requests_details)
 
         if self._is_auth_token_to_add(requests_details):

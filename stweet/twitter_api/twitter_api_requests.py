@@ -1,3 +1,4 @@
+"""Definitions of all api calls."""
 import json
 from typing import Optional
 
@@ -8,12 +9,16 @@ _default_tweets_count_in_batch = 100
 
 
 class TwitterApiRequests:
+    """Definitions of all api calls."""
+
     timeout: int
 
     def __init__(self, timeout: int = 20):
+        """Constructor TwitterApiRequests."""
         self.timeout = timeout
 
     def get_guest_token(self):
+        """Method return request details to get guest token."""
         return RequestDetails(
             HttpMethod.POST,
             'https://api.twitter.com/1.1/guest/activate.json',

@@ -1,5 +1,8 @@
+"""TooManyRequestsException class."""
+
+
 class TooManyRequestsException(Exception):
-    """ScrapBatchBadResponse class."""
+    """TooManyRequestsException class."""
 
     def __init__(self, request_url: str):
         """Error constructor."""

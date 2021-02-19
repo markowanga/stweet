@@ -1,5 +1,8 @@
+"""GuestAuthException class."""
+
+
 class GuestAuthException(Exception):
-    """ScrapBatchBadResponse class."""
+    """GuestAuthException class."""
 
     def __init__(self, request_url: str):
         """Error constructor."""

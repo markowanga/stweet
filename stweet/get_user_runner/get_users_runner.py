@@ -2,15 +2,13 @@
 from dataclasses import dataclass
 from typing import Optional, List
 
-from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from .get_users_context import GetUsersContext
 from .get_users_result import GetUsersResult
 from .get_users_task import GetUsersTask
 from .user_parser import parse_user
-from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
-from ..http_request.interceptor.params_response_log_web_client_interceptor import ParamsResponseLogWebClientInterceptor
 from ..model import User
+from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
 from ..twitter_api.twitter_api_requests import TwitterApiRequests
 from ..user_output import UserOutput
 
@@ -29,22 +27,19 @@ class GetUsersRunner:
     get_user_task: GetUsersTask
     user_outputs: List[UserOutput]
     web_client: WebClient
-    auth_token_provider_factory: AuthTokenProviderFactory
 
     def __init__(
             self,
             get_user_task: GetUsersTask,
             user_outputs: List[UserOutput],
             get_user_context: Optional[GetUsersContext] = None,
-            web_client: WebClient = RequestsWebClient(interceptors=[ParamsResponseLogWebClientInterceptor()]),
-            auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
+            web_client: Optional[WebClient] = None
     ):
         """Constructor to create object."""
         self.get_user_context = GetUsersContext() if get_user_context is None else get_user_context
         self.get_user_task = get_user_task
         self.user_outputs = user_outputs
-        self.web_client = web_client
-        self.auth_token_provider_factory = auth_token_provider_factory
+        self.web_client = web_client if web_client is not None else DefaultTwitterWebClientProvider().get_web_client()
         return
 
     def run(self) -> GetUsersResult:

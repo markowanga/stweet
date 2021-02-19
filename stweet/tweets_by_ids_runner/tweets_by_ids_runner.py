@@ -5,7 +5,6 @@ from typing import List, Optional
 
 from arrow import Arrow, get as arrow_get
 
-from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from .tweets_by_ids_context import TweetsByIdsContext
 from .tweets_by_ids_result import TweetsByIdsResult
 from .tweets_by_ids_task import TweetsByIdsTask
@@ -17,6 +16,7 @@ from ..search_runner.parse import TweetParser
 from ..search_runner.search_run_context import SearchRunContext
 from ..search_runner.search_tweets_task import SearchTweetsTask
 from ..tweet_output import TweetOutput, CollectorTweetOutput
+from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
 from ..twitter_api.twitter_api_requests import TwitterApiRequests
 
 
@@ -42,14 +42,14 @@ class TweetsByIdsRunner:
             tweets_by_ids_task: TweetsByIdsTask,
             tweet_outputs: List[TweetOutput],
             tweets_by_ids_context: Optional[TweetsByIdsContext] = None,
-            web_client: WebClient = RequestsWebClient(),
+            web_client: Optional[WebClient] = None,
             tweet_parser: TweetParser = BaseTweetParser()
     ):
         """Constructor to create object."""
         self.tweets_by_ids_context = TweetsByIdsContext() if tweets_by_ids_context is None else tweets_by_ids_context
         self.tweets_by_ids_task = tweets_by_ids_task
         self.tweet_outputs = tweet_outputs
-        self.web_client = web_client
+        self.web_client = web_client if web_client is not None else DefaultTwitterWebClientProvider().get_web_client()
         self.tweet_parser = tweet_parser
         return
 

@@ -1,17 +1,28 @@
-from typing import Optional
+from typing import Optional, List, Dict
 
 import stweet as st
+from stweet import WebClient
 from stweet.http_request import RequestDetails, RequestResponse
 
 
 class MockWebClient(st.WebClient):
-    status_code: Optional[int]
-    text: Optional[str]
+    responses: Optional[Dict[str, RequestResponse]]
+    default_response: Optional[RequestResponse]
 
-    def __init__(self, status_code: Optional[int], text: Optional[str]):
-        self.status_code = status_code
-        self.text = text
+    def __init__(
+            self,
+            interceptors: Optional[List[WebClient.WebClientInterceptor]] = None,
+            default_response: Optional[RequestResponse] = None,
+            responses: Optional[Dict[str, RequestResponse]] = None
+    ):
+        super().__init__(interceptors)
+        self.responses = responses
+        self.default_response = default_response
 
-    def run_request(self, params: RequestDetails) -> RequestResponse:
-        return RequestResponse(self.status_code, self.text)
-
+    def run_clear_request(self, params: RequestDetails) -> RequestResponse:
+        if self.responses is not None and params.url in self.responses.keys():
+            return self.responses[params.url]
+        elif self.default_response is not None:
+            return self.default_response
+        else:
+            raise Exception('no value to return')

@@ -8,7 +8,6 @@ from typing import Optional
 class TweetsByIdsContext:
     """Domain TweetsByIdsContext class."""
 
-    guest_auth_token: Optional[str]
     all_download_tweets_count: int
 
     def __init__(

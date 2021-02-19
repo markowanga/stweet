@@ -1,7 +1,7 @@
 Download searched tweets
 ========================
 
-.. code:: ipython3
+.. code:: python
 
     import stweet as st
 
@@ -22,7 +22,7 @@ to first N scrapped tweets -
 **``replies_filter: Optional[RepliesFilter]``** – filter tweets by
 replies or original tweets, when None there is no filter
 
-.. code:: ipython3
+.. code:: python
 
     task = st.SearchTweetsTask(
         all_words='#covid19', 
@@ -37,7 +37,7 @@ Prepare TweetOutputs
 Here is example of use TweetOutputs. All options are in tweet-output
 section.
 
-.. code:: ipython3
+.. code:: python
 
     tweet_outputs = [
         st.JsonLineFileTweetOutput('example.jl')
@@ -50,7 +50,7 @@ The base configuration of ``TweetSearchRunner`` needs
 ``search_tweets_task`` and ``tweet_outputs``. To execute runner object
 you need to execute ``run()`` method.
 
-.. code:: ipython3
+.. code:: python
 
     run_result = st.TweetSearchRunner(
         search_tweets_task=task, 
@@ -60,7 +60,7 @@ you need to execute ``run()`` method.
 ``TweetSearchRunner`` returns ``SearchTweetsResult`` which contain the
 count of scrapped tweets.
 
-.. code:: ipython3
+.. code:: python
 
     run_result
 

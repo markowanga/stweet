@@ -1,15 +1,31 @@
 """Parser of JSON string to User."""
 import json
+from typing import List
 
 from arrow import Arrow
 from dateutil import parser
 
+from ..exceptions.user_suspended_exception import UserSuspendedException
 from ..model import User
+
+
+def _get_error_codes(parsed_response: any) -> List[int]:
+    return [it['code'] for it in parsed_response['errors'] if 'code' in it]
+
+
+def _is_user_suspended(parsed_response: any) -> bool:
+    if 'errors' not in parsed_response:
+        return False
+    error_codes = _get_error_codes(parsed_response)
+    return any(error_code == 63 for error_code in error_codes)
 
 
 def parse_user(response_content: str) -> User:
     """Parser of JSON string to User."""
-    user_json = json.loads(response_content)['data']['user']
+    parsed_response = json.loads(response_content)
+    if _is_user_suspended(parsed_response):
+        raise UserSuspendedException()
+    user_json = parsed_response['data']['user']
     legacy_user_json = user_json['legacy']
     return User(
         created_at=Arrow.fromdatetime(parser.parse(legacy_user_json['created_at'])),

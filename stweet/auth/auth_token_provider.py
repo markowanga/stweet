@@ -8,13 +8,5 @@ class AuthTokenProvider:
     """Abstract class for get guest auth token."""
 
     @abstractmethod
-    def get_new_token(self) -> str:
+    def get_new_token(self, web_client: WebClient) -> str:
         """Method returns new token."""
-
-
-class AuthTokenProviderFactory:
-    """Provider of AuthTokenProvider."""
-
-    @abstractmethod
-    def create(self, web_client: WebClient) -> AuthTokenProvider:
-        """Method to create AuthTokenProvider from web_client."""

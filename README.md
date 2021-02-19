@@ -42,6 +42,9 @@ If you want to sponsor me, in thanks for the project, please send me some crypto
 |Bitcoin (segwit)|3EajE9DbLvEmBHLRzjDfG86LyZB4jzsZyg|
 |Etherum|0xE43d8C2c7a9af286bc2fc0568e2812151AF9b1FD|
 
+## Full documentation
+Full documentation documents are available in [docs/rst/](https://github.com/markowanga/stweet/tree/master/docs/rst) or [docs/notebooks/](https://github.com/markowanga/stweet/tree/master/docs/notebooks). ReadTheDoc is planned to be released 😉.
+
 ## Basic usage
 
 To make a simple request the scrap **task** must be prepared. The next task should be processed by **runner**.

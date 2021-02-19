@@ -5,12 +5,9 @@ from typing import List, Optional
 
 from arrow import Arrow, get as arrow_get
 
-from stweet.http_request.requests.requests_web_client import RequestsWebClient
 from .tweets_by_ids_context import TweetsByIdsContext
-from .tweets_by_ids_request_details_builder import get_request_details_for_base_tweet_info
 from .tweets_by_ids_result import TweetsByIdsResult
 from .tweets_by_ids_task import TweetsByIdsTask
-from ..auth import AuthTokenProviderFactory, SimpleAuthTokenProviderFactory
 from ..http_request import WebClient
 from ..model import Tweet
 from ..search_runner import TweetSearchRunner
@@ -19,6 +16,8 @@ from ..search_runner.parse import TweetParser
 from ..search_runner.search_run_context import SearchRunContext
 from ..search_runner.search_tweets_task import SearchTweetsTask
 from ..tweet_output import TweetOutput, CollectorTweetOutput
+from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
+from ..twitter_api.twitter_api_requests import TwitterApiRequests
 
 
 @dataclass
@@ -37,29 +36,25 @@ class TweetsByIdsRunner:
     tweet_outputs: List[TweetOutput]
     web_client: WebClient
     tweet_parser: TweetParser
-    auth_token_provider_factory: AuthTokenProviderFactory
 
     def __init__(
             self,
             tweets_by_ids_task: TweetsByIdsTask,
             tweet_outputs: List[TweetOutput],
             tweets_by_ids_context: Optional[TweetsByIdsContext] = None,
-            web_client: WebClient = RequestsWebClient(),
-            tweet_parser: TweetParser = BaseTweetParser(),
-            auth_token_provider_factory: AuthTokenProviderFactory = SimpleAuthTokenProviderFactory()
+            web_client: Optional[WebClient] = None,
+            tweet_parser: TweetParser = BaseTweetParser()
     ):
         """Constructor to create object."""
         self.tweets_by_ids_context = TweetsByIdsContext() if tweets_by_ids_context is None else tweets_by_ids_context
         self.tweets_by_ids_task = tweets_by_ids_task
         self.tweet_outputs = tweet_outputs
-        self.web_client = web_client
+        self.web_client = web_client if web_client is not None else DefaultTwitterWebClientProvider().get_web_client()
         self.tweet_parser = tweet_parser
-        self.auth_token_provider_factory = auth_token_provider_factory
         return
 
     def run(self) -> TweetsByIdsResult:
         """Main search_runner method."""
-        self._prepare_token()
         tweet_ids_not_scrapped = []
         for tweet_id_to_scrap in self.tweets_by_ids_task.tweet_ids:
             tweet_base_info = self._get_base_tweet_info(tweet_id_to_scrap)
@@ -75,7 +70,7 @@ class TweetsByIdsRunner:
         return TweetsByIdsResult(self.tweets_by_ids_context.all_download_tweets_count, tweet_ids_not_scrapped)
 
     def _get_base_tweet_info(self, tweet_id: str) -> Optional[_TweetByIdBaseInfo]:
-        request_params = get_request_details_for_base_tweet_info(tweet_id)
+        request_params = TwitterApiRequests().get_request_details_for_base_tweet_info(tweet_id)
         request_result = self.web_client.run_request(request_params)
         return self._get_base_tweet_info_from_text_response(tweet_id, request_result.text) \
             if request_result.is_success() \
@@ -104,22 +99,11 @@ class TweetsByIdsRunner:
             tweet_outputs=[tweets_collector],
             web_client=self.web_client,
             search_run_context=search_context,
-            tweet_parser=self.tweet_parser,
-            auth_token_provider_factory=self.auth_token_provider_factory
+            tweet_parser=self.tweet_parser
         ).run()
         self.tweets_by_ids_context.guest_auth_token = search_context.guest_auth_token
         filtered_list = [it for it in tweets_collector.get_scrapped_tweets() if it.id_str == tweet_base_info.id]
         return filtered_list[0] if len(filtered_list) > 0 else None
-
-    def _refresh_token(self):
-        token_provider = self.auth_token_provider_factory.create(self.web_client)
-        self.tweets_by_ids_context.guest_auth_token = token_provider.get_new_token()
-        return
-
-    def _prepare_token(self):
-        if self.tweets_by_ids_context.guest_auth_token is None:
-            self._refresh_token()
-        return
 
     def _process_new_tweets_to_output(self, new_tweets: List[Tweet]):
         for tweet_output in self.tweet_outputs:

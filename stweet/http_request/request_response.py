@@ -11,7 +11,7 @@ class RequestResponse:
     status_code: Optional[int]
     text: Optional[str]
 
-    def is_token_expired(self) -> bool:
+    def is_429(self) -> bool:
         """Method to check that is token_expired response status."""
         return self.status_code == 429
 

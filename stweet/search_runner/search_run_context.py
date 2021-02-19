@@ -11,7 +11,6 @@ class SearchRunContext:
     """Domain SearchRunContext class."""
 
     scroll_token: Optional[str]
-    guest_auth_token: Optional[str]
     last_tweets_download_count: int
     all_download_tweets_count: int
 

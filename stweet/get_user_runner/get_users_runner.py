@@ -52,7 +52,6 @@ class GetUsersRunner:
         try:
             request_details = TwitterApiRequests().get_user_details_request_details(username)
             user_request_response = self.web_client.run_request(request_details)
-            print(user_request_response.text)
             full_user = parse_user(user_request_response.text)
             self.get_user_context.add_one_scrapped_user()
             self._process_user_to_output(full_user)

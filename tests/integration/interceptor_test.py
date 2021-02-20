@@ -2,7 +2,6 @@ import sys
 from io import StringIO
 
 import stweet as st
-from stweet.auth import SimpleAuthTokenProvider
 from stweet.http_request import HttpMethod
 from stweet.http_request.interceptor.logging_requests_web_client_interceptor import LoggingRequestsWebClientInterceptor
 from stweet.http_request.interceptor.params_response_log_web_client_interceptor import \

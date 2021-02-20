@@ -1,5 +1,4 @@
 import stweet as st
-import os
 
 _RESOURCES_PATH = 'tests/resources'
 

@@ -3,13 +3,10 @@ from typing import List
 import pytest
 
 import stweet as st
-from tests.test_util import remove_all_temp_files, get_temp_test_file_name, two_lists_assert_equal
+from tests.test_file_manager import run_around_tests
+from tests.test_util import get_temp_test_file_name, two_lists_assert_equal
 
-
-@pytest.fixture(autouse=True)
-def run_around_tests():
-    yield
-    remove_all_temp_files()
+# pytest.fixture(autouse=True)(run_around_tests)
 
 
 def get_tweets() -> List[st.Tweet]:

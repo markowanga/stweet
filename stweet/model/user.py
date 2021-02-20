@@ -31,3 +31,4 @@ class User:
     screen_name: str
     statuses_count: int
     verified: bool
+    urls: List[str]

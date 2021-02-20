@@ -12,6 +12,7 @@ def user_to_flat_dict(self):
     """Method to prepare flat dict of tweet. Used in CSV serialization."""
     dictionary = dict(self.__dict__)
     dictionary['pinned_tweet_ids_str'] = simple_string_list_to_string(dictionary['pinned_tweet_ids_str'])
+    dictionary['urls'] = simple_string_list_to_string(dictionary['urls'])
     return dictionary
 
 
@@ -38,7 +39,8 @@ def create_user_from_dict(dictionary: Dict[str, any]):
         dictionary['protected'],
         dictionary['screen_name'],
         dictionary['statuses_count'],
-        dictionary['verified']
+        dictionary['verified'],
+        dictionary['urls']
     )
 
 
@@ -46,4 +48,5 @@ def create_user_from_flat_dict(dictionary: Dict[str, any]) -> User:
     """Method to create Tweet from flat dictionary."""
     dictionary = copy(dictionary)
     dictionary['pinned_tweet_ids_str'] = string_to_simple_string_list(dictionary['pinned_tweet_ids_str'])
+    dictionary['urls'] = string_to_simple_string_list(dictionary['urls'])
     return create_user_from_dict(dictionary)

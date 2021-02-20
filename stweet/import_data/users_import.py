@@ -13,7 +13,8 @@ _USER_DF_DTYPE = {
     'pinned_tweet_ids_str': str,
     'profile_banner_url': str,
     'location': str,
-    'description': str
+    'description': str,
+    'urls': str
 }
 
 
@@ -41,8 +42,11 @@ def get_users_df_chunked(file_path: str, chunk_size: int) -> Iterator[pd.DataFra
 
 def df_to_users(df: pd.DataFrame) -> List[User]:
     """Converts DataFrame to List[User]."""
+    if 'urls' not in df.columns:
+        df['urls'] = ''
     df.pinned_tweet_ids_str.fillna('', inplace=True)
     df.profile_banner_url.fillna('', inplace=True)
     df.location.fillna('', inplace=True)
     df.description.fillna('', inplace=True)
+    df.urls.fillna('', inplace=True)
     return [create_user_from_flat_dict(row) for _, row in df.iterrows()]

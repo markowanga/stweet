@@ -20,6 +20,14 @@ def _is_user_suspended(parsed_response: any) -> bool:
     return any(error_code == 63 for error_code in error_codes)
 
 
+def _get_user_urls(legacy_user_json: any) -> List[str]:
+    try:
+        urls = legacy_user_json['entities']['url']['urls']
+        return [it['expanded_url'] for it in urls]
+    except KeyError:
+        return []
+
+
 def parse_user(response_content: str) -> User:
     """Parser of JSON string to User."""
     parsed_response = json.loads(response_content)
@@ -48,5 +56,6 @@ def parse_user(response_content: str) -> User:
         protected=legacy_user_json['protected'],
         screen_name=legacy_user_json['screen_name'],
         statuses_count=legacy_user_json['statuses_count'],
-        verified=legacy_user_json['verified']
+        verified=legacy_user_json['verified'],
+        urls=_get_user_urls(legacy_user_json)
     )

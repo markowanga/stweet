@@ -15,4 +15,6 @@ def user_to_json(user: User) -> str:
 def create_user_from_json(json_value: str) -> User:
     """Creates user from json string."""
     tweet_dict = json.loads(json_value)
+    if 'urls' not in tweet_dict:
+        tweet_dict['urls'] = []
     return create_user_from_dict(tweet_dict)

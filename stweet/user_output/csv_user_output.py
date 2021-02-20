@@ -13,7 +13,7 @@ _fields_list = [
     'created_at', 'id_str', 'rest_id_str', 'default_profile', 'default_profile_image', 'description',
     'favourites_count', 'followers_count', 'friends_count', 'has_custom_timelines', 'listed_count', 'location',
     'media_count', 'name', 'pinned_tweet_ids_str', 'profile_banner_url', 'profile_banner_url',
-    'profile_image_url_https', 'protected', 'screen_name', 'statuses_count', 'verified'
+    'profile_image_url_https', 'protected', 'screen_name', 'statuses_count', 'verified', 'urls'
 ]
 
 

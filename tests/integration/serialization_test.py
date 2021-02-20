@@ -1,11 +1,8 @@
 import pytest
 
 import stweet as st
-from tests.test_file_manager import run_around_tests
 from tests.test_util import get_temp_test_file_name, get_tweets_to_tweet_output_test, \
     two_lists_assert_equal
-
-# pytest.fixture(autouse=True)(run_around_tests)
 
 
 def test_csv_serialization():

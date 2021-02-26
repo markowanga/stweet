@@ -19,7 +19,7 @@ def parse_user(response_content: str) -> User:
         default_profile_image=legacy_user_json['default_profile_image'],
         description=legacy_user_json['description'],
         favourites_count=legacy_user_json['favourites_count'],
-        followers_count=legacy_user_json['favourites_count'],
+        followers_count=legacy_user_json['followers_count'],
         friends_count=legacy_user_json['friends_count'],
         has_custom_timelines=legacy_user_json['has_custom_timelines'],
         listed_count=legacy_user_json['listed_count'],

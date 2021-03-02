@@ -10,7 +10,7 @@ from ..model import User
 
 
 def read_users_from_csv_file(file_path: str) -> List[User]:
-    """Method to read tweets from csv file."""
+    """Method to read users from csv file."""
     df = pd.read_csv(file_path, dtype={
         'pinned_tweet_ids_str': str,
         'profile_banner_url': str,
@@ -25,6 +25,6 @@ def read_users_from_csv_file(file_path: str) -> List[User]:
 
 
 def read_users_from_json_lines_file(file_path: str) -> List[User]:
-    """Method to read tweets from csv file."""
+    """Method to read users from csv file."""
     file = open(file_path, 'r')
     return [create_user_from_json(line) for line in file.readlines()]

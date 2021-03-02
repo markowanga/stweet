@@ -1,4 +1,4 @@
-"""UserOutput which print each n-th tweet."""
+"""UserOutput which print each n-th user."""
 
 from typing import List
 

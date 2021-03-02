@@ -1,6 +1,6 @@
-"""Runner for get tweets by ids."""
+"""Runner for get users by ids."""
 import traceback
-from dataclasses import dataclass
+
 from typing import Optional, List
 
 from .get_user_request_details_builder import get_user_details_request_details
@@ -15,15 +15,8 @@ from ..model import User
 from ..user_output import UserOutput
 
 
-@dataclass
-class _TweetByIdBaseInfo:
-    id: str
-    username: str
-    tweet_content: str
-
-
 class GetUsersRunner:
-    """Runner class to process task to search tweets."""
+    """Runner class to process task to search users."""
 
     get_user_context: GetUsersContext
     get_user_task: GetUsersTask

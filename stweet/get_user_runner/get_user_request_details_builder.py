@@ -1,4 +1,4 @@
-"""Prepare params for request in TweetsByIdsRunner."""
+"""Prepare params for request in GetUsersRunner."""
 import json
 
 from .get_users_context import GetUsersContext
@@ -13,7 +13,7 @@ _auth_token = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4p' 
 
 
 def get_user_details_request_details(username: str, get_user_context: GetUsersContext) -> RequestDetails:
-    """Prepare params for request in TweetsByIdsRunner."""
+    """Prepare params for request in GetUsersRunner."""
     return RequestDetails(
         http_method=HttpMethod.GET,
         url=_request_url,

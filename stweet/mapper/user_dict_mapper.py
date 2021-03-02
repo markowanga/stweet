@@ -9,14 +9,14 @@ from ..model import User
 
 
 def user_to_flat_dict(self):
-    """Method to prepare flat dict of tweet. Used in CSV serialization."""
+    """Method to prepare flat dict of user. Used in CSV serialization."""
     dictionary = dict(self.__dict__)
     dictionary['pinned_tweet_ids_str'] = simple_string_list_to_string(dictionary['pinned_tweet_ids_str'])
     return dictionary
 
 
 def create_user_from_dict(dictionary: Dict[str, any]):
-    """Method to create Tweet from dictionary."""
+    """Method to create User from dictionary."""
     return User(
         arrow_get(dictionary['created_at']),
         str(dictionary['id_str']),
@@ -43,7 +43,7 @@ def create_user_from_dict(dictionary: Dict[str, any]):
 
 
 def create_user_from_flat_dict(dictionary: Dict[str, any]) -> User:
-    """Method to create Tweet from flat dictionary."""
+    """Method to create User from flat dictionary."""
     dictionary = copy(dictionary)
     dictionary['pinned_tweet_ids_str'] = string_to_simple_string_list(dictionary['pinned_tweet_ids_str'])
     return create_user_from_dict(dictionary)

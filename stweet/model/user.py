@@ -22,7 +22,7 @@ class User:
     has_custom_timelines: bool
     listed_count: int
     location: str
-    media_count: str
+    media_count: int
     name: str
     pinned_tweet_ids_str: List[str]
     profile_banner_url: str

@@ -1,7 +1,7 @@
 """TweetOutput which saves tweet data by request received tweets batch to CSV file."""
 
 import os
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -9,10 +9,14 @@ from .tweet_output import TweetOutput
 from ..mapper.tweet_dict_mapper import tweet_to_flat_dict
 from ..model.tweet import Tweet
 
-_fields_list = ['created_at', 'id_str', 'conversation_id_str', 'full_text', 'lang', 'favorited', 'retweeted',
-                'retweet_count', 'favorite_count', 'reply_count', 'quote_count', 'quoted_status_id_str',
-                'quoted_status_short_url', 'quoted_status_expand_url', 'user_id_str', 'user_name', 'user_full_name',
-                'user_verified', 'in_reply_to_status_id_str', 'in_reply_to_user_id_str', 'hashtags', 'mentions',
+_fields_list = ['created_at', 'id_str', 'conversation_id_str', 'full_text',
+                'lang', 'favorited', 'retweeted',
+                'retweet_count', 'favorite_count', 'reply_count', 'quote_count',
+                'quoted_status_id_str',
+                'quoted_status_short_url', 'quoted_status_expand_url',
+                'user_id_str', 'user_name', 'user_full_name',
+                'user_verified', 'in_reply_to_status_id_str',
+                'in_reply_to_user_id_str', 'hashtags', 'mentions',
                 'urls', 'media']
 
 
@@ -20,10 +24,12 @@ class CsvTweetOutput(TweetOutput):
     """CsvTweetOutput saves tweet data by request received tweets batch to CSV file."""
 
     file_location: str
+    csv_encoding: Optional[str]
 
-    def __init__(self, file_location: str):
+    def __init__(self, file_location: str, csv_encoding: Optional[str] = None):
         """Create instance of CsvTweetOutput."""
         self.file_location = file_location
+        self.csv_encoding = csv_encoding
 
     def export_tweets(self, tweets: List[Tweet]):
         """Export tweets to CSV."""
@@ -33,7 +39,8 @@ class CsvTweetOutput(TweetOutput):
             path_or_buf=self.file_location,
             mode='a',
             header=self._header_to_add(),
-            index=False
+            index=False,
+            encoding=self.csv_encoding
         )
         return
 

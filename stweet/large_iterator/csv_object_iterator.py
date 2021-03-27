@@ -25,6 +25,10 @@ class CsvObjectIterator(Generic[T], ABC, Iterator):
         """Method opens fileIterator."""
         self.df_iterator = self._load_df_iterator(self.file_path, self.chunk_size)
 
+    def close(self):
+        """Method closes fileIterator."""
+        self.df_iterator = None
+
     @abstractmethod
     def _load_df_iterator(self, file_path: str, chunk_size: int) -> Iterator[pd.DataFrame]:
         """Method loads chunked df iterator."""

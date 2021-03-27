@@ -1,7 +1,7 @@
 """UserOutput which saves user data by request received users batch to CSV file."""
 
 import os
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -10,10 +10,14 @@ from ..mapper.user_dict_mapper import user_to_flat_dict
 from ..model import User
 
 _fields_list = [
-    'created_at', 'id_str', 'rest_id_str', 'default_profile', 'default_profile_image', 'description',
-    'favourites_count', 'followers_count', 'friends_count', 'has_custom_timelines', 'listed_count', 'location',
-    'media_count', 'name', 'pinned_tweet_ids_str', 'profile_banner_url', 'profile_banner_url',
-    'profile_image_url_https', 'protected', 'screen_name', 'statuses_count', 'verified', 'urls'
+    'created_at', 'id_str', 'rest_id_str', 'default_profile',
+    'default_profile_image', 'description',
+    'favourites_count', 'followers_count', 'friends_count',
+    'has_custom_timelines', 'listed_count', 'location',
+    'media_count', 'name', 'pinned_tweet_ids_str', 'profile_banner_url',
+    'profile_banner_url',
+    'profile_image_url_https', 'protected', 'screen_name', 'statuses_count',
+    'verified', 'urls'
 ]
 
 
@@ -21,10 +25,12 @@ class CsvUserOutput(UserOutput):
     """CsvUserOutput saves user data by request received users batch to CSV file."""
 
     file_location: str
+    csv_encoding: Optional[str]
 
-    def __init__(self, file_location: str):
+    def __init__(self, file_location: str, csv_encoding: Optional[str] = None):
         """Create instance of CsvUserOutput."""
         self.file_location = file_location
+        self.csv_encoding = csv_encoding
 
     def export_users(self, users: List[User]):
         """Export users to CSV."""
@@ -34,7 +40,8 @@ class CsvUserOutput(UserOutput):
             path_or_buf=self.file_location,
             mode='a',
             header=self._header_to_add(),
-            index=False
+            index=False,
+            encoding=self.csv_encoding
         )
         return
 

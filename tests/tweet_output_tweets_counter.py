@@ -9,7 +9,7 @@ class TweetOutputTweetsCounter(st.TweetOutput):
     def __init__(self):
         self.counter = 0
 
-    def export_tweets(self, tweets: List[st.Tweet]):
+    def export_tweets(self, tweets: List[st.UserTweetRaw]):
         self.counter += len(tweets)
         return
 

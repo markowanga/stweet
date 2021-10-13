@@ -2,3 +2,5 @@ requests
 pandas
 arrow
 retrying
+# TODO mention link to tor docker-compose
+# TODO graniczna -> zielna / zielona

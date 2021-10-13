@@ -3,6 +3,9 @@ from typing import List, Tuple
 import stweet as st
 from stweet import RequestsWebClient
 from stweet.http_request import RequestDetails, RequestResponse
+from stweet.http_request.interceptor.logging_requests_web_client_interceptor import \
+    LoggingRequestsWebClientInterceptor
+from stweet.twitter_api.twitter_auth_web_client_interceptor import TwitterAuthWebClientInterceptor
 
 _TWITTER_JSON_NO_TWEETS = '{"globalObjects":{"tweets":{},"users":{},"moments":{},"cards":{},"places":{}' \
                           ',"media":{},"broadcasts":{},"topics":{},"lists":{}},"timeline":{"id":"search' \
@@ -30,23 +33,27 @@ class CustomAdapter(RequestsWebClient):
 
 def test_get_tweets_by_ids():
     tweets_ids = ['1337071849772093442', '1337067073051238400']
-    task = st.TweetsByIdsTask(tweets_ids)
+    task = st.TweetsByIdTask(tweets_ids)
     collect_output = st.CollectorTweetOutput()
-    result = st.TweetsByIdsRunner(task, [collect_output]).run()
-    scrapped_tweets_ids = [it.id_str for it in collect_output.get_scrapped_tweets()]
+    result = st.TweetsByIdRunner(task, [collect_output],
+                                 web_client=RequestsWebClient(
+                                      interceptors=[LoggingRequestsWebClientInterceptor(),
+                                                    TwitterAuthWebClientInterceptor()])).run()
+    scrapped_tweets_ids = [it.id_str for it in collect_output.get_raw_list()]
     assert result.downloaded_count == 1
-    assert len(collect_output.get_scrapped_tweets()) == 1
+    assert len(collect_output.get_raw_list()) == 1
     assert len(result.tweet_ids_not_scrapped) == 1
 
 
 def test_get_not_existing_tweet():
     tweets_ids = ['1337071849772093442']
-    task = st.TweetsByIdsTask(tweets_ids)
+    task = st.TweetsByIdTask(tweets_ids)
     collect_output = st.CollectorTweetOutput()
-    result = st.TweetsByIdsRunner(
+    result = st.TweetsByIdRunner(
         task,
         [collect_output],
-        web_client=CustomAdapter([('https://cdn.syndication.twimg.com/tweet', RequestResponse(404, ''))])
+        web_client=CustomAdapter(
+            [('https://cdn.syndication.twimg.com/tweet', RequestResponse(404, ''))])
     ).run()
     assert result.downloaded_count == 0
     assert len(result.tweet_ids_not_scrapped) == 1
@@ -54,14 +61,18 @@ def test_get_not_existing_tweet():
 
 def test_get_not_existing_tweet_in_twitter():
     tweets_ids = ['1337071849772093442']
-    task = st.TweetsByIdsTask(tweets_ids)
+    task = st.TweetsByIdTask(tweets_ids)
     collect_output = st.CollectorTweetOutput()
-    result = st.TweetsByIdsRunner(
+    result = st.TweetsByIdRunner(
         task,
         [collect_output],
         web_client=CustomAdapter(
-            [('https://api.twitter.com/2/search/adaptive.json', RequestResponse(200, _TWITTER_JSON_NO_TWEETS))]
+            [('https://api.twitter.com/2/search/adaptive.json',
+              RequestResponse(200, _TWITTER_JSON_NO_TWEETS))]
         )
     ).run()
     assert result.downloaded_count == 0
     assert len(result.tweet_ids_not_scrapped) == 1
+
+
+test_get_tweets_by_ids()

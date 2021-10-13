@@ -16,7 +16,7 @@ def test_print_all_tweet_output():
         tweets_collector
     ])
     sys.stdout = sys.__stdout__
-    assert captured_output.getvalue().count('Tweet(') == len(tweets_collector.get_scrapped_tweets())
+    assert captured_output.getvalue().count('Tweet(') == len(tweets_collector.get_raw_list())
 
 
 def test_print_all_user_output():

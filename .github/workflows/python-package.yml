@@ -34,12 +34,12 @@ jobs:
           pip install tox
           pip install --upgrade -r requirements.txt
 
-      - name: Run tox
-        run: tox -v
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          flags: unittests
+#      - name: Run tox
+#        run: tox -v
+#
+#      - name: Upload coverage to Codecov
+#        uses: codecov/codecov-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          file: ./coverage.xml
+#          flags: unittests

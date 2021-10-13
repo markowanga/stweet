@@ -57,7 +57,7 @@ def get_users_to_tweet_output_test(user_outputs: List[st.UserOutput]) -> st.GetU
     ).run()
 
 
-def tweet_list_assert_condition(tweets: List[st.Tweet], condition: Callable[[st.Tweet], bool]):
+def tweet_list_assert_condition(tweets: List[st.UserTweetRaw], condition: Callable[[st.UserTweetRaw], bool]):
     for tweet in tweets:
         if not condition(tweet):
             print(f'--- {tweet}')

@@ -8,11 +8,11 @@ from tests.test_util import get_temp_test_file_name, two_lists_assert_equal
 # pytest.fixture(autouse=True)(run_around_tests)
 
 
-def get_tweets() -> List[st.Tweet]:
+def get_tweets() -> List[st.UserTweetRaw]:
     collect_tweet_output = st.CollectorTweetOutput()
     task = st.SearchTweetsTask(all_words="#covid19", tweets_limit=100)
     st.TweetSearchRunner(task, [collect_tweet_output]).run()
-    return collect_tweet_output.get_scrapped_tweets()
+    return collect_tweet_output.get_raw_list()
 
 
 def get_users() -> List[st.User]:

@@ -12,7 +12,7 @@ def test_return_tweets_objects():
         search_tweets_task=search_tweets_task,
         tweet_outputs=[tweets_collector]
     ).run()
-    scrapped_tweets = tweets_collector.get_scrapped_tweets()
+    scrapped_tweets = tweets_collector.get_raw_list()
     assert isinstance(result, st.SearchTweetsResult)
     assert result.downloaded_count == len(scrapped_tweets)
     assert result.downloaded_count > 0

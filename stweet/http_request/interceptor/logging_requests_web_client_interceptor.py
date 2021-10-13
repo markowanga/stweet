@@ -50,6 +50,7 @@ class LoggingRequestsWebClientInterceptor(WebClient.WebClientInterceptor):
         if is_to_log:
             LoggingRequestsWebClientInterceptor._debug_requests_on()
         to_return = self.get_response(requests_details, next_interceptors, web_client)
+        print(to_return.text)
         if is_to_log:
             LoggingRequestsWebClientInterceptor._debug_requests_off()
         return to_return

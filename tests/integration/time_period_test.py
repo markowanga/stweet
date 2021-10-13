@@ -16,7 +16,7 @@ def _run_test_between_dates(since: Arrow, until: Arrow):
         tweet_outputs=[tweets_collector]
     ).run()
     tweet_list_assert_condition(
-        tweets_collector.get_scrapped_tweets(),
+        tweets_collector.get_raw_list(),
         lambda tweet: since <= tweet.created_at <= until
     )
 

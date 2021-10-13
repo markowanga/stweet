@@ -1,18 +1,17 @@
 """Domain TweetsByIdsTask class."""
 from dataclasses import dataclass
-from typing import List
 
 
 @dataclass(frozen=True)
-class TweetsByIdsTask:
+class TweetsByIdTask:
     """Domain TweetsByIdsTask class."""
 
-    tweet_ids: List[str]
+    tweet_id: str
 
     def __init__(
             self,
-            tweet_ids: List[str]
+            tweet_id: str
     ):
         """Class constructor."""
-        object.__setattr__(self, 'tweet_ids', tweet_ids)
+        object.__setattr__(self, 'tweet_id', tweet_id)
         return

@@ -53,16 +53,16 @@ To make a simple request the scrap **task** must be prepared. The next task shou
 import stweet as st
 
 search_tweets_task = st.SearchTweetsTask(
-    all_words='#covid19'
+  all_words='#covid19'
 )
 tweets_collector = st.CollectorTweetOutput()
 
 st.TweetSearchRunner(
-    search_tweets_task=search_tweets_task,
-    tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')]
+  search_tweets_task=search_tweets_task,
+  tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')]
 ).run()
 
-tweets = tweets_collector.get_scrapped_tweets()
+tweets = tweets_collector.get_raw_list()
 ```
 
 This simple code snippet calls for all tweets with hashtag **#covid19**. The result in **tweets** object is a list of
@@ -73,15 +73,15 @@ Above example shows how to scrap tweets by search phrase. Stweet has also scrapp
 ```python
 import stweet as st
 
-tweets_by_ids_task = st.TweetsByIdsTask(['1336002732717727752', '1338916735479496704'])
+tweets_by_ids_task = st.TweetsByIdTask(['1336002732717727752', '1338916735479496704'])
 tweets_collector = st.CollectorTweetOutput()
 
-st.TweetsByIdsRunner(
-    tweets_by_ids_task=tweets_by_ids_task,
-    tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')]
+st.TweetsByIdRunner(
+  tweets_by_ids_task=tweets_by_ids_task,
+  tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')]
 ).run()
 
-tweets = tweets_collector.get_scrapped_tweets()
+tweets = tweets_collector.get_raw_list()
 ```
 
 Stweet allows scrapping user information by users screen name:
@@ -109,22 +109,22 @@ This snippet shows how to use it:
 import stweet as st
 
 search_tweets_task = st.SearchTweetsTask(
-    all_words='#covid19',
+  all_words='#covid19',
 )
 tweets_collector = st.CollectorTweetOutput()
 
 proxies_config = st.RequestsWebClientProxyConfig(
-    http_proxy="<Your http proxy URL>",
-    https_proxy="<Your https proxy URL>"
+  http_proxy="<Your http proxy URL>",
+  https_proxy="<Your https proxy URL>"
 )
 
 st.TweetSearchRunner(
-    search_tweets_task=search_tweets_task,
-    tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')],
-    web_client=st.RequestsWebClient(proxy=proxies_config, verify=False),
+  search_tweets_task=search_tweets_task,
+  tweet_outputs=[tweets_collector, st.CsvTweetOutput('output_file.csv')],
+  web_client=st.RequestsWebClient(proxy=proxies_config, verify=False),
 ).run()
 
-tweets = tweets_collector.get_scrapped_tweets()
+tweets = tweets_collector.get_raw_list()
 ```
 
 All important details and classes of this library are described below.

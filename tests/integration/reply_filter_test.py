@@ -14,7 +14,7 @@ def test_search_as_replay():
         tweet_outputs=[tweets_collector]
     ).run()
     tweet_list_assert_condition(
-        tweets_collector.get_scrapped_tweets(),
+        tweets_collector.get_raw_list(),
         lambda tweet: len(tweet.in_reply_to_status_id_str + tweet.in_reply_to_user_id_str) > 0
     )
 
@@ -31,6 +31,6 @@ def test_search_as_not_replay():
         tweet_outputs=[tweets_collector]
     ).run()
     tweet_list_assert_condition(
-        tweets_collector.get_scrapped_tweets(),
+        tweets_collector.get_raw_list(),
         lambda tweet: len(tweet.in_reply_to_status_id_str + tweet.in_reply_to_user_id_str) == 0
     )

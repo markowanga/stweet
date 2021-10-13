@@ -49,7 +49,7 @@ def test_tweet_json_lines_read_iterator():
         except StopIteration:
             break
     iterator.close()
-    two_lists_assert_equal(list_from_iterator, collector.get_scrapped_tweets())
+    two_lists_assert_equal(list_from_iterator, collector.get_raw_list())
 
 
 def test_tweet_csv_read_iterator():
@@ -64,4 +64,4 @@ def test_tweet_csv_read_iterator():
             list_from_iterator.extend(next(iterator))
         except StopIteration:
             break
-    two_lists_assert_equal(list_from_iterator, collector.get_scrapped_tweets())
+    two_lists_assert_equal(list_from_iterator, collector.get_raw_list())

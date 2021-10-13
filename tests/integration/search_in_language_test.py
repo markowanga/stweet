@@ -14,7 +14,7 @@ def _run_search_test_covid_tweets_in_language(language: st.Language):
         tweet_outputs=[tweets_collector]
     ).run()
     tweet_list_assert_condition(
-        tweets_collector.get_scrapped_tweets(),
+        tweets_collector.get_raw_list(),
         lambda tweet: tweet.lang == language.short_value
     )
 

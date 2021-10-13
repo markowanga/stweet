@@ -20,6 +20,6 @@ def test_using_proxy_client():
         tweet_outputs=[tweets_collector],
         web_client=proxy_client
     ).run()
-    scrapped_tweets = tweets_collector.get_scrapped_tweets()
+    scrapped_tweets = tweets_collector.get_raw_list()
     assert isinstance(result, st.SearchTweetsResult)
     assert len(scrapped_tweets) == task.tweets_limit

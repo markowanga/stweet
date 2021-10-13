@@ -13,7 +13,7 @@ def test_csv_serialization():
         tweets_collector
     ])
     tweets_from_csv = st.read_tweets_from_csv_file(csv_filename)
-    two_lists_assert_equal(tweets_from_csv, tweets_collector.get_scrapped_tweets())
+    two_lists_assert_equal(tweets_from_csv, tweets_collector.get_raw_list())
 
 
 def test_file_json_lines_serialization():
@@ -24,4 +24,4 @@ def test_file_json_lines_serialization():
         tweets_collector
     ])
     tweets_from_jl = st.read_tweets_from_json_lines_file(jl_filename)
-    two_lists_assert_equal(tweets_from_jl, tweets_collector.get_scrapped_tweets())
+    two_lists_assert_equal(tweets_from_jl, tweets_collector.get_raw_list())

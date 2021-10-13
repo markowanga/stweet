@@ -14,7 +14,7 @@ def _scrap_tweets_with_count_assert(count: int):
         search_tweets_task=search_tweets_task,
         tweet_outputs=[tweets_collector]
     ).run()
-    assert len(tweets_collector.get_scrapped_tweets()) == count
+    assert len(tweets_collector.get_raw_list()) == count
 
 
 def test_scrap_small_count_of_tweets():

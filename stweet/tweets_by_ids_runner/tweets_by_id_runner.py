@@ -1,13 +1,10 @@
 """Runner for get tweets by ids."""
-from dataclasses import dataclass
 from typing import List, Optional
 
-from arrow import Arrow
-
 from .tweet_raw_parser import get_all_tweets_from_json
-from .tweets_by_ids_context import TweetsByIdContext
-from .tweets_by_ids_result import TweetsByIdResult
-from .tweets_by_ids_task import TweetsByIdTask
+from .tweets_by_id_context import TweetsByIdContext
+from .tweets_by_id_result import TweetsByIdResult
+from .tweets_by_id_task import TweetsByIdTask
 from ..exceptions import ScrapBatchBadResponse
 from ..http_request import WebClient, RequestDetails
 from ..model import UserTweetRaw
@@ -15,14 +12,6 @@ from ..model.cursor import Cursor
 from ..raw_output.raw_data_output import RawDataOutput
 from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
 from ..twitter_api.twitter_api_requests import TwitterApiRequests
-
-
-@dataclass
-class _TweetByIdBaseInfo:
-    id: str
-    username: str
-    tweet_content: str
-    created_at: Arrow
 
 
 class TweetsByIdRunner:
@@ -43,7 +32,7 @@ class TweetsByIdRunner:
         self.tweets_by_ids_task = tweets_by_id_task
         self.raw_data_outputs = raw_data_outputs
         self.web_client = web_client if web_client is not None \
-            else DefaultTwitterWebClientProvider().get_web_client()
+            else DefaultTwitterWebClientProvider.get_web_client()
         return
 
     def run(self) -> TweetsByIdResult:
@@ -56,7 +45,6 @@ class TweetsByIdRunner:
         ctx = self.tweets_by_id_context
         is_cursor = ctx.cursor is not None
         last_scrapped_zero = ctx.last_scrapped_tweets_count == 0
-        print('is_cursor', is_cursor, 'last_scrapped_zero', last_scrapped_zero)
         return (last_scrapped_zero and is_cursor) or (not last_scrapped_zero and not is_cursor)
 
     def _execute_next_tweets_request(self):

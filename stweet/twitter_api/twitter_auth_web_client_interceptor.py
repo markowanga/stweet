@@ -66,7 +66,6 @@ class TwitterAuthWebClientInterceptor(WebClient.WebClientInterceptor):
     ) -> RequestResponse:
         """Method intercepts request. It manage with auth headers."""
         need_guest_token = self._is_guest_token_to_add(requests_details)
-        print('need_guest_token', need_guest_token)
         if self._is_auth_token_to_add(requests_details):
             self._add_auth_token(requests_details)
 

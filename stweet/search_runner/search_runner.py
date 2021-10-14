@@ -41,7 +41,7 @@ class TweetSearchRunner:
         self.user_raw_data_outputs = user_raw_data_outputs
         self.web_client = web_client \
             if web_client is not None \
-            else DefaultTwitterWebClientProvider().get_web_client()
+            else DefaultTwitterWebClientProvider.get_web_client()
         return
 
     def run(self) -> SearchTweetsResult:
@@ -54,13 +54,11 @@ class TweetSearchRunner:
         ctx = self.search_run_context
         last_scrap_zero = ctx.last_tweets_download_count == 0
         is_cursor = ctx.cursor is not None
-        print('last_scrap_zero', last_scrap_zero, 'is_cursor', is_cursor)
         return (last_scrap_zero and is_cursor) or (not last_scrap_zero and not is_cursor)
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()
         response = self.web_client.run_request(request_params)
-        print(response.status_code)
         if response.is_success():
             tweets = parse_tweets(response.text)
             users = parse_users(response.text)

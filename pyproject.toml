@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "stweet"
+version = "2.0.0_rc2"
+description = "Package to scrap tweets"
+authors = ["Marcin Wątroba <markowanga@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "stweet" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.26.0"
+pandas = "^1.3.3"
+arrow = "^1.2.0"
+tor-python-easy = "^0.1.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

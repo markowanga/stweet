@@ -33,7 +33,6 @@ class RequestsWebClient(WebClient):
 
     def run_clear_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""
-        print(f'run request {params}')
         session = requests.Session()
         response = session.request(
             method=params.http_method.name,

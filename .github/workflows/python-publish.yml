@@ -6,8 +6,6 @@ name: Python package & deploy
 on:
   push:
     branches: [ master ]
-    paths:
-      - 'setup.py'
 
 jobs:
   deploy:

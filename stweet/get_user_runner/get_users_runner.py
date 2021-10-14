@@ -37,7 +37,7 @@ class GetUsersRunner:
         self.get_user_task = get_user_task
         self.raw_data_outputs = raw_data_outputs
         self.web_client = web_client if web_client is not None \
-            else DefaultTwitterWebClientProvider().get_web_client()
+            else DefaultTwitterWebClientProvider.get_web_client()
         return
 
     def run(self) -> GetUsersResult:

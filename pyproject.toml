@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stweet"
-version = "2.0.0_rc2"
+version = "2.0.0"
 description = "Package to scrap tweets"
 authors = ["Marcin Wątroba <markowanga@gmail.com>"]
 license = "MIT"

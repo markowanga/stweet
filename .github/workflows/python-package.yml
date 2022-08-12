@@ -15,11 +15,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python-version: [ 3.8 ]
-        poetry-version: [ 1.2.0a2 ]
+        python-version: [ 3.7, 3.8, 3.9 ]
+        poetry-version: [ 1.1.14 ]
 
     steps:
       - uses: actions/checkout@v2

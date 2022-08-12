@@ -1,4 +1,5 @@
 """Runner for get tweets by ids."""
+import json
 from typing import List, Optional
 
 from .tweet_raw_parser import get_all_tweets_from_json
@@ -6,12 +7,14 @@ from .tweets_by_id_context import TweetsByIdContext
 from .tweets_by_id_result import TweetsByIdResult
 from .tweets_by_id_task import TweetsByIdTask
 from ..exceptions import ScrapBatchBadResponse
-from ..http_request import WebClient, RequestDetails
+from ..http_request import WebClient, RequestDetails, RequestResponse
 from ..model import UserTweetRaw
 from ..model.cursor import Cursor
 from ..raw_output.raw_data_output import RawDataOutput
 from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
 from ..twitter_api.twitter_api_requests import TwitterApiRequests
+
+_NOT_FOUND_MESSAGE = '_Missing: No status found with that ID.'
 
 
 class TweetsByIdRunner:
@@ -44,20 +47,37 @@ class TweetsByIdRunner:
     def _is_end_of_scrapping(self) -> bool:
         ctx = self.tweets_by_id_context
         is_cursor = ctx.cursor is not None
-        last_scrapped_zero = ctx.last_scrapped_tweets_count == 0
-        return (last_scrapped_zero and is_cursor) or (not last_scrapped_zero and not is_cursor)
+        was_any_call = ctx.requests_count > 0
+        # last_scrapped_zero = ctx.last_scrapped_tweets_count == 0
+        # print(f'is_cursor {is_cursor}; last_scrapped_zero {last_scrapped_zero}')
+        # return (last_scrapped_zero and is_cursor) or (not last_scrapped_zero and not is_cursor)
+        return was_any_call and not is_cursor
+
+    @staticmethod
+    def response_with_not_found(request_response: RequestResponse) -> bool:
+        parsed = json.loads(request_response.text)
+        if 'errors' not in parsed:
+            return False
+        errors = parsed['errors']
+        filtered_errors = [it for it in errors if _NOT_FOUND_MESSAGE == it['message']]
+        return len(filtered_errors) > 0
 
     def _execute_next_tweets_request(self):
         request_params = self._get_next_request_details()
         response = self.web_client.run_request(request_params)
         if response.is_success():
-            parsed_list = get_all_tweets_from_json(response.text)
-            cursors = [it for it in parsed_list if isinstance(it, Cursor)]
-            cursor = cursors[0] if len(cursors) > 0 else None
-            user_tweet_raw = [it for it in parsed_list if isinstance(it, UserTweetRaw)]
-            self.tweets_by_id_context.add_downloaded_tweets_count(len(user_tweet_raw))
-            self.tweets_by_id_context.cursor = cursor
-            self._process_new_tweets_to_output(user_tweet_raw)
+            print(response.text)
+            if self.response_with_not_found(response):
+                self.tweets_by_id_context.add_downloaded_tweets_count_in_request(0)
+                self.tweets_by_id_context.cursor = None
+            else:
+                parsed_list = get_all_tweets_from_json(response.text)
+                cursors = [it for it in parsed_list if isinstance(it, Cursor)]
+                cursor = cursors[0] if len(cursors) > 0 else None
+                user_tweet_raw = [it for it in parsed_list if isinstance(it, UserTweetRaw)]
+                self.tweets_by_id_context.add_downloaded_tweets_count_in_request(len(user_tweet_raw))
+                self.tweets_by_id_context.cursor = cursor
+                self._process_new_tweets_to_output(user_tweet_raw)
         else:
             raise ScrapBatchBadResponse(response)
         return
@@ -68,6 +88,7 @@ class TweetsByIdRunner:
         return
 
     def _get_next_request_details(self) -> RequestDetails:
+        print(f'cursor {self.tweets_by_id_context.cursor}')
         return TwitterApiRequests().get_tweet_request_by_id(
             self.tweets_by_ids_task.tweet_id,
             self.tweets_by_id_context.cursor

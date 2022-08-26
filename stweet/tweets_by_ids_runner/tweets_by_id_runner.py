@@ -48,9 +48,6 @@ class TweetsByIdRunner:
         ctx = self.tweets_by_id_context
         is_cursor = ctx.cursor is not None
         was_any_call = ctx.requests_count > 0
-        # last_scrapped_zero = ctx.last_scrapped_tweets_count == 0
-        # print(f'is_cursor {is_cursor}; last_scrapped_zero {last_scrapped_zero}')
-        # return (last_scrapped_zero and is_cursor) or (not last_scrapped_zero and not is_cursor)
         return was_any_call and not is_cursor
 
     @staticmethod
@@ -66,7 +63,6 @@ class TweetsByIdRunner:
         request_params = self._get_next_request_details()
         response = self.web_client.run_request(request_params)
         if response.is_success():
-            print(response.text)
             if self.response_with_not_found(response):
                 self.tweets_by_id_context.add_downloaded_tweets_count_in_request(0)
                 self.tweets_by_id_context.cursor = None
@@ -88,7 +84,6 @@ class TweetsByIdRunner:
         return
 
     def _get_next_request_details(self) -> RequestDetails:
-        print(f'cursor {self.tweets_by_id_context.cursor}')
         return TwitterApiRequests().get_tweet_request_by_id(
             self.tweets_by_ids_task.tweet_id,
             self.tweets_by_id_context.cursor

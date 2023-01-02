@@ -9,8 +9,8 @@ from .replies_filter import RepliesFilter
 from ..model.language import Language
 
 
-def _format_date(arrow_time: Arrow) -> int:
-    return arrow_time.int_timestamp
+def _format_date(arrow_time: Arrow) -> str:
+    return arrow_time.date().isoformat()
 
 
 @dataclass(frozen=True)

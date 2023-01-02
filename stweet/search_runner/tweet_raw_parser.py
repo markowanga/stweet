@@ -19,7 +19,7 @@ def get_scroll_cursor(instructions: List[any]) -> Optional[Cursor]:
         for instruction in instructions if 'replaceEntry' in instruction
     ]
     entries.extend(replace_entries)
-    bottom_entries = [it for it in entries if it['entryId'] == 'sq-cursor-bottom']
+    bottom_entries = [it for it in entries if it['entryId'] == 'cursor-bottom-0']
     bottom_entry = None if len(bottom_entries) == 0 else bottom_entries[0]
     if bottom_entry is not None:
         cursor_raw = bottom_entry['content']['operation']['cursor']

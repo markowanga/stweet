@@ -40,10 +40,10 @@ pip install -U stweet
 
 If you want to sponsor me, in thanks for the project, please send me some crypto 😁:
 
-|Coin|Wallet address|
-|---|---|
-|Bitcoin|3EajE9DbLvEmBHLRzjDfG86LyZB4jzsZyg|
-|Etherum|0xE43d8C2c7a9af286bc2fc0568e2812151AF9b1FD|
+| Coin    | Wallet address                             |
+|---------|--------------------------------------------|
+| Bitcoin | 3EajE9DbLvEmBHLRzjDfG86LyZB4jzsZyg         |
+| Etherum | 0xE43d8C2c7a9af286bc2fc0568e2812151AF9b1FD |
 
 ## Basic usage
 
@@ -104,15 +104,17 @@ Currently, stweet have implemented:
 - **PrintRawOutput** – prints all items (not recommended in large scrapping)
 
 ## Using tor proxy
+
 Library is integrated with [tor-python-easy](https://github.com/markowanga/tor-python-easy).
 It allows using tor proxy with exposed control port – to change ip when it is needed.
 
 If you want to use tor proxy client you need to prepare custom web client and use it in runner.
 
-You need to run tor proxy -- you can run it on your local OS, or you can use this 
+You need to run tor proxy -- you can run it on your local OS, or you can use this
 [docker-compose](https://github.com/markowanga/tor-python-easy/blob/main/docker-compose.yml).
 
 Code snippet below show how to use proxy:
+
 ```python
 import stweet as st
 
@@ -133,6 +135,14 @@ if __name__ == '__main__':
                          user_raw_data_outputs=[output_print, output_jl_users],
                          web_client=web_client).run()
 ```
+
+## Divide scrap periods recommended
+
+Twitter on guest client block multiple pagination. Sometimes in one query there is possible to call for 3 paginations.
+To avoid this limitation divide scrapping period for smaller parts.
+
+Twitter in 2023 block in API putting time range in timestamp – only format YYYY-MM-DD is acceptable. In arrow you can
+only put time without hours.
 
 ## Twint inspiration
 

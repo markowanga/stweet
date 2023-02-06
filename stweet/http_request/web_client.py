@@ -1,7 +1,7 @@
 """Web client abstract class."""
 from __future__ import annotations
 
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from .request_details import RequestDetails

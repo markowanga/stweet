@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stweet"
-version = "2.1.0"
+version = "2.1.1"
 description = "Package to scrap tweets"
 authors = ["Marcin Wątroba <markowanga@gmail.com>"]
 license = "MIT"
@@ -18,6 +18,9 @@ tor-python-easy = "^0.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -2,18 +2,19 @@
 import json
 from typing import List, Optional
 
-from .search_run_context import SearchRunContext
-from .search_tweets_result import SearchTweetsResult
-from .search_tweets_task import SearchTweetsTask
-from .tweet_raw_parser import parse_users, get_scroll_cursor, parse_tweets
 from ..exceptions.scrap_batch_bad_response import ScrapBatchBadResponse
 from ..http_request.request_details import RequestDetails
 from ..http_request.web_client import WebClient
 from ..model.tweet_raw import TweetRaw
 from ..model.user_raw import UserRaw
 from ..raw_output.raw_data_output import RawDataOutput
-from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
+from ..twitter_api.default_twitter_web_client_provider import \
+    DefaultTwitterWebClientProvider
 from ..twitter_api.twitter_api_requests import TwitterApiRequests
+from .search_run_context import SearchRunContext
+from .search_tweets_result import SearchTweetsResult
+from .search_tweets_task import SearchTweetsTask
+from .tweet_raw_parser import get_scroll_cursor, parse_tweets, parse_users
 
 
 class TweetSearchRunner:

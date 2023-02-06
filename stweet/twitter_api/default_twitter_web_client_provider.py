@@ -1,10 +1,13 @@
 """DefaultTwitterWebClientProvider class."""
 from tor_python_easy.tor_control_port_client import TorControlPortClient
 
-from .twitter_auth_web_client_interceptor import TwitterAuthWebClientInterceptor
 from ..auth import SimpleAuthTokenProvider
-from ..auth.fail_strategy.tor_ip_change_auth_fail_strategy import TorIpChangeAuthFailStrategy
-from ..http_request import WebClient, RequestsWebClient, RequestsWebClientProxyConfig
+from ..auth.fail_strategy.tor_ip_change_auth_fail_strategy import \
+    TorIpChangeAuthFailStrategy
+from ..http_request import (RequestsWebClient, RequestsWebClientProxyConfig,
+                            WebClient)
+from .twitter_auth_web_client_interceptor import \
+    TwitterAuthWebClientInterceptor
 
 
 class DefaultTwitterWebClientProvider:

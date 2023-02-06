@@ -1,15 +1,16 @@
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import List, Optional
 
+from ..http_request import WebClient
+from ..model.user_raw import UserRaw
+from ..raw_output.raw_data_output import RawDataOutput
+from ..twitter_api.default_twitter_web_client_provider import \
+    DefaultTwitterWebClientProvider
+from ..twitter_api.twitter_api_requests import TwitterApiRequests
 from .get_users_context import GetUsersContext
 from .get_users_result import GetUsersResult
 from .get_users_task import GetUsersTask
 from .user_parser import parse_user
-from ..http_request import WebClient
-from ..model.user_raw import UserRaw
-from ..raw_output.raw_data_output import RawDataOutput
-from ..twitter_api.default_twitter_web_client_provider import DefaultTwitterWebClientProvider
-from ..twitter_api.twitter_api_requests import TwitterApiRequests
 
 
 @dataclass

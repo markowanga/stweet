@@ -2,7 +2,7 @@
 import threading
 from typing import List
 
-from .. import RequestsWebClient, WebClient, RequestDetails, RequestResponse
+from .. import RequestDetails, RequestResponse, RequestsWebClient, WebClient
 
 
 class ParamsResponseLogWebClientInterceptor(WebClient.WebClientInterceptor):

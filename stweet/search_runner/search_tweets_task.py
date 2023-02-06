@@ -5,8 +5,8 @@ from typing import Optional
 
 from arrow import Arrow
 
-from .replies_filter import RepliesFilter
 from ..model.language import Language
+from .replies_filter import RepliesFilter
 
 
 def _format_date(arrow_time: Arrow) -> str:

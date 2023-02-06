@@ -2,9 +2,11 @@
 from threading import Lock
 from typing import List, Optional
 
-from stweet.auth import SimpleAuthTokenProvider, AuthTokenProvider
-from stweet.exceptions.too_many_requests_exception import TooManyRequestsException
-from stweet.http_request import RequestsWebClient, WebClient, RequestDetails, RequestResponse
+from stweet.auth import AuthTokenProvider, SimpleAuthTokenProvider
+from stweet.exceptions.too_many_requests_exception import \
+    TooManyRequestsException
+from stweet.http_request import (RequestDetails, RequestResponse,
+                                 RequestsWebClient, WebClient)
 
 _AUTH_TOKEN = 'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4p' \
               'uTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA'

@@ -5,13 +5,13 @@ import time
 from json import JSONDecodeError
 from typing import Callable, Optional
 
-from .auth_token_provider import AuthTokenProvider
-from .fail_strategy.auth_fail_strategy import AuthFailStrategy
-from .fail_strategy.wait_auth_fail_strategy import WaitAuthFailStrategy
 from ..exceptions import RefreshTokenException
 from ..exceptions.too_many_requests_exception import TooManyRequestsException
 from ..http_request import WebClient
 from ..twitter_api.twitter_api_requests import TwitterApiRequests
+from .auth_token_provider import AuthTokenProvider
+from .fail_strategy.auth_fail_strategy import AuthFailStrategy
+from .fail_strategy.wait_auth_fail_strategy import WaitAuthFailStrategy
 
 _TIMEOUT = 20
 _URL = 'https://api.twitter.com/1.1/guest/activate.json'

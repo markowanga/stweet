@@ -1,7 +1,7 @@
 from typing import List
 
-from .raw_data_output import RawDataOutput
 from ..model.raw_data import RawData
+from .raw_data_output import RawDataOutput
 
 
 class PrintRawOutput(RawDataOutput):

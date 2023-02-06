@@ -3,7 +3,7 @@ import logging
 from http.client import HTTPConnection
 from typing import List
 
-from .. import RequestsWebClient, WebClient, RequestDetails, RequestResponse
+from .. import RequestDetails, RequestResponse, RequestsWebClient, WebClient
 
 
 class LoggingRequestsWebClientInterceptor(WebClient.WebClientInterceptor):

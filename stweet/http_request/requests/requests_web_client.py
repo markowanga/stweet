@@ -1,14 +1,30 @@
 """Request search_runner class."""
 from __future__ import annotations
 
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 import requests
+import requests.adapters
+import urllib3
+import urllib3.util.ssl_
 
-from .requests_web_client_proxy_config import RequestsWebClientProxyConfig
 from ..request_details import RequestDetails
 from ..request_response import RequestResponse
 from ..web_client import WebClient
+from .requests_web_client_proxy_config import RequestsWebClientProxyConfig
+
+_CIPHERS = 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:ECDHE-ECDSA-AES128-' \
+           'GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:' \
+           'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-SHA' \
+           ':ECDHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA:AES256-SHA'
+
+
+class _TwitterTLSAdapter(requests.adapters.HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        # FIXME: When urllib3 2.0.0 is out and can be required,
+        #  this should use urllib3.util.create_urllib3_context instead of the private, undocumented ssl_ module.
+        kwargs['ssl_context'] = urllib3.util.ssl_.create_urllib3_context(ciphers=_CIPHERS)
+        return super().init_poolmanager(*args, **kwargs)
 
 
 class RequestsWebClient(WebClient):
@@ -34,6 +50,9 @@ class RequestsWebClient(WebClient):
     def run_clear_request(self, params: RequestDetails) -> RequestResponse:
         """Main method to run request using requests package."""
         session = requests.Session()
+        adapter = _TwitterTLSAdapter()
+        session.mount('https://twitter.com', adapter)
+        session.mount('https://api.twitter.com', adapter)
         response = session.request(
             method=params.http_method.name,
             url=params.url,
